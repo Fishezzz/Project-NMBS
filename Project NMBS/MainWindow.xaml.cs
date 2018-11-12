@@ -99,6 +99,10 @@ namespace Project_NMBS
             string[] tripsRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\trips.txt");
             for (int i = 1; i < tripsRaw.Length; i++)
                 trips.Add(new Trip(tripsRaw[i]));
+
+
+            lvAgencies.ItemsSource = agencies;
+            lvStops.ItemsSource = stops;
         }
     }
 }
