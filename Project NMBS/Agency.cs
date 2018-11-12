@@ -13,7 +13,7 @@ namespace Project_NMBS
         public string Agency_Url { get; set; }
         public string Agency_Timezone { get; set; }
         public string Agency_Language { get; set; }
-        public string Agency_Phone { get; set; }
+        [Obsolete] public string Agency_Phone { get; set; }
 
         public Agency(string agencyString)
         {

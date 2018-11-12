@@ -12,11 +12,11 @@ namespace Project_NMBS
         public string Agency_Id { get; set; }
         public string Route_Short_Name { get; set; }
         public string Route_Long_Name { get; set; }
-        public string Route_Desc { get; set; }
+        [Obsolete] public string Route_Desc { get; set; }
         public int Route_Type { get; set; }
-        public string Route_Url { get; set; }
-        public string Route_Color { get; set; }
-        public string Route_Text_Color { get; set; }
+        [Obsolete] public string Route_Url { get; set; }
+        [Obsolete] public string Route_Color { get; set; }
+        [Obsolete] public string Route_Text_Color { get; set; }
 
         public Route(string routeString)
         {

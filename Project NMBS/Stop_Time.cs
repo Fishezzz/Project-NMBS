@@ -13,10 +13,10 @@ namespace Project_NMBS
         public string Departure_Time { get; set; }
         public int Stop_Id { get; set; }
         public int Stop_Sequence { get; set; }
-        public string Stop_Headsign { get; set; }
+        [Obsolete] public string Stop_Headsign { get; set; }
         public int Pickup_Type { get; set; }
         public int Drop_Off_Type { get; set; }
-        public string Shape_Dist_Traveled { get; set; }
+        [Obsolete] public string Shape_Dist_Traveled { get; set; }
 
         public Stop_Time(string stop_timeString)
         {

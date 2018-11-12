@@ -12,8 +12,8 @@ namespace Project_NMBS
         public int To_Stop_Id { get; set; }
         public int Transfer_Type { get; set; }
         public int Min_Transfer_Time { get; set; }
-        public string From_Trip_Id { get; set; }
-        public string To_Trip_Id { get; set; }
+        [Obsolete] public string From_Trip_Id { get; set; }
+        [Obsolete] public string To_Trip_Id { get; set; }
 
         public Transfer(string transferString)
         {

@@ -13,9 +13,9 @@ namespace Project_NMBS
         public string Trip_Id { get; set; }
         public string Trip_Headsign { get; set; }
         public int Trip_Short_Name { get; set; }
-        public string Direction_Id { get; set; }
+        [Obsolete] public string Direction_Id { get; set; }
         public int Block_Id { get; set; }
-        public string Shape_Id { get; set; }
+        [Obsolete] public string Shape_Id { get; set; }
         public int Trip_Type { get; set; }
 
         public Trip(string tripString)

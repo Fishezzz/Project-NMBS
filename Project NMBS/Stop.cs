@@ -9,13 +9,13 @@ namespace Project_NMBS
     class Stop
     {
         public string Stop_Id { get; set; }
-        public string Stop_Code { get; set; }
+        [Obsolete] public string Stop_Code { get; set; }
         public string Stop_Name { get; set; }
-        public string Stop_Desc { get; set; }
+        [Obsolete] public string Stop_Desc { get; set; }
         public double Stop_Lat { get; set; }
         public double Stop_Long { get; set; }
-        public string Zone_Id { get; set; }
-        public string Stop_Url { get; set; }
+        [Obsolete] public string Zone_Id { get; set; }
+        [Obsolete] public string Stop_Url { get; set; }
         public int Location_Type { get; set; }
         public string Parent_Station { get; set; }
         public string Platform_Code { get; set; }
