@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,16 @@ namespace Project_NMBS
         public MainWindow()
         {
             InitializeComponent();
+
+            // create the reader.
+            var reader = new GTFSReader<GTFSFeed>(strict: false);
+
+            // execute the reader.
+            GTFSFeed feed = reader.Read(new GTFSDirectorySource(new DirectoryInfo("GTFS")));
+            Debug.WriteLine(feed);
+
+            feed = reader.Read(new GTFSDirectorySource(new DirectoryInfo("GTFS")));
+            Debug.WriteLine(feed);
         }
     }
 }
