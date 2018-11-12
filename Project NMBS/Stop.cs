@@ -23,6 +23,8 @@ namespace Project_NMBS
         public Stop(string stopString)
         {
             string[] stop = stopString.Split(',');
+            stop[4] = string.Join(",", stop[4].Split('.'));
+            stop[5] = string.Join(",", stop[5].Split('.'));
 
             Stop_Id = stop[0];
             Stop_Code = stop[1];
