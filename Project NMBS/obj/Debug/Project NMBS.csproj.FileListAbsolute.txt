@@ -1,0 +1,19 @@
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\Project NMBS.exe.config
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\Project NMBS.exe
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\Project NMBS.pdb
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\GTFS.dll
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\GTFS.IO.Desktop.dll
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\GTFS.IO.dll
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS.csprojAssemblyReference.cache
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\MainWindow.g.cs
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\App.g.cs
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS_MarkupCompile.cache
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS_MarkupCompile.lref
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\MainWindow.baml
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS.g.resources
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project_NMBS.Properties.Resources.resources
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS.csproj.GenerateResource.cache
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS.csproj.CoreCompileInputs.cache
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS.csproj.CopyComplete
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS.exe
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\Project NMBS.pdb
