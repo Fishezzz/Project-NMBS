@@ -37,6 +37,7 @@ namespace Project_NMBS
         public MainWindow()
         {
             InitializeComponent();
+            string[] agencyRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\agency.txt");
         }
     }
 }

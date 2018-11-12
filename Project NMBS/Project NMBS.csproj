@@ -64,10 +64,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Calendar.cs" />
+    <Compile Include="Calendar_Date.cs" />
+    <Compile Include="Route.cs" />
+    <Compile Include="Stop.cs" />
+    <Compile Include="Stop_Time.cs" />
+    <Compile Include="Stop_Time_Override.cs" />
+    <Compile Include="Transfer.cs" />
+    <Compile Include="Translation.cs" />
+    <Compile Include="Trip.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Agency.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
