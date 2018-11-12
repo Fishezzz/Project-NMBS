@@ -152,10 +152,14 @@
             </TabItem>
             <TabItem Header="Translations">
                 <Grid Background="#FFE5E5E5">
-                    <ListView Name="lvTranslations" Margin="0,0,0,0">
+                    <ListView Name="lvTranslations" Margin="0,0,0,0" >
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="200" Header="Translation ID" DisplayMemberBinding="{Binding Trans_Id}"/>
+                                <GridViewColumn Width="200" DisplayMemberBinding="{Binding Trans_Id}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Click="GridViewColumnHeader_Click">Translation ID</GridViewColumnHeader>
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
                                 <GridViewColumn Width="70" Header="Language" DisplayMemberBinding="{Binding Language}"/>
                                 <GridViewColumn Width="300" Header="Translation" DisplayMemberBinding="{Binding Trans}"/>
                             </GridView>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,9 @@ namespace Project_NMBS
     /// </summary>
     public partial class MainWindow : Window
     {
+        GridViewColumnHeader _lastHeaderClicked = null;
+        ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
         List<Agency> agencies;
         List<Calendar> calendars;
         List<Calendar_Date> calendar_dates;
@@ -49,6 +53,7 @@ namespace Project_NMBS
         {
             InitializeComponent();
 
+            // Initialize 
             agencies = new List<Agency>();
             calendars = new List<Calendar>();
             calendar_dates = new List<Calendar_Date>();
@@ -60,47 +65,14 @@ namespace Project_NMBS
             translations = new List<Translation>();
             trips = new List<Trip>();
 
-            string[] agencyRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\agency.txt");
-            for (int i = 1; i < agencyRaw.Length; i++)
-                agencies.Add(new Agency(agencyRaw[i]));
+            LoadFiles();
 
-            string[] calendarRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\calendar.txt");
-            for (int i = 1; i < calendarRaw.Length; i++)
-                calendars.Add(new Calendar(calendarRaw[i]));
+            UpdateListViews();
 
-            string[] calendar_datesRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\calendar_dates.txt");
-            for (int i = 1; i < calendar_datesRaw.Length; i++)
-                calendar_dates.Add(new Calendar_Date(calendar_datesRaw[i]));
+        }
 
-            string[] routesRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\routes.txt");
-            for (int i = 1; i < routesRaw.Length; i++)
-                routes.Add(new Route(routesRaw[i]));
-
-            string[] stopsRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\stops.txt");
-            for (int i = 1; i < stopsRaw.Length; i++)
-                stops.Add(new Stop(stopsRaw[i]));
-
-            string[] stop_timesRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\stop_times.txt");
-            for (int i = 1; i < stop_timesRaw.Length; i++)
-                stop_times.Add(new Stop_Time(stop_timesRaw[i]));
-            
-            string[] stop_time_overridesRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\stop_time_overrides.txt");
-            for (int i = 1; i < stop_time_overridesRaw.Length; i++)
-                stop_time_overrides.Add(new Stop_Time_Override(stop_time_overridesRaw[i]));
-
-            string[] transfersRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\transfers.txt");
-            for (int i = 1; i < transfersRaw.Length; i++)
-                transfers.Add(new Transfer(transfersRaw[i]));
-            
-            string[] translationsRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\translations.txt");
-            for (int i = 1; i < translationsRaw.Length; i++)
-                translations.Add(new Translation(translationsRaw[i]));
-
-            string[] tripsRaw = File.ReadAllLines(@"C:\Users\emiel\School\OOP\Project NMBS\GTFS\trips.txt");
-            for (int i = 1; i < tripsRaw.Length; i++)
-                trips.Add(new Trip(tripsRaw[i]));
-
-
+        private void UpdateListViews()
+        {
             lvAgencies.ItemsSource = agencies;
             lvStops.ItemsSource = stops;
             lvRoutes.ItemsSource = routes;
@@ -111,6 +83,113 @@ namespace Project_NMBS
             lvTransfers.ItemsSource = transfers;
             lvStopTimeOverrides.ItemsSource = stop_time_overrides;
             lvTranslations.ItemsSource = translations;
+        }
+
+        private void LoadFiles()
+        {
+            string[] agencyRaw = File.ReadAllLines("GTFS\\agency.txt");
+            for (int i = 1; i < agencyRaw.Length; i++)
+                agencies.Add(new Agency(agencyRaw[i]));
+
+            string[] calendarRaw = File.ReadAllLines("GTFS\\calendar.txt");
+            for (int i = 1; i < calendarRaw.Length; i++)
+                calendars.Add(new Calendar(calendarRaw[i]));
+
+            string[] calendar_datesRaw = File.ReadAllLines("GTFS\\calendar_dates.txt");
+            for (int i = 1; i < calendar_datesRaw.Length; i++)
+                calendar_dates.Add(new Calendar_Date(calendar_datesRaw[i]));
+
+            string[] routesRaw = File.ReadAllLines("GTFS\\routes.txt");
+            for (int i = 1; i < routesRaw.Length; i++)
+                routes.Add(new Route(routesRaw[i]));
+
+            string[] stopsRaw = File.ReadAllLines("GTFS\\stops.txt");
+            for (int i = 1; i < stopsRaw.Length; i++)
+                stops.Add(new Stop(stopsRaw[i]));
+
+            string[] stop_timesRaw = File.ReadAllLines("GTFS\\stop_times.txt");
+            for (int i = 1; i < stop_timesRaw.Length; i++)
+                stop_times.Add(new Stop_Time(stop_timesRaw[i]));
+
+            string[] stop_time_overridesRaw = File.ReadAllLines("GTFS\\stop_time_overrides.txt");
+            for (int i = 1; i < stop_time_overridesRaw.Length; i++)
+                stop_time_overrides.Add(new Stop_Time_Override(stop_time_overridesRaw[i]));
+
+            string[] transfersRaw = File.ReadAllLines("GTFS\\transfers.txt");
+            for (int i = 1; i < transfersRaw.Length; i++)
+                transfers.Add(new Transfer(transfersRaw[i]));
+
+            string[] translationsRaw = File.ReadAllLines("GTFS\\translations.txt");
+            for (int i = 1; i < translationsRaw.Length; i++)
+                translations.Add(new Translation(translationsRaw[i]));
+
+            string[] tripsRaw = File.ReadAllLines("GTFS\\trips.txt");
+            for (int i = 1; i < tripsRaw.Length; i++)
+                trips.Add(new Trip(tripsRaw[i]));
+        }
+
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader headerClicked = e.OriginalSource as GridViewColumnHeader;
+            ListSortDirection direction;
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    Binding columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
+                    string sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+
+                    Sort(sortBy, direction);
+
+                    if (direction == ListSortDirection.Ascending)
+                    {
+                        headerClicked.Column.HeaderTemplate = Resources["HeaderTemplateArrowUp"] as DataTemplate;
+                    }
+                    else
+                    {
+                        headerClicked.Column.HeaderTemplate = Resources["HeaderTemplateArrowDown"] as DataTemplate;
+                    }
+
+                    // Remove arrow from previously sorted header
+                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
+                    {
+                        _lastHeaderClicked.Column.HeaderTemplate = null;
+                    }
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+        }
+
+        private void Sort(string sortBy, ListSortDirection direction)
+        {
+            var gesorteerdelijst = direction == ListSortDirection.Ascending ?
+                                   (from persoon in translations
+                                   orderby persoon.Trans_Id ascending
+                                   select persoon)
+                                   :
+                                   (from persoon in translations
+                                   orderby persoon.Trans_Id descending
+                                   select persoon);
+            lvTranslations.ItemsSource = gesorteerdelijst;
         }
     }
 }
