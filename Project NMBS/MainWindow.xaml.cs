@@ -103,6 +103,14 @@ namespace Project_NMBS
 
             lvAgencies.ItemsSource = agencies;
             lvStops.ItemsSource = stops;
+            lvRoutes.ItemsSource = routes;
+            lvTrips.ItemsSource = trips;
+            lvStopTimes.ItemsSource = stop_times;
+            lvCalendar.ItemsSource = calendars;
+            lvCalendarDates.ItemsSource = calendar_dates;
+            lvTransfers.ItemsSource = transfers;
+            lvStopTimeOverrides.ItemsSource = stop_time_overrides;
+            lvTranslations.ItemsSource = translations;
         }
     }
 }

@@ -13,7 +13,7 @@
                     <ListView Name="lvAgencies" Margin="0,0,0,0">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="80" Header="ID" DisplayMemberBinding="{Binding Agency_Id}"/>
+                                <GridViewColumn Width="80" Header="Agency ID" DisplayMemberBinding="{Binding Agency_Id}"/>
                                 <GridViewColumn Width="80" Header="Name" DisplayMemberBinding="{Binding Agency_Name}"/>
                                 <GridViewColumn Width="200" Header="URL" DisplayMemberBinding="{Binding Agency_Url}"/>
                                 <GridViewColumn Width="100" Header="Timezone" DisplayMemberBinding="{Binding Agency_Timezone}"/>
@@ -28,7 +28,7 @@
                     <ListView Name="lvStops" Margin="0,0,0,0">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="100" Header="ID" DisplayMemberBinding="{Binding Stop_Id}"/>
+                                <GridViewColumn Width="100" Header="Stop ID" DisplayMemberBinding="{Binding Stop_Id}"/>
                                 <GridViewColumn Width="200" Header="Name" DisplayMemberBinding="{Binding Stop_Name}"/>
                                 <GridViewColumn Width="70" Header="Latitude" DisplayMemberBinding="{Binding Stop_Lat}"/>
                                 <GridViewColumn Width="70" Header="Longtitude" DisplayMemberBinding="{Binding Stop_Long}"/>
@@ -41,30 +41,128 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Routes">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvRoutes" Margin="0,0,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="60" Header="Route ID" DisplayMemberBinding="{Binding Route_Id}"/>
+                                <GridViewColumn Width="80" Header="Agency ID" DisplayMemberBinding="{Binding Agency_Id}"/>
+                                <GridViewColumn Width="70" Header="Short Name" DisplayMemberBinding="{Binding Route_Short_Name}"/>
+                                <GridViewColumn Width="300" Header="Name" DisplayMemberBinding="{Binding Route_Long_Name}"/>
+                                <GridViewColumn Width="80" Header="Route Type" DisplayMemberBinding="{Binding Route_Type}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem Header="Trips">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvTrips" Margin="0,0,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="60" Header="Route ID" DisplayMemberBinding="{Binding Route_Id}"/>
+                                <GridViewColumn Width="70" Header="Service ID" DisplayMemberBinding="{Binding Service_Id}"/>
+                                <GridViewColumn Width="265" Header="Trip ID" DisplayMemberBinding="{Binding Trip_Id}"/>
+                                <GridViewColumn Width="160" Header="Headsign" DisplayMemberBinding="{Binding Trip_Headsign}"/>
+                                <GridViewColumn Width="70" Header="Short Name" DisplayMemberBinding="{Binding Trip_Short_Name}"/>
+                                <GridViewColumn Width="60" Header="Block ID" DisplayMemberBinding="{Binding Block_Id}"/>
+                                <GridViewColumn Width="60" Header="Trip Type" DisplayMemberBinding="{Binding Trip_Type}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem Header="Stop Times">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvStopTimes" Margin="0,0,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="265" Header="Trip ID" DisplayMemberBinding="{Binding Trip_Id}"/>
+                                <GridViewColumn Width="80" Header="Arrival Time" DisplayMemberBinding="{Binding Arrival_Time}"/>
+                                <GridViewColumn Width="90" Header="Departure Time" DisplayMemberBinding="{Binding Departure_Time}"/>
+                                <GridViewColumn Width="70" Header="Stop ID" DisplayMemberBinding="{Binding Stop_Id}"/>
+                                <GridViewColumn Width="70" Header="Sequence" DisplayMemberBinding="{Binding Stop_Sequence}"/>
+                                <GridViewColumn Width="80" Header="Pickup Type" DisplayMemberBinding="{Binding Pickup_Type}"/>
+                                <GridViewColumn Width="90" Header="Drop Off Type" DisplayMemberBinding="{Binding Drop_Off_Type}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem Header="Calendar">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvCalendar" Margin="0,0,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="70" Header="Service ID" DisplayMemberBinding="{Binding Service_Id}"/>
+                                <GridViewColumn Width="70" Header="Monday" DisplayMemberBinding="{Binding Monday}"/>
+                                <GridViewColumn Width="70" Header="Tuesday" DisplayMemberBinding="{Binding Tuesday}"/>
+                                <GridViewColumn Width="70" Header="Wednesday" DisplayMemberBinding="{Binding Wednesday}"/>
+                                <GridViewColumn Width="70" Header="Thursday" DisplayMemberBinding="{Binding Thursday}"/>
+                                <GridViewColumn Width="70" Header="Friday" DisplayMemberBinding="{Binding Friday}"/>
+                                <GridViewColumn Width="70" Header="Saturday" DisplayMemberBinding="{Binding Saturday}"/>
+                                <GridViewColumn Width="70" Header="Sunday" DisplayMemberBinding="{Binding Sunday}"/>
+                                <GridViewColumn Width="90" Header="Start Date" DisplayMemberBinding="{Binding Start_Date}"/>
+                                <GridViewColumn Width="90" Header="End Date" DisplayMemberBinding="{Binding End_Date}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem Header="Calendar Dates">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvCalendarDates" Margin="0,0,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="70" Header="Service ID" DisplayMemberBinding="{Binding Service_Id}"/>
+                                <GridViewColumn Width="90" Header="Date" DisplayMemberBinding="{Binding Date}"/>
+                                <GridViewColumn Width="100" Header="Exception Type" DisplayMemberBinding="{Binding Exception_Type}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem Header="Transfers">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvTransfers" Margin="0,0,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="100" Header="From Stop ID" DisplayMemberBinding="{Binding From_Stop_Id}"/>
+                                <GridViewColumn Width="100" Header="To Stop ID" DisplayMemberBinding="{Binding To_Stop_Id}"/>
+                                <GridViewColumn Width="90" Header="Transfer Type" DisplayMemberBinding="{Binding Transfer_Type}"/>
+                                <GridViewColumn Width="110" Header="Min Transfer Time" DisplayMemberBinding="{Binding Min_Transfer_Time}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem Header="Stop Time Overrides">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvStopTimeOverrides" Margin="0,0,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="265" Header="Trip ID" DisplayMemberBinding="{Binding Trip_Id}"/>
+                                <GridViewColumn Width="100" Header="Stop Sequence" DisplayMemberBinding="{Binding Stop_Sequence}"/>
+                                <GridViewColumn Width="70" Header="Service ID" DisplayMemberBinding="{Binding Service_Id}"/>
+                                <GridViewColumn Width="100" Header="Stop ID" DisplayMemberBinding="{Binding Stop_Id}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </TabItem>
             <TabItem Header="Translations">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvTranslations" Margin="0,0,0,0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="200" Header="Translation ID" DisplayMemberBinding="{Binding Trans_Id}"/>
+                                <GridViewColumn Width="70" Header="Language" DisplayMemberBinding="{Binding Language}"/>
+                                <GridViewColumn Width="300" Header="Translation" DisplayMemberBinding="{Binding Trans}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>
