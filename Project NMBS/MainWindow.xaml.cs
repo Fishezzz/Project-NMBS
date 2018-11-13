@@ -160,11 +160,11 @@ namespace Project_NMBS
 
                     if (direction == ListSortDirection.Ascending)
                     {
-                        headerClicked.Column.HeaderTemplate = Resources["HeaderTemplateArrowUp"] as DataTemplate;
+                        headerClicked.Column.HeaderTemplate = Resources["arrow_up"] as DataTemplate;
                     }
                     else
                     {
-                        headerClicked.Column.HeaderTemplate = Resources["HeaderTemplateArrowDown"] as DataTemplate;
+                        headerClicked.Column.HeaderTemplate = Resources["arrow_down"] as DataTemplate;
                     }
 
                     // Remove arrow from previously sorted header
