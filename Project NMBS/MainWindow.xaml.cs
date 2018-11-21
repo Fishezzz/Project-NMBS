@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 
 using GTFS;
 using GTFS.Attributes;
+using GTFS.DB;
+using GTFS.DB.Memory;
 using GTFS.Entities;
 using GTFS.Entities.Collections;
 using GTFS.Entities.Enumerations;
@@ -28,6 +30,7 @@ using GTFS.IO.CSV;
 using GTFS.StopsToShape;
 using GTFS.Validation;
 
+
 namespace Project_NMBS
 {
     /// <summary>
@@ -35,19 +38,15 @@ namespace Project_NMBS
     /// </summary>
     public partial class MainWindow : Window
     {
+        GTFSReader<GTFSFeed> reader;
+        GTFSFeed feed;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            // create the reader.
-            var reader = new GTFSReader<GTFSFeed>(strict: false);
-
-            // execute the reader.
-            GTFSFeed feed = reader.Read(new GTFSDirectorySource(new DirectoryInfo("GTFS")));
-            Debug.WriteLine(feed);
-
-            feed = reader.Read(new GTFSDirectorySource(new DirectoryInfo("GTFS")));
-            Debug.WriteLine(feed);
+            reader = new GTFSReader<GTFSFeed>(strict: false);
+            feed = reader.Read(new DirectoryInfo("GTFS"));
         }
     }
 }
