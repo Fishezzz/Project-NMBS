@@ -511,10 +511,10 @@ Brugelette,fr,Brugelette
 Brugelette,nl,Brugelette
 Brugelette,de,Brugelette
 Brugelette,en,Brugelette
-Mévergnies-Attre,fr,Mévergnies-Attre
-Mévergnies-Attre,nl,Mévergnies-Attre
-Mévergnies-Attre,de,Mévergnies-Attre
-Mévergnies-Attre,en,Mévergnies-Attre
+MÃ©vergnies-Attre,fr,MÃ©vergnies-Attre
+MÃ©vergnies-Attre,nl,MÃ©vergnies-Attre
+MÃ©vergnies-Attre,de,MÃ©vergnies-Attre
+MÃ©vergnies-Attre,en,MÃ©vergnies-Attre
 Maffle,fr,Maffle
 Maffle,nl,Maffle
 Maffle,de,Maffle
@@ -551,10 +551,10 @@ Callenelle,fr,Callenelle
 Callenelle,nl,Callenelle
 Callenelle,de,Callenelle
 Callenelle,en,Callenelle
-Péruwelz,fr,Péruwelz
-Péruwelz,nl,Péruwelz
-Péruwelz,de,Péruwelz
-Péruwelz,en,Péruwelz
+PÃ©ruwelz,fr,PÃ©ruwelz
+PÃ©ruwelz,nl,PÃ©ruwelz
+PÃ©ruwelz,de,PÃ©ruwelz
+PÃ©ruwelz,en,PÃ©ruwelz
 Blaton,fr,Blaton
 Blaton,nl,Blaton
 Blaton,de,Blaton
@@ -579,10 +579,10 @@ Thulin,fr,Thulin
 Thulin,nl,Thulin
 Thulin,de,Thulin
 Thulin,en,Thulin
-Quiévrain,fr,Quiévrain
-Quiévrain,nl,Quiévrain
-Quiévrain,de,Quiévrain
-Quiévrain,en,Quiévrain
+QuiÃ©vrain,fr,QuiÃ©vrain
+QuiÃ©vrain,nl,QuiÃ©vrain
+QuiÃ©vrain,de,QuiÃ©vrain
+QuiÃ©vrain,en,QuiÃ©vrain
 Hainin,fr,Hainin
 Hainin,nl,Hainin
 Hainin,de,Hainin
@@ -627,10 +627,10 @@ Soignies,fr,Soignies
 Soignies,nl,Zinnik
 Soignies,de,Zinnik / Soignies
 Soignies,en,Soignies / Zinnik
-Hennuyères,fr,Hennuyères
-Hennuyères,nl,Hennuyères
-Hennuyères,de,Hennuyères
-Hennuyères,en,Hennuyères
+HennuyÃ¨res,fr,HennuyÃ¨res
+HennuyÃ¨res,nl,HennuyÃ¨res
+HennuyÃ¨res,de,HennuyÃ¨res
+HennuyÃ¨res,en,HennuyÃ¨res
 Braine-Le-Comte,fr,Braine-Le-Comte
 Braine-Le-Comte,nl,'s Gravenbrakel
 Braine-Le-Comte,de,' s Gravenbrakel / Braine-le-Comte
@@ -647,22 +647,22 @@ Leval,fr,Leval
 Leval,nl,Leval
 Leval,de,Leval
 Leval,en,Leval
-Carnières,fr,Carnières
-Carnières,nl,Carnières
-Carnières,de,Carnières
-Carnières,en,Carnières
+CarniÃ¨res,fr,CarniÃ¨res
+CarniÃ¨res,nl,CarniÃ¨res
+CarniÃ¨res,de,CarniÃ¨res
+CarniÃ¨res,en,CarniÃ¨res
 Morlanwelz,fr,Morlanwelz
 Morlanwelz,nl,Morlanwelz
 Morlanwelz,de,Morlanwelz
 Morlanwelz,en,Morlanwelz
-La Louvière-Sud,fr,La Louvière-Sud
-La Louvière-Sud,nl,La Louvière-Zuid
-La Louvière-Sud,de,La Louvière-Zuid / La Louvière-Sud
-La Louvière-Sud,en,La Louvière-Sud / La Louvière-Zuid
-La Louvière- Centre,fr,La Louvière- Centre
-La Louvière- Centre,nl,La Louvière-Centrum
-La Louvière- Centre,de,La Louvière-Centrum / La Louvière-Centre
-La Louvière- Centre,en,La Louvière-Centre / La Louvière-Centrum
+La LouviÃ¨re-Sud,fr,La LouviÃ¨re-Sud
+La LouviÃ¨re-Sud,nl,La LouviÃ¨re-Zuid
+La LouviÃ¨re-Sud,de,La LouviÃ¨re-Zuid / La LouviÃ¨re-Sud
+La LouviÃ¨re-Sud,en,La LouviÃ¨re-Sud / La LouviÃ¨re-Zuid
+La LouviÃ¨re- Centre,fr,La LouviÃ¨re- Centre
+La LouviÃ¨re- Centre,nl,La LouviÃ¨re-Centrum
+La LouviÃ¨re- Centre,de,La LouviÃ¨re-Centrum / La LouviÃ¨re-Centre
+La LouviÃ¨re- Centre,en,La LouviÃ¨re-Centre / La LouviÃ¨re-Centrum
 Frameries,fr,Frameries
 Frameries,nl,Frameries
 Frameries,de,Frameries
@@ -671,10 +671,10 @@ Genly,fr,Genly
 Genly,nl,Genly
 Genly,de,Genly
 Genly,en,Genly
-Quévy,fr,Quévy
-Quévy,nl,Quévy
-Quévy,de,Quévy
-Quévy,en,Quévy
+QuÃ©vy,fr,QuÃ©vy
+QuÃ©vy,nl,QuÃ©vy
+QuÃ©vy,de,QuÃ©vy
+QuÃ©vy,en,QuÃ©vy
 Bracquegnies,fr,Bracquegnies
 Bracquegnies,nl,Bracquegnies
 Bracquegnies,de,Bracquegnies
@@ -683,10 +683,10 @@ Thieu,fr,Thieu
 Thieu,nl,Thieu
 Thieu,de,Thieu
 Thieu,en,Thieu
-Havré,fr,Havré
-Havré,nl,Havré
-Havré,de,Havré
-Havré,en,Havré
+HavrÃ©,fr,HavrÃ©
+HavrÃ©,nl,HavrÃ©
+HavrÃ©,de,HavrÃ©
+HavrÃ©,en,HavrÃ©
 Obourg,fr,Obourg
 Obourg,nl,Obourg
 Obourg,de,Obourg
@@ -755,10 +755,10 @@ Couillet,fr,Couillet
 Couillet,nl,Couillet
 Couillet,de,Couillet
 Couillet,en,Couillet
-Châtelet,fr,Châtelet
-Châtelet,nl,Châtelet
-Châtelet,de,Châtelet
-Châtelet,en,Châtelet
+ChÃ¢telet,fr,ChÃ¢telet
+ChÃ¢telet,nl,ChÃ¢telet
+ChÃ¢telet,de,ChÃ¢telet
+ChÃ¢telet,en,ChÃ¢telet
 Ham-sur-Heure,fr,Ham-sur-Heure
 Ham-sur-Heure,nl,Ham-sur-Heure
 Ham-sur-Heure,de,Ham-sur-Heure
@@ -767,18 +767,18 @@ Cour-sur-Heure,fr,Cour-sur-Heure
 Cour-sur-Heure,nl,Cour-sur-Heure
 Cour-sur-Heure,de,Cour-sur-Heure
 Cour-sur-Heure,en,Cour-sur-Heure
-Berzée,fr,Berzée
-Berzée,nl,Berzée
-Berzée,de,Berzée
-Berzée,en,Berzée
+BerzÃ©e,fr,BerzÃ©e
+BerzÃ©e,nl,BerzÃ©e
+BerzÃ©e,de,BerzÃ©e
+BerzÃ©e,en,BerzÃ©e
 Pry,fr,Pry
 Pry,nl,Pry
 Pry,de,Pry
 Pry,en,Pry
-Yves-Gomezée,fr,Yves-Gomezée
-Yves-Gomezée,nl,Yves-Gomezée
-Yves-Gomezée,de,Yves-Gomezée
-Yves-Gomezée,en,Yves-Gomezée
+Yves-GomezÃ©e,fr,Yves-GomezÃ©e
+Yves-GomezÃ©e,nl,Yves-GomezÃ©e
+Yves-GomezÃ©e,de,Yves-GomezÃ©e
+Yves-GomezÃ©e,en,Yves-GomezÃ©e
 Philippeville,fr,Philippeville
 Philippeville,nl,Philippeville
 Philippeville,de,Philippeville
@@ -847,10 +847,10 @@ Fontaine Valmont,fr,Fontaine Valmont
 Fontaine Valmont,nl,Fontaine Valmont
 Fontaine Valmont,de,Fontaine-Valmont
 Fontaine Valmont,en,Fontaine-Valmont
-Labuissière,fr,Labuissière
-Labuissière,nl,Labuissière
-Labuissière,de,Labuissière
-Labuissière,en,Labuissière
+LabuissiÃ¨re,fr,LabuissiÃ¨re
+LabuissiÃ¨re,nl,LabuissiÃ¨re
+LabuissiÃ¨re,de,LabuissiÃ¨re
+LabuissiÃ¨re,en,LabuissiÃ¨re
 Solre-sur-Sambre,fr,Solre-sur-Sambre
 Solre-sur-Sambre,nl,Solre-sur-Sambre
 Solre-sur-Sambre,de,Solre-sur-Sambre
@@ -867,22 +867,22 @@ Forchies,fr,Forchies
 Forchies,nl,Forchies
 Forchies,de,Forchies
 Forchies,en,Forchies
-Piéton,fr,Piéton
-Piéton,nl,Piéton
-Piéton,de,Piéton
-Piéton,en,Piéton
+PiÃ©ton,fr,PiÃ©ton
+PiÃ©ton,nl,PiÃ©ton
+PiÃ©ton,de,PiÃ©ton
+PiÃ©ton,en,PiÃ©ton
 Godarville,fr,Godarville
 Godarville,nl,Godarville
 Godarville,de,Godarville
 Godarville,en,Godarville
-Gouy-lez-Piéton,fr,Gouy-lez-Piéton
-Gouy-lez-Piéton,nl,Gouy-lez-Piéton
-Gouy-lez-Piéton,de,Gouy-lez-Piéton
-Gouy-lez-Piéton,en,Gouy-lez-Piéton
-Pont-à-Celles,fr,Pont-à-Celles
-Pont-à-Celles,nl,Pont-à-Celles
-Pont-à-Celles,de,Pont-à-Celles
-Pont-à-Celles,en,Pont-à-Celles
+Gouy-lez-PiÃ©ton,fr,Gouy-lez-PiÃ©ton
+Gouy-lez-PiÃ©ton,nl,Gouy-lez-PiÃ©ton
+Gouy-lez-PiÃ©ton,de,Gouy-lez-PiÃ©ton
+Gouy-lez-PiÃ©ton,en,Gouy-lez-PiÃ©ton
+Pont-Ã -Celles,fr,Pont-Ã -Celles
+Pont-Ã -Celles,nl,Pont-Ã -Celles
+Pont-Ã -Celles,de,Pont-Ã -Celles
+Pont-Ã -Celles,en,Pont-Ã -Celles
 Obaix-Buzet,fr,Obaix-Buzet
 Obaix-Buzet,nl,Obaix-Buzet
 Obaix-Buzet,de,Obaix-Buzet
@@ -900,9 +900,9 @@ Roux,nl,Roux
 Roux,de,Roux
 Roux,en,Roux
 Beignee,fr,Beignee
-Beignee,nl,Beignée
-Beignee,de,Beignée
-Beignee,en,Beignée
+Beignee,nl,BeignÃ©e
+Beignee,de,BeignÃ©e
+Beignee,en,BeignÃ©e
 Jamioulx,fr,Jamioulx
 Jamioulx,nl,Jamioulx
 Jamioulx,de,Jamioulx
@@ -935,10 +935,10 @@ Virton,fr,Virton
 Virton,nl,Virton
 Virton,de,Virton
 Virton,en,Virton
-Neufchâteau,fr,Neufchâteau
-Neufchâteau,nl,Neufchâteau
-Neufchâteau,de,Neufchâteau
-Neufchâteau,en,Neufchâteau
+NeufchÃ¢teau,fr,NeufchÃ¢teau
+NeufchÃ¢teau,nl,NeufchÃ¢teau
+NeufchÃ¢teau,de,NeufchÃ¢teau
+NeufchÃ¢teau,en,NeufchÃ¢teau
 Marbehan,fr,Marbehan
 Marbehan,nl,Marbehan
 Marbehan,de,Marbehan
@@ -999,10 +999,10 @@ Sart-Bernard,fr,Sart-Bernard
 Sart-Bernard,nl,Sart-Bernard
 Sart-Bernard,de,Sart-Bernard
 Sart-Bernard,en,Sart-Bernard
-Courrière,fr,Courrière
-Courrière,nl,Courrière
-Courrière,de,Courrière
-Courrière,en,Courrière
+CourriÃ¨re,fr,CourriÃ¨re
+CourriÃ¨re,nl,CourriÃ¨re
+CourriÃ¨re,de,CourriÃ¨re
+CourriÃ¨re,en,CourriÃ¨re
 Assesse,fr,Assesse
 Assesse,nl,Assesse
 Assesse,de,Assesse
@@ -1055,10 +1055,10 @@ Grupont,fr,Grupont
 Grupont,nl,Grupont
 Grupont,de,Grupont
 Grupont,en,Grupont
-Forrières,fr,Forrières
-Forrières,nl,Forrières
-Forrières,de,Forrières
-Forrières,en,Forrières
+ForriÃ¨res,fr,ForriÃ¨res
+ForriÃ¨res,nl,ForriÃ¨res
+ForriÃ¨res,de,ForriÃ¨res
+ForriÃ¨res,en,ForriÃ¨res
 Rochefort-Jemelle,fr,Rochefort-Jemelle
 Rochefort-Jemelle,nl,Rochefort-Jemelle
 Rochefort-Jemelle,de,Rochefort-Jemelle
@@ -1095,18 +1095,18 @@ Marche-les-Dames,fr,Marche-les-Dames
 Marche-les-Dames,nl,Marche-les-Dames
 Marche-les-Dames,de,Marche-les-Dames
 Marche-les-Dames,en,Marche-les-Dames
-Namêche,fr,Namêche
-Namêche,nl,Namêche
-Namêche,de,Namêche
-Namêche,en,Namêche
+NamÃªche,fr,NamÃªche
+NamÃªche,nl,NamÃªche
+NamÃªche,de,NamÃªche
+NamÃªche,en,NamÃªche
 Sclaigneaux,fr,Sclaigneaux
 Sclaigneaux,nl,Sclaigneaux
 Sclaigneaux,de,Sclaigneaux
 Sclaigneaux,en,Sclaigneaux
-Château-de-Seilles,fr,Château-de-Seilles
-Château-de-Seilles,nl,Château-de-Seilles
-Château-de-Seilles,de,Château-de-Seilles
-Château-de-Seilles,en,Château-de-Seilles
+ChÃ¢teau-de-Seilles,fr,ChÃ¢teau-de-Seilles
+ChÃ¢teau-de-Seilles,nl,ChÃ¢teau-de-Seilles
+ChÃ¢teau-de-Seilles,de,ChÃ¢teau-de-Seilles
+ChÃ¢teau-de-Seilles,en,ChÃ¢teau-de-Seilles
 Andenne,fr,Andenne
 Andenne,nl,Andenne
 Andenne,de,Andenne
@@ -1163,10 +1163,10 @@ Beuzet,fr,Beuzet
 Beuzet,nl,Beuzet
 Beuzet,de,Beuzet
 Beuzet,en,Beuzet
-Lonzée,fr,Lonzée
-Lonzée,nl,Lonzée
-Lonzée,de,Lonzée
-Lonzée,en,Lonzée
+LonzÃ©e,fr,LonzÃ©e
+LonzÃ©e,nl,LonzÃ©e
+LonzÃ©e,de,LonzÃ©e
+LonzÃ©e,en,LonzÃ©e
 Mazy,fr,Mazy
 Mazy,nl,Mazy
 Mazy,de,Mazy
@@ -1187,10 +1187,10 @@ Moustier,fr,Moustier
 Moustier,nl,Moustier
 Moustier,de,Moustier
 Moustier,en,Moustier
-Franière,fr,Franière
-Franière,nl,Franière
-Franière,de,Franière
-Franière,en,Franière
+FraniÃ¨re,fr,FraniÃ¨re
+FraniÃ¨re,nl,FraniÃ¨re
+FraniÃ¨re,de,FraniÃ¨re
+FraniÃ¨re,en,FraniÃ¨re
 Floreffe,fr,Floreffe
 Floreffe,nl,Floreffe
 Floreffe,de,Floreffe
@@ -1203,10 +1203,10 @@ Ronet,fr,Ronet
 Ronet,nl,Ronet
 Ronet,de,Ronet
 Ronet,en,Ronet
-Visé,fr,Visé
-Visé,nl,Visé
-Visé,de,Wezet / Visé
-Visé,en,Visé / Wezet
+VisÃ©,fr,VisÃ©
+VisÃ©,nl,VisÃ©
+VisÃ©,de,Wezet / VisÃ©
+VisÃ©,en,VisÃ© / Wezet
 Coo,fr,Coo
 Coo,nl,Coo
 Coo,de,Coo
@@ -1239,10 +1239,10 @@ Welkenraedt,fr,Welkenraedt
 Welkenraedt,nl,Welkenraedt
 Welkenraedt,de,Welkenraedt
 Welkenraedt,en,Welkenraedt
-Spa-Geronstère,fr,Spa-Geronstère
-Spa-Geronstère,nl,Spa-Géronstère
-Spa-Geronstère,de,Spa-Geronstère
-Spa-Geronstère,en,Spa-Geronstère
+Spa-GeronstÃ¨re,fr,Spa-GeronstÃ¨re
+Spa-GeronstÃ¨re,nl,Spa-GÃ©ronstÃ¨re
+Spa-GeronstÃ¨re,de,Spa-GeronstÃ¨re
+Spa-GeronstÃ¨re,en,Spa-GeronstÃ¨re
 Spa,fr,Spa
 Spa,nl,Spa
 Spa,de,Spa
@@ -1259,10 +1259,10 @@ Juslenville,fr,Juslenville
 Juslenville,nl,Juslenville
 Juslenville,de,Juslenville
 Juslenville,en,Juslenville
-Pepinster-Cité,fr,Pepinster-Cité
-Pepinster-Cité,nl,Pepinster-Cité
-Pepinster-Cité,de,Pepinster-Cité
-Pepinster-Cité,en,Pepinster-Cité
+Pepinster-CitÃ©,fr,Pepinster-CitÃ©
+Pepinster-CitÃ©,nl,Pepinster-CitÃ©
+Pepinster-CitÃ©,de,Pepinster-CitÃ©
+Pepinster-CitÃ©,en,Pepinster-CitÃ©
 Trooz,fr,Trooz
 Trooz,nl,Trooz
 Trooz,de,Trooz
@@ -1299,10 +1299,10 @@ Statte,fr,Statte
 Statte,nl,Statte
 Statte,de,Statte
 Statte,en,Statte
-Haute-Flône,fr,Haute-Flône
-Haute-Flône,nl,Haute-Flône
-Haute-Flône,de,Haute-Flône
-Haute-Flône,en,Haute-Flône
+Haute-FlÃ´ne,fr,Haute-FlÃ´ne
+Haute-FlÃ´ne,nl,Haute-FlÃ´ne
+Haute-FlÃ´ne,de,Haute-FlÃ´ne
+Haute-FlÃ´ne,en,Haute-FlÃ´ne
 Amay,fr,Amay
 Amay,nl,Amay
 Amay,de,Amay
@@ -1323,14 +1323,14 @@ Leman,fr,Leman
 Leman,nl,Leman
 Leman,de,Leman
 Leman,en,Leman
-Flémalle-Haute,fr,Flémalle-Haute
-Flémalle-Haute,nl,Flémalle-Haute
-Flémalle-Haute,de,Flémalle-Haute
-Flémalle-Haute,en,Flémalle-Haute
-Flémalle-Grande,fr,Flémalle-Grande
-Flémalle-Grande,nl,Flémalle-Grande
-Flémalle-Grande,de,Flémalle-Grande
-Flémalle-Grande,en,Flémalle-Grande
+FlÃ©malle-Haute,fr,FlÃ©malle-Haute
+FlÃ©malle-Haute,nl,FlÃ©malle-Haute
+FlÃ©malle-Haute,de,FlÃ©malle-Haute
+FlÃ©malle-Haute,en,FlÃ©malle-Haute
+FlÃ©malle-Grande,fr,FlÃ©malle-Grande
+FlÃ©malle-Grande,nl,FlÃ©malle-Grande
+FlÃ©malle-Grande,de,FlÃ©malle-Grande
+FlÃ©malle-Grande,en,FlÃ©malle-Grande
 Jemeppe-sur-Meuse,fr,Jemeppe-sur-Meuse
 Jemeppe-sur-Meuse,nl,Jemeppe-sur-Meuse
 Jemeppe-sur-Meuse,de,Jemeppe-sur-Meuse
@@ -1375,18 +1375,18 @@ Hony,fr,Hony
 Hony,nl,Hony
 Hony,de,Hony
 Hony,en,Hony
-Méry,fr,Méry
-Méry,nl,Méry
-Méry,de,Méry
-Méry,en,Méry
+MÃ©ry,fr,MÃ©ry
+MÃ©ry,nl,MÃ©ry
+MÃ©ry,de,MÃ©ry
+MÃ©ry,en,MÃ©ry
 Tilff,fr,Tilff
 Tilff,nl,Tilff
 Tilff,de,Tilff
 Tilff,en,Tilff
-Chênée,fr,Chênée
-Chênée,nl,Chênée
-Chênée,de,Chênée
-Chênée,en,Chênée
+ChÃªnÃ©e,fr,ChÃªnÃ©e
+ChÃªnÃ©e,nl,ChÃªnÃ©e
+ChÃªnÃ©e,de,ChÃªnÃ©e
+ChÃªnÃ©e,en,ChÃªnÃ©e
 Angleur,fr,Angleur
 Angleur,nl,Angleur
 Angleur,de,Angleur
@@ -1407,14 +1407,14 @@ Herstal,fr,Herstal
 Herstal,nl,Herstal
 Herstal,de,Herstal
 Herstal,en,Herstal
-Liège-Carré,fr,Liège-Carré
-Liège-Carré,nl,Luik-Carré
-Liège-Carré,de,Luik-Carré / Liège-Carré
-Liège-Carré,en,Liège-Carré / Luik-Carré
-Liège-Saint-Lambert,fr,Liège-Saint-Lambert
-Liège-Saint-Lambert,nl,Luik-Sint-Lambertus
-Liège-Saint-Lambert,de,Luik-Sint-Lambertus / Liège-Saint-Lambert
-Liège-Saint-Lambert,en,Liège-Saint-Lambert / Luik-Sint-Lambertus
+LiÃ¨ge-CarrÃ©,fr,LiÃ¨ge-CarrÃ©
+LiÃ¨ge-CarrÃ©,nl,Luik-CarrÃ©
+LiÃ¨ge-CarrÃ©,de,Luik-CarrÃ© / LiÃ¨ge-CarrÃ©
+LiÃ¨ge-CarrÃ©,en,LiÃ¨ge-CarrÃ© / Luik-CarrÃ©
+LiÃ¨ge-Saint-Lambert,fr,LiÃ¨ge-Saint-Lambert
+LiÃ¨ge-Saint-Lambert,nl,Luik-Sint-Lambertus
+LiÃ¨ge-Saint-Lambert,de,Luik-Sint-Lambertus / LiÃ¨ge-Saint-Lambert
+LiÃ¨ge-Saint-Lambert,en,LiÃ¨ge-Saint-Lambert / Luik-Sint-Lambertus
 Fexhe-Le-Haut-Clocher,fr,Fexhe-Le-Haut-Clocher
 Fexhe-Le-Haut-Clocher,nl,Fexhe-Le-Haut-Clocher
 Fexhe-Le-Haut-Clocher,de,Fexhe-le-Haut-Clocher
@@ -1427,10 +1427,10 @@ Remicourt,fr,Remicourt
 Remicourt,nl,Remicourt
 Remicourt,de,Remicourt
 Remicourt,en,Remicourt
-Bléret,fr,Bléret
-Bléret,nl,Bléret
-Bléret,de,Bléret
-Bléret,en,Bléret
+BlÃ©ret,fr,BlÃ©ret
+BlÃ©ret,nl,BlÃ©ret
+BlÃ©ret,de,BlÃ©ret
+BlÃ©ret,en,BlÃ©ret
 Waremme,fr,Waremme
 Waremme,nl,Borgworm
 Waremme,de,Borgworm / Waremme
@@ -1447,10 +1447,10 @@ Ans,fr,Ans
 Ans,nl,Ans
 Ans,de,Ans
 Ans,en,Ans
-Liège-Guillemins,fr,Liège-Guillemins
-Liège-Guillemins,nl,Luik-Guillemins
-Liège-Guillemins,de,Luik-Guillemins / Liège-Guillemins
-Liège-Guillemins,en,Liège-Guillemins / Luik-Guillemins
+LiÃ¨ge-Guillemins,fr,LiÃ¨ge-Guillemins
+LiÃ¨ge-Guillemins,nl,Luik-Guillemins
+LiÃ¨ge-Guillemins,de,Luik-Guillemins / LiÃ¨ge-Guillemins
+LiÃ¨ge-Guillemins,en,LiÃ¨ge-Guillemins / Luik-Guillemins
 Neerwinden,fr,Neerwinden
 Neerwinden,nl,Neerwinden
 Neerwinden,de,Neerwinden
@@ -1567,10 +1567,10 @@ Balen,fr,Balen
 Balen,nl,Balen
 Balen,de,Balen
 Balen,en,Balen
-Bourg-Léopold,fr,Bourg-Léopold
-Bourg-Léopold,nl,Leopoldsburg
-Bourg-Léopold,de,Leopoldsburg / Bourg Léopold
-Bourg-Léopold,en,Bourg Léopold / Leopoldsburg
+Bourg-LÃ©opold,fr,Bourg-LÃ©opold
+Bourg-LÃ©opold,nl,Leopoldsburg
+Bourg-LÃ©opold,de,Leopoldsburg / Bourg LÃ©opold
+Bourg-LÃ©opold,en,Bourg LÃ©opold / Leopoldsburg
 Saint-Trond,fr,Saint-Trond
 Saint-Trond,nl,Sint-Truiden
 Saint-Trond,de,Sint-Truiden / Saint-Trond
@@ -1923,10 +1923,10 @@ Waterloo,fr,Waterloo
 Waterloo,nl,Waterloo
 Waterloo,de,Waterloo
 Waterloo,en,Waterloo
-Braine-L Alleud,fr,Braine-L Alleud
-Braine-L Alleud,nl,Eigenbrakel
-Braine-L Alleud,de,Eigenbrakel / Braine-l'Alleud
-Braine-L Alleud,en,Braine-l'Alleud / Eigenbrakel
+Braine-L'Alleud,fr,Braine-L'Alleud
+Braine-L'Alleud,nl,Eigenbrakel
+Braine-L'Alleud,de,Eigenbrakel / Braine-l'Alleud
+Braine-L'Alleud,en,Braine-l'Alleud / Eigenbrakel
 Lillois,fr,Lillois
 Lillois,nl,Lillois
 Lillois,de,Lillois
@@ -1939,10 +1939,10 @@ De Hoek,fr,De Hoek
 De Hoek,nl,De Hoek
 De Hoek,de,De Hoek
 De Hoek,en,De Hoek
-Rhode-Saint-Genèse,fr,Rhode-Saint-Genèse
-Rhode-Saint-Genèse,nl,Sint-Genesius-Rode
-Rhode-Saint-Genèse,de,St.-Gen.-Rode/Rhode-St-Gen.
-Rhode-Saint-Genèse,en,Rhode-St-Gen./St.-Gen.-Rode
+Rhode-Saint-GenÃ¨se,fr,Rhode-Saint-GenÃ¨se
+Rhode-Saint-GenÃ¨se,nl,Sint-Genesius-Rode
+Rhode-Saint-GenÃ¨se,de,St.-Gen.-Rode/Rhode-St-Gen.
+Rhode-Saint-GenÃ¨se,en,Rhode-St-Gen./St.-Gen.-Rode
 Holleken,fr,Holleken
 Holleken,nl,Holleken
 Holleken,de,Holleken
@@ -2055,14 +2055,14 @@ Court-Saint-Etienne,fr,Court-Saint-Etienne
 Court-Saint-Etienne,nl,Court-Saint-Etienne
 Court-Saint-Etienne,de,Court-Saint-Etienne
 Court-Saint-Etienne,en,Court-Saint-Etienne
-Céroux-Mousty,fr,Céroux-Mousty
-Céroux-Mousty,nl,Céroux-Mousty
-Céroux-Mousty,de,Céroux-Mousty
-Céroux-Mousty,en,Céroux-Mousty
-Pécrot,fr,Pécrot
-Pécrot,nl,Pécrot
-Pécrot,de,Pécrot
-Pécrot,en,Pécrot
+CÃ©roux-Mousty,fr,CÃ©roux-Mousty
+CÃ©roux-Mousty,nl,CÃ©roux-Mousty
+CÃ©roux-Mousty,de,CÃ©roux-Mousty
+CÃ©roux-Mousty,en,CÃ©roux-Mousty
+PÃ©crot,fr,PÃ©crot
+PÃ©crot,nl,PÃ©crot
+PÃ©crot,de,PÃ©crot
+PÃ©crot,en,PÃ©crot
 Florival,fr,Florival
 Florival,nl,Florival
 Florival,de,Florival
@@ -2175,10 +2175,10 @@ Delta,fr,Delta
 Delta,nl,Delta
 Delta,de,Delta
 Delta,en,Delta
-Mérode,fr,Mérode
-Mérode,nl,Merode
-Mérode,de,Merode / Mérode
-Mérode,en,Mérode/Merode
+MÃ©rode,fr,MÃ©rode
+MÃ©rode,nl,Merode
+MÃ©rode,de,Merode / MÃ©rode
+MÃ©rode,en,MÃ©rode/Merode
 Vilvorde,fr,Vilvorde
 Vilvorde,nl,Vilvoorde
 Vilvorde,de,Vilvoorde / Vilvorde
@@ -2215,10 +2215,10 @@ Luxembourg (LU),fr,Luxembourg (LU)
 Luxembourg (LU),nl,Luxemburg (LU)
 Luxembourg (LU),de,Luxemburg (LU)
 Luxembourg (LU),en,Luxembourg (LU)
-Ougrée,fr,Ougrée
-Ougrée,nl,Ougrée
-Ougrée,de,Ougrée
-Ougrée,en,Ougrée
+OugrÃ©e,fr,OugrÃ©e
+OugrÃ©e,nl,OugrÃ©e
+OugrÃ©e,de,OugrÃ©e
+OugrÃ©e,en,OugrÃ©e
 Seraing,fr,Seraing
 Seraing,nl,Seraing
 Seraing,de,Seraing
