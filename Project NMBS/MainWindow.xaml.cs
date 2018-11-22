@@ -48,5 +48,62 @@ namespace Project_NMBS
             reader = new GTFSReader<GTFSFeed>(strict: false);
             feed = reader.Read(new DirectoryInfo("GTFS"));
         }
+
+        private void DpDatePicker_Loaded(object sender, RoutedEventArgs e)
+        {
+            dpDatePicker.DisplayDateStart = feed.Calendars.First().StartDate;
+            dpDatePicker.DisplayDateEnd = feed.Calendars.First().EndDate;
+        }
+
+        private void TpTimePicker_Loaded(object sender, RoutedEventArgs e)
+        {
+            tpTimePicker.Value = DateTime.Now;
+        }
+
+        private void TbxBeginStation_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var gefilterdeStations = from station in feed.Stops
+                                     where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxBeginStation.Text.ToLower())
+                                     orderby station.Name ascending
+                                     select station;
+
+            lvBeginStation.Items.Clear();
+
+            foreach (Stop s in gefilterdeStations)
+            {
+                ListBoxItem lbi = new ListBoxItem();
+                lbi.Content = s.Name;
+                lbi.Tag = s;
+                lvBeginStation.Items.Add(lbi);
+            }
+        }
+
+        private void TbxEindStation_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var gefilterdeStations = from station in feed.Stops
+                                     where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxEindStation.Text.ToLower())
+                                     orderby station.Name ascending
+                                     select station;
+
+            lvEindStation.Items.Clear();
+
+            foreach (Stop s in gefilterdeStations)
+            {
+                ListBoxItem lbi = new ListBoxItem();
+                lbi.Content = s.Name;
+                lbi.Tag = s;
+                lvEindStation.Items.Add(lbi);
+            }
+        }
+
+        private void LvBeginStation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void LvEindStation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
