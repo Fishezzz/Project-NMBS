@@ -8,30 +8,67 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="NMBS" Height="450" Width="800">
     <Grid>
-        <Label Content="Van:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
-        <TextBox Name="tbxBeginStation" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxBeginStation_TextChanged"/>
-        <ListView Name="lvBeginStation" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="LvBeginStation_SelectionChanged">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Beginstation" Width="200"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <TabControl Margin="0,0,0,0">
+            <TabItem Header="Routeplanner">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="From :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
+                    <TextBox Name="tbxBeginStation" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxBeginStation_TextChanged"/>
+                    <ListView Name="lvBeginStation" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvBeginStation_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Beginstation" Width="200"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
 
-        <Label Content="Naar:" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
-        <TextBox Name="tbxEindStation" HorizontalAlignment="Left" Height="30" Margin="215,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxEindStation_TextChanged"/>
-        <ListView Name="lvEindStation" HorizontalAlignment="Left" Height="200" Margin="215,75,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="LvEindStation_SelectionChanged">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Eindestation" Width="200"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                    <Label Content="To :" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
+                    <TextBox Name="tbxEndStation" HorizontalAlignment="Left" Height="30" Margin="215,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxEndStation_TextChanged"/>
+                    <ListView Name="lvEndStation" HorizontalAlignment="Left" Height="200" Margin="215,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvEndStation_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Endestation" Width="200"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
 
-        <Label Content="Datum:" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="60" FontSize="15"/>
-        <DatePicker Name="dpDatePicker" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DpDatePicker_Loaded"/>
+                    <Label Content="Date:" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="60" FontSize="15"/>
+                    <DatePicker Name="dpDatePicker" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DpDatePicker_Loaded"/>
 
-        <Label Content="Tijd:" HorizontalAlignment="Left" Margin="230,280,0,0" VerticalAlignment="Top" Height="30" Width="40" FontSize="15"/>
-        <xctk:TimePicker Name="tpTimePicker" HorizontalAlignment="Left" Margin="270,280,0,0" VerticalAlignment="Top" Height="30" Width="145" FontSize="15" Loaded="TpTimePicker_Loaded" CultureInfo="nl-BE" TimeInterval="0:15:0" CurrentDateTimePart="Hour24" Kind="Local"/>
+                    <Label Content="Time:" HorizontalAlignment="Left" Margin="230,280,0,0" VerticalAlignment="Top" Height="30" Width="40" FontSize="15"/>
+                    <xctk:TimePicker Name="tpTimePicker" HorizontalAlignment="Left" Margin="270,280,0,0" VerticalAlignment="Top" Height="30" Width="145" FontSize="15" Loaded="TpTimePicker_Loaded" CultureInfo="nl-BE" TimeInterval="0:15:0" CurrentDateTimePart="Hour24" Kind="Local"/>
+                    <ListView Name="lvResult" HorizontalAlignment="Left" Height="235" Margin="420,40,0,0" VerticalAlignment="Top" Width="350" MouseDoubleClick="LvResult_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Result" Width="350"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Name="btnQuery" Content="Query" HorizontalAlignment="Left" Margin="10,315,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQuery_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Trip viewer">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Station:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
+                    <TextBox Name="tbxStation" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxStation_TextChanged"/>
+                    <ListView Name="lvStationTrips" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvStationTrips_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Stations" Width="200"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <ListView Name="lvTrips" HorizontalAlignment="Left" Height="235" Margin="228,40,0,0" VerticalAlignment="Top" Width="450" MouseDoubleClick="LvTrips_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Trips" Width="450"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Name="btnQueryTrip" Content="Query" HorizontalAlignment="Left" Margin="478,280,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQueryTrip_Click"/>
+                    <Label Content="Datum: " HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="60" FontSize="15"/>
+                    <DatePicker Name="dp2" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DpDatePicker_Loaded"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

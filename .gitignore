@@ -5,3 +5,7 @@
 /.vs/Project NMBS/v15
 /GTFS
 /Licentieovereenkomst.pdf
+/Project NMBS/GTFS_NMBS.dll
+/Project NMBS/bin/Debug/GTFS_NMBS.dll
+/Project NMBS/TripID.cs
+/Project NMBS/TripExpanded.cs
