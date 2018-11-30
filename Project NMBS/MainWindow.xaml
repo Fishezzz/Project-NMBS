@@ -9,11 +9,11 @@
         Title="NMBS" Height="450" Width="800">
     <Grid>
         <TabControl Margin="0,0,0,0">
-            <TabItem Header="Routeplanner">
+            <TabItem Header="Route planner">
                 <Grid Background="#FFE5E5E5">
                     <Label Content="From :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
-                    <TextBox Name="tbxBeginStation" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxBeginStation_TextChanged"/>
-                    <ListView Name="lvBeginStation" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvBeginStation_MouseDoubleClick">
+                    <TextBox Name="tbxBeginStationRouteplanner" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxBeginStationRouteplanner_TextChanged"/>
+                    <ListView Name="lvBeginStationRouteplanner" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvBeginStationRouteplanner_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Beginstation" Width="200"/>
@@ -22,8 +22,8 @@
                     </ListView>
 
                     <Label Content="To :" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
-                    <TextBox Name="tbxEndStation" HorizontalAlignment="Left" Height="30" Margin="215,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxEndStation_TextChanged"/>
-                    <ListView Name="lvEndStation" HorizontalAlignment="Left" Height="200" Margin="215,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvEndStation_MouseDoubleClick">
+                    <TextBox Name="tbxEndStationRouteplanner" HorizontalAlignment="Left" Height="30" Margin="215,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxEndStationRouteplanner_TextChanged"/>
+                    <ListView Name="lvEndStationRouteplanner" HorizontalAlignment="Left" Height="200" Margin="215,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvEndStationRouteplanner_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Endestation" Width="200"/>
@@ -32,41 +32,70 @@
                     </ListView>
 
                     <Label Content="Date:" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="60" FontSize="15"/>
-                    <DatePicker Name="dpDatePicker" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DpDatePicker_Loaded"/>
+                    <DatePicker Name="dpRouteplanner" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
 
                     <Label Content="Time:" HorizontalAlignment="Left" Margin="230,280,0,0" VerticalAlignment="Top" Height="30" Width="40" FontSize="15"/>
-                    <xctk:TimePicker Name="tpTimePicker" HorizontalAlignment="Left" Margin="270,280,0,0" VerticalAlignment="Top" Height="30" Width="145" FontSize="15" Loaded="TpTimePicker_Loaded" CultureInfo="nl-BE" TimeInterval="0:15:0" CurrentDateTimePart="Hour24" Kind="Local"/>
-                    <ListView Name="lvResult" HorizontalAlignment="Left" Height="235" Margin="420,40,0,0" VerticalAlignment="Top" Width="350" MouseDoubleClick="LvResult_MouseDoubleClick">
+                    <xctk:TimePicker Name="tpRouteplanner" HorizontalAlignment="Left" Margin="270,280,0,0" VerticalAlignment="Top" Height="30" Width="145" FontSize="15" Loaded="TimePicker_Loaded" CultureInfo="nl-BE" TimeInterval="0:15:0" CurrentDateTimePart="Hour24" Kind="Local"/>
+                    
+                    <ListView Name="lvResultRouteplanner" HorizontalAlignment="Left" Height="235" Margin="420,40,0,0" VerticalAlignment="Top" Width="350" MouseDoubleClick="LvResultRouteplanner_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Result" Width="350"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Button Name="btnQuery" Content="Query" HorizontalAlignment="Left" Margin="10,315,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQuery_Click"/>
+                    
+                    <Button Name="btnQueryRouteplanner" Content="Query" HorizontalAlignment="Left" Margin="10,315,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQueryRouteplanner_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Real time">
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvResultRealtime" Margin="10,30,10,10" MouseDoubleClick="LvResultRealtime_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Info" Width="788"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Expander Header="Station" ExpandDirection="Down" Margin="0,0,0,0">
+                        <Grid Background="#FFE5E5E5">
+                            <Label Content="Station:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
+                            <TextBox Name="tbxStationRealtime" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxStationRealtime_TextChanged"/>
+                            <ListView Name="lvStationRealtime" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvStationRealtime_MouseDoubleClick">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Stations" Width="200"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Expander>
                 </Grid>
             </TabItem>
             <TabItem Header="Trip viewer">
                 <Grid Background="#FFE5E5E5">
                     <Label Content="Station:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
-                    <TextBox Name="tbxStation" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxStation_TextChanged"/>
-                    <ListView Name="lvStationTrips" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvStationTrips_MouseDoubleClick">
+                    <TextBox Name="tbxStationTripviewer" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxStationTripviewer_TextChanged"/>
+                    <ListView Name="lvStationTripviewer" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvStationTripviewer_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Stations" Width="200"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListView Name="lvTrips" HorizontalAlignment="Left" Height="235" Margin="228,40,0,0" VerticalAlignment="Top" Width="450" MouseDoubleClick="LvTrips_MouseDoubleClick">
+
+                    <Label Content="Datum: " HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="60" FontSize="15"/>
+                    <DatePicker Name="dpTripviewer" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
+
+                    <ListView Name="lvResultTripviewer" HorizontalAlignment="Left" Height="235" Margin="228,40,0,0" VerticalAlignment="Top" Width="450" MouseDoubleClick="LvResultTripviewer_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Trips" Width="450"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Button Name="btnQueryTrip" Content="Query" HorizontalAlignment="Left" Margin="478,280,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQueryTrip_Click"/>
-                    <Label Content="Datum: " HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="60" FontSize="15"/>
-                    <DatePicker Name="dp2" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DpDatePicker_Loaded"/>
+
+                    <Button Name="btnQueryTripviewer" Content="Query" HorizontalAlignment="Left" Margin="478,280,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQueryTripviewer_Click"/>
                 </Grid>
             </TabItem>
         </TabControl>

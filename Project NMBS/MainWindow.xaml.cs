@@ -31,6 +31,10 @@ using GTFS.IO.CSV;
 using GTFS.StopsToShape;
 using GTFS.Validation;
 
+using System.Net;
+using ProtoBuf;
+using transit_realtime;
+
 
 namespace Project_NMBS
 {
@@ -53,21 +57,23 @@ namespace Project_NMBS
         List<Transfer> _transfers;
         public static List<Trip/*Extra*/> _trips;
 
-        Stop _searchBeginStation;
-        Stop _searchEndstation;
-        Stop _searchTripStation;
+        Stop _searchBeginStationRouteplanner;
+        Stop _searchEndstationPlanner;
+        Stop _searchStationTripviewer;
+        Stop _searchStationRealtime;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            // Read GTFS Static files
             _reader = new GTFSReader<GTFSFeed>(strict: false);
             _feed = _reader.Read(new DirectoryInfo("GTFS"));
 
+            // Create lists with objects
             _stops = _feed.Stops.ToList();
             _trips = _feed.Trips.ToList()/*.ToTripExtraList()*/;
             _routes = _feed.Routes.ToList()/*.ToRouteExtraList()*/;
-
             _agencies = _feed.Agencies.ToList();
             _calendars = _feed.Calendars.ToList();
             _calendarDates = _feed.CalendarDates.ToList();
@@ -76,6 +82,7 @@ namespace Project_NMBS
             _transfers = _feed.Transfers.ToList();
             _translations = new List<Translation>();
 
+            // Read extra files and create lists with objects
             string[] stop_time_overridesRaw = File.ReadAllLines("GTFS\\stop_time_overrides.txt");
             for (int i = 1; i < stop_time_overridesRaw.Length; i++)
                 _stopTimeOverrides.Add(new StopTimeOverride(stop_time_overridesRaw[i]));
@@ -83,181 +90,287 @@ namespace Project_NMBS
             for (int i = 1; i < translationsRaw.Length; i++)
                 _translations.Add(new Translation(translationsRaw[i]));
 
-            UpdateLvBeginStation();
-            UpdateLvEndStation();
-            UpdateLvTrips();
+            // Update ListViews
+            UpdateLvBeginStationRouteplanner();
+            UpdateLvEndStationRouteplanner();
+            UpdateLvResultTripviewer();
+            UpdateLvStationRealtime();
+        }
+
+        //// METHODS
+
+        /// <summary>
+        /// Filter the results in lvBeginStationRouteplanner based on the input of tbxBeginStationRouteplanner.
+        /// </summary>
+        private void UpdateLvBeginStationRouteplanner()
+        {
+            var filterdStations = from station in _stops
+                                  where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxBeginStationRouteplanner.Text.ToLower())
+                                  orderby station.Name ascending
+                                  select station;
+
+            lvBeginStationRouteplanner.Items.Clear();
+
+            foreach (Stop s in filterdStations)
+            {
+                ListBoxItem lbi = new ListBoxItem();
+                lbi.Content = s.Name;
+                lbi.Tag = s;
+                lvBeginStationRouteplanner.Items.Add(lbi);
+            }
+        }
+
+        /// <summary>
+        /// Filter the results in lvEndStationRouteplanner based on the input of tbxEndStationRouteplanner.
+        /// </summary>
+        private void UpdateLvEndStationRouteplanner()
+        {
+            var filterdStations = from station in _stops
+                                  where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxEndStationRouteplanner.Text.ToLower())
+                                  orderby station.Name ascending
+                                  select station;
+
+            lvEndStationRouteplanner.Items.Clear();
+
+            foreach (Stop s in filterdStations)
+            {
+                ListBoxItem lbi = new ListBoxItem();
+                lbi.Content = s.Name;
+                lbi.Tag = s;
+                lvEndStationRouteplanner.Items.Add(lbi);
+            }
+        }
+
+        /// <summary>
+        /// Filter the results in lvStationTripviewer based on the input of tbxStationTripviewer.
+        /// </summary>
+        private void UpdateLvResultTripviewer()
+        {
+            var filterdStations = from station in _stops
+                                  where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxStationTripviewer.Text.ToLower())
+                                  orderby station.Name ascending
+                                  select station;
+
+            lvStationTripviewer.Items.Clear();
+
+            foreach (Stop s in filterdStations)
+            {
+                ListBoxItem lbi = new ListBoxItem();
+                lbi.Content = s.Name;
+                lbi.Tag = s;
+                lvStationTripviewer.Items.Add(lbi);
+            }
+        }
+
+        /// <summary>
+        /// Filter the results in lvStationRealtime based on the input of tbxStationRealtime.
+        /// </summary>
+        private void UpdateLvStationRealtime()
+        {
+            var filterdStations = from station in _stops
+                                  where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxStationRealtime.Text.ToLower())
+                                  orderby station.Name ascending
+                                  select station;
+
+            lvStationRealtime.Items.Clear();
+
+            foreach (Stop s in filterdStations)
+            {
+                ListBoxItem lbi = new ListBoxItem();
+                lbi.Content = s.Name;
+                lbi.Tag = s;
+                lvStationRealtime.Items.Add(lbi);
+            }
         }
 
 
 
+        //// EVENT HANDLERS
+
+        //////// ROUTE PLANNER
+
         /// <summary>
-        /// Initial setting the DisplayDateStart and DisplayDateEnd for the DatePicker in the "Routeplanner" tab.
+        /// Initial setting the DisplayDateStart and DisplayDateEnd for dpRouteplanner and dpTripviewer.
         /// </summary>
-        /// <param name="sender">dpDatePicker</param>
-        private void DpDatePicker_Loaded(object sender, RoutedEventArgs e)
+        /// <param name="sender">dpRouteplanner or dpTripviewer</param>
+        private void DatePicker_Loaded(object sender, RoutedEventArgs e)
         {
-            dpDatePicker.DisplayDateStart = dp2.DisplayDateStart = _feed.Calendars.First().StartDate;
-            dpDatePicker.DisplayDateEnd = dp2.DisplayDateEnd = _feed.Calendars.First().EndDate;
+            dpRouteplanner.DisplayDateStart = dpTripviewer.DisplayDateStart = _feed.Calendars.First().StartDate;
+            dpRouteplanner.DisplayDateEnd = dpTripviewer.DisplayDateEnd = _feed.Calendars.First().EndDate;
         }
 
         /// <summary>
-        /// Initial setting the displayed Value for the TimePicker in the "Routeplanner" tab.
+        /// Initial setting the displayed Value for tpRouteplanner.
         /// </summary>
-        /// <param name="sender">tpTimePicker</param>
-        private void TpTimePicker_Loaded(object sender, RoutedEventArgs e)
+        /// <param name="sender">tpRouteplanner</param>
+        private void TimePicker_Loaded(object sender, RoutedEventArgs e)
         {
-            tpTimePicker.Value = DateTime.Now;
+            tpRouteplanner.Value = DateTime.Now;
         }
 
+
         /// <summary>
-        /// Call method to update the Beginstation ListView.
+        /// Call method to update lvBeginStationRouteplanner.
         /// </summary>
-        /// <param name="sender">tbxBeginStation</param>
-        private void TbxBeginStation_TextChanged(object sender, TextChangedEventArgs e)
+        /// <param name="sender">tbxBeginStationRouteplanner</param>
+        private void TbxBeginStationRouteplanner_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateLvBeginStation();
+            UpdateLvBeginStationRouteplanner();
         }
 
         /// <summary>
         /// Catche the DoubleClick event and sets _searchBeginStation to the SelectedItem.
         /// </summary>
-        /// <param name="sender">lvBeginStation</param>
-        private void LvBeginStation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        /// <param name="sender">lvBeginStationRouteplanner</param>
+        private void LvBeginStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
             try
             {
                 ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-                _searchBeginStation = (Stop)lbi.Tag;
+                _searchBeginStationRouteplanner = (Stop)lbi.Tag;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchEndstation != null)
-                btnQuery.IsEnabled = true;
+            if (_searchEndstationPlanner != null)
+            {
+                btnQueryRouteplanner.IsEnabled = true;
+                tbxBeginStationRouteplanner.Text = _searchBeginStationRouteplanner.Name;
+            }
             else
-                btnQuery.IsEnabled = false;
-
-            tbxBeginStation.Text = _searchBeginStation.Name;
+                btnQueryRouteplanner.IsEnabled = false;
         }
 
         /// <summary>
-        /// Call method to update the Endstation Listview.
+        /// Call method to update lvEndStationRouteplanner.
         /// </summary>
-        /// <param name="sender">tbxEndStation</param>
-        private void TbxEndStation_TextChanged(object sender, TextChangedEventArgs e)
+        /// <param name="sender">tbxEndStationRouteplanner</param>
+        private void TbxEndStationRouteplanner_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateLvEndStation();
+            UpdateLvEndStationRouteplanner();
         }
 
         /// <summary>
         /// Cath the DoubleClick event and set _searchEndStation to the SelectedItem.
         /// </summary>
-        /// <param name="sender">lvEndStation</param>
-        private void LvEndStation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        /// <param name="sender">lvEndStationRouteplanner</param>
+        private void LvEndStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
             try
             {
                 ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-                _searchEndstation = (Stop)lbi.Tag;
+                _searchEndstationPlanner = (Stop)lbi.Tag;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchBeginStation != null)
-                btnQuery.IsEnabled = true;
+            if (_searchBeginStationRouteplanner != null)
+            {
+                btnQueryRouteplanner.IsEnabled = true;
+                tbxEndStationRouteplanner.Text = _searchEndstationPlanner.Name;
+            }
             else
-                btnQuery.IsEnabled = false;
+                btnQueryRouteplanner.IsEnabled = false;
+        }
 
-            tbxEndStation.Text = _searchEndstation.Name;
+        ///// <summary>
+        ///// Catch the DoubleClick event.
+        ///// </summary>
+        ///// <param name="sender">lvResultRouteplanner</param>
+        private void LvResultRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
 
         /// <summary>
         /// Filter based on _searchBeginStation, _searchEndStation, the selected date and time.
         /// Display the results in lvResult.
         /// </summary>
-        /// <param name="sender">btnQuery</param>
-        private void BtnQuery_Click(object sender, RoutedEventArgs e)
+        /// <param name="sender">btnQueryRouteplanner</param>
+        private void BtnQueryRouteplanner_Click(object sender, RoutedEventArgs e)
         {
             var gefilterdeStations = from station in _stops
-                                     where station.Id == _searchBeginStation.Id
+                                     where station.Id == _searchBeginStationRouteplanner.Id
                                      select station;
 
-            lvResult.Items.Clear();
+            lvResultRouteplanner.Items.Clear();
 
             foreach (Stop s in gefilterdeStations)
             {
                 ListBoxItem lbi = new ListBoxItem();
                 lbi.Content = $"[{s.Id}] {s.Name}";
                 lbi.Tag = s;
-                lvResult.Items.Add(lbi);
+                lvResultRouteplanner.Items.Add(lbi);
             }
         }
 
-        /// <summary>
-        /// Catch the DoubleClick event.
-        /// </summary>
-        /// <param name="sender">lvResult</param>
-        private void LvResult_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
 
 
-
+        //////// TRIP VIEWER
 
         /// <summary>
-        /// Call method to update the Trips Listview
+        /// Call method to update lvStationTripviewer.
         /// </summary>
-        /// <param name="sender">tbxStation</param>
-        private void TbxStation_TextChanged(object sender, TextChangedEventArgs e)
+        /// <param name="sender">tbxStationTripviewer</param>
+        private void TbxStationTripviewer_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateLvTrips();
+            UpdateLvResultTripviewer();
         }
 
         /// <summary>
         /// Catch the DoubleClick event and set _searchTripStation.
         /// </summary>
-        /// <param name="sender">lvStationTrips</param>
-        private void LvStationTrips_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        /// <param name="sender">lvStationTripviewer</param>
+        private void LvStationTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
             try
             {
                 ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-                _searchTripStation = (Stop)lbi.Tag;
+                _searchStationTripviewer = (Stop)lbi.Tag;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchTripStation != null)
-                btnQueryTrip.IsEnabled = true;
+            if (_searchStationTripviewer != null)
+            {
+                btnQueryTripviewer.IsEnabled = true;
+                tbxStationTripviewer.Text = _searchStationTripviewer.Name;
+            }
             else
-                btnQueryTrip.IsEnabled = false;
+                btnQueryTripviewer.IsEnabled = false;
+        }
 
-            tbxStation.Text = _searchTripStation.Name;
+        ///// <summary>
+        ///// Catch the DoubleClick event.
+        ///// </summary>
+        ///// <param name="sender">lvResultTripviewer</param>
+        private void LvResultTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
 
         /// <summary>
         /// Filter based on _searchTripStation and the selected date.
         /// Display the results in lvTrips.
         /// </summary>
-        /// <param name="sender">btnQueryTrip</param>
-        private void BtnQueryTrip_Click(object sender, RoutedEventArgs e)
+        /// <param name="sender">btnQueryTripviewer</param>
+        private void BtnQueryTripviewer_Click(object sender, RoutedEventArgs e)
         {
             var gefilterdeTrips = from trip in _stopTimes
-                                  where trip.StopId == _searchTripStation.Id.TrimStart('S').Split('_')[0]
+                                  where trip.StopId == _searchStationTripviewer.Id.TrimStart('S').Split('_')[0]
                                   orderby trip.TripId.Split(':')[7] ascending
                                   select trip;
 
-            lvTrips.Items.Clear();
+            lvResultTripviewer.Items.Clear();
             
             foreach (StopTime stopTime in gefilterdeTrips)
             {
@@ -266,81 +379,51 @@ namespace Project_NMBS
                 DateTime dateDT = DateTime.ParseExact(stopTime.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")).AddHours(Convert.ToDouble(stopTime.DepartureTime.Hours)).AddMinutes(Convert.ToDouble(stopTime.DepartureTime.Minutes));
                 lbi.Content = $"[{stopTime.TripId}]\n{dateDT}\n Train to {stopName.First().Name}";
                 lbi.Tag = stopTime;
-                lvTrips.Items.Add(lbi);
+                lvResultTripviewer.Items.Add(lbi);
             }
+        }
+
+
+
+        //////// REAL TIME
+
+        /// <summary>
+        /// Catch the DoubleClick event.
+        /// </summary>
+        /// <param name="sender">lvResultRealtime</param>
+        private void LvResultRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListView lv = (ListView)sender;
+            try
+            {
+                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                _searchStationRealtime = (Stop)lbi.Tag;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            if (_searchStationRealtime != null)
+                tbxStationRealtime.Text = _searchStationRealtime.Name;
+        }
+
+        /// <summary>
+        /// Call method to update lvStationRealtime.
+        /// </summary>
+        /// <param name="sender">tbxStationRealtime</param>
+        private void TbxStationRealtime_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateLvStationRealtime();
         }
 
         /// <summary>
         /// Catch the DoubleClick event.
         /// </summary>
-        /// <param name="sender">lvTrips</param>
-        private void LvTrips_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        /// <param name="sender">lvStationRealtime</param>
+        private void LvStationRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
-        }
-
-
-
-        /// <summary>
-        /// Filter the results in lvBeginStation based on the input of tbxBeginStation.
-        /// </summary>
-        private void UpdateLvBeginStation()
-        {
-            var filterdStations = from station in _stops
-                                  where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxBeginStation.Text.ToLower())
-                                  orderby station.Name ascending
-                                  select station;
-
-            lvBeginStation.Items.Clear();
-
-            foreach (Stop s in filterdStations)
-            {
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Content = s.Name;
-                lbi.Tag = s;
-                lvBeginStation.Items.Add(lbi);
-            }
-        }
-
-        /// <summary>
-        /// Filter the results in lvEndStation based on the input of tbxEndStation.
-        /// </summary>
-        private void UpdateLvEndStation()
-        {
-            var filterdStations = from station in _stops
-                                  where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxEndStation.Text.ToLower())
-                                  orderby station.Name ascending
-                                  select station;
-
-            lvEndStation.Items.Clear();
-
-            foreach (Stop s in filterdStations)
-            {
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Content = s.Name;
-                lbi.Tag = s;
-                lvEndStation.Items.Add(lbi);
-            }
-        }
-
-        /// <summary>
-        /// Filter the results in lvTrips based on the input of tbxStation
-        /// </summary>
-        private void UpdateLvTrips()
-        {
-            var filterdStations = from station in _stops
-                                  where station.LocationType == LocationType.Station && station.Name.ToLower().Contains(tbxStation.Text.ToLower())
-                                  select station;
-
-            lvStationTrips.Items.Clear();
-
-            foreach (Stop s in filterdStations)
-            {
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Content = s.Name;
-                lbi.Tag = s;
-                lvStationTrips.Items.Add(lbi);
-            }
         }
     }
 }
