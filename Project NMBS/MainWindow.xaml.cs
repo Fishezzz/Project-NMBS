@@ -38,20 +38,20 @@ namespace Project_NMBS
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    { 
+        List<Translation> _translations;
         GTFSReader<GTFSFeed> _reader;
         GTFSFeed _feed;
 
         List<Agency> _agencies;
         List<GTFS.Entities.Calendar> _calendars;
         List<CalendarDate> _calendarDates;
-        List<Route> _routes;
-        List<Stop> _stops;
+        List<Route/*Extra*/> _routes;
+        public static List<Stop> _stops;
         List<StopTime> _stopTimes;
-        List<Stop_Time_Override> _stopTimeOverrides;
+        List<StopTimeOverride> _stopTimeOverrides;
         List<Transfer> _transfers;
-        List<Translation> _translations;
-        List<Trip> _trips;
+        public static List<Trip/*Extra*/> _trips;
 
         Stop _searchBeginStation;
         Stop _searchEndstation;
@@ -64,24 +64,25 @@ namespace Project_NMBS
             _reader = new GTFSReader<GTFSFeed>(strict: false);
             _feed = _reader.Read(new DirectoryInfo("GTFS"));
 
+            _stops = _feed.Stops.ToList();
+            _trips = _feed.Trips.ToList()/*.ToTripExtraList()*/;
+            _routes = _feed.Routes.ToList()/*.ToRouteExtraList()*/;
+
             _agencies = _feed.Agencies.ToList();
             _calendars = _feed.Calendars.ToList();
             _calendarDates = _feed.CalendarDates.ToList();
-            _routes = _feed.Routes.ToList();
-            _stops = _feed.Stops.ToList();
             _stopTimes = _feed.StopTimes.ToList();
-            _stopTimeOverrides = new List<Stop_Time_Override>();
+            _stopTimeOverrides = new List<StopTimeOverride>();
             _transfers = _feed.Transfers.ToList();
             _translations = new List<Translation>();
-            _trips = _feed.Trips.ToList();
 
             string[] stop_time_overridesRaw = File.ReadAllLines("GTFS\\stop_time_overrides.txt");
             for (int i = 1; i < stop_time_overridesRaw.Length; i++)
-                _stopTimeOverrides.Add(new Stop_Time_Override(stop_time_overridesRaw[i]));
+                _stopTimeOverrides.Add(new StopTimeOverride(stop_time_overridesRaw[i]));
             string[] translationsRaw = File.ReadAllLines("GTFS\\translations.txt");
             for (int i = 1; i < translationsRaw.Length; i++)
                 _translations.Add(new Translation(translationsRaw[i]));
-            
+
             UpdateLvBeginStation();
             UpdateLvEndStation();
             UpdateLvTrips();

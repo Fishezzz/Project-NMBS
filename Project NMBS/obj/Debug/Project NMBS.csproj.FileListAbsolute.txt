@@ -34,4 +34,6 @@ C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\ro\Xceed.Wpf.Avalo
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
-C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\GTFS_NMBS.dll
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\GtfsRealtimeBindings.dll
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\protobuf-net.dll
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\protobuf-net.xml
