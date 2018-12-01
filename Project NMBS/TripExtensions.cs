@@ -14,6 +14,9 @@ namespace Project_NMBS
     /// </summary>
     public class TripId
     {
+        ////// TODO: DateTime veranderen door GTFS.Entities.TimeOfDay
+
+
         /// <summary>
         /// Administration code of this trip. (The Belgium NMBS code is "88____")
         /// </summary>

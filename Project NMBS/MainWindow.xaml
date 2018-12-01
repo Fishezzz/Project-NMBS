@@ -57,7 +57,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Expander Header="Station" ExpandDirection="Down" Margin="0,0,0,0">
+                    <Expander Name="expStationRealtime" Header="Station" ExpandDirection="Down" Margin="0,0,0,0" Expanded="ExpStationRealtime_Expanded" Collapsed="ExpStationRealtime_Collapsed" Height="391" VerticalAlignment="Top">
                         <Grid Background="#FFE5E5E5">
                             <Label Content="Station:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
                             <TextBox Name="tbxStationRealtime" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxStationRealtime_TextChanged"/>

@@ -45,7 +45,8 @@ namespace Project_NMBS
     { 
         List<Translation> _translations;
         GTFSReader<GTFSFeed> _reader;
-        GTFSFeed _feed;
+        GTFSFeed _feedStatic;
+        FeedMessage _feedRealtime;
 
         List<Agency> _agencies;
         List<GTFS.Entities.Calendar> _calendars;
@@ -68,18 +69,18 @@ namespace Project_NMBS
 
             // Read GTFS Static files
             _reader = new GTFSReader<GTFSFeed>(strict: false);
-            _feed = _reader.Read(new DirectoryInfo("GTFS"));
+            _feedStatic = _reader.Read(new DirectoryInfo("GTFS"));
 
             // Create lists with objects
-            _stops = _feed.Stops.ToList();
-            _trips = _feed.Trips.ToList()/*.ToTripExtraList()*/;
-            _routes = _feed.Routes.ToList()/*.ToRouteExtraList()*/;
-            _agencies = _feed.Agencies.ToList();
-            _calendars = _feed.Calendars.ToList();
-            _calendarDates = _feed.CalendarDates.ToList();
-            _stopTimes = _feed.StopTimes.ToList();
+            _stops = _feedStatic.Stops.ToList();
+            _trips = _feedStatic.Trips.ToList()/*.ToTripExtraList()*/;
+            _routes = _feedStatic.Routes.ToList()/*.ToRouteExtraList()*/;
+            _agencies = _feedStatic.Agencies.ToList();
+            _calendars = _feedStatic.Calendars.ToList();
+            _calendarDates = _feedStatic.CalendarDates.ToList();
+            _stopTimes = _feedStatic.StopTimes.ToList();
             _stopTimeOverrides = new List<StopTimeOverride>();
-            _transfers = _feed.Transfers.ToList();
+            _transfers = _feedStatic.Transfers.ToList();
             _translations = new List<Translation>();
 
             // Read extra files and create lists with objects
@@ -95,6 +96,9 @@ namespace Project_NMBS
             UpdateLvEndStationRouteplanner();
             UpdateLvResultTripviewer();
             UpdateLvStationRealtime();
+
+            // Realtime GTFS
+            _feedRealtime = Serializer.Deserialize<FeedMessage>(new FileStream("GTFS/realtime", FileMode.Open, FileAccess.Read));
         }
 
         //// METHODS
@@ -195,8 +199,8 @@ namespace Project_NMBS
         /// <param name="sender">dpRouteplanner or dpTripviewer</param>
         private void DatePicker_Loaded(object sender, RoutedEventArgs e)
         {
-            dpRouteplanner.DisplayDateStart = dpTripviewer.DisplayDateStart = _feed.Calendars.First().StartDate;
-            dpRouteplanner.DisplayDateEnd = dpTripviewer.DisplayDateEnd = _feed.Calendars.First().EndDate;
+            dpRouteplanner.DisplayDateStart = dpTripviewer.DisplayDateStart = _feedStatic.Calendars.First().StartDate;
+            dpRouteplanner.DisplayDateEnd = dpTripviewer.DisplayDateEnd = _feedStatic.Calendars.First().EndDate;
         }
 
         /// <summary>
@@ -393,19 +397,7 @@ namespace Project_NMBS
         /// <param name="sender">lvResultRealtime</param>
         private void LvResultRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ListView lv = (ListView)sender;
-            try
-            {
-                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-                _searchStationRealtime = (Stop)lbi.Tag;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
 
-            if (_searchStationRealtime != null)
-                tbxStationRealtime.Text = _searchStationRealtime.Name;
         }
 
         /// <summary>
@@ -423,7 +415,48 @@ namespace Project_NMBS
         /// <param name="sender">lvStationRealtime</param>
         private void LvStationRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            ListView lv = (ListView)sender;
+            try
+            {
+                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                _searchStationRealtime = (Stop)lbi.Tag;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
+            if (_searchStationRealtime != null)
+            {
+                tbxStationRealtime.Text = _searchStationRealtime.Name;
+                // [3]
+                // [4]
+                var filterdEntities = from entity in _feedRealtime.entity
+                                      where entity.id.Split(':')[3] == _searchStationRealtime.Id.TrimStart('S').Split('_')[0]
+                                      select entity;
+
+                lvResultRealtime.Items.Clear();
+
+                foreach (FeedEntity entity in filterdEntities)
+                {
+                    ListBoxItem lbi = new ListBoxItem();
+                    DateTime dt = new DateTime();
+                    lbi.Content = $"Arrival: {dt.AddSeconds(entity.trip_update.stop_time_update.Last().arrival.time).ToShortTimeString()}";
+                    //lbi.Content = $"{entity.trip_update.stop_time_update.Last().arrival}\t{entity.trip_update.stop_time_update.Last().departure}";
+                    lbi.Tag = entity;
+                    lvResultRealtime.Items.Add(lbi);
+                }
+            }
+        }
+
+        private void ExpStationRealtime_Expanded(object sender, RoutedEventArgs e)
+        {
+            expStationRealtime.Height = 391;
+        }
+
+        private void ExpStationRealtime_Collapsed(object sender, RoutedEventArgs e)
+        {
+            expStationRealtime.Height = 30;
         }
     }
 }
