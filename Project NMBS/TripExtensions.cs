@@ -60,12 +60,17 @@ namespace Project_NMBS
         /// <param name="tripId">The plain text string 'Trip.Id'</param>
         public TripId(string tripId)
         {
+            Stop stop;
             string[] s = tripId.Split(':');
             AdministrationCode = s[0];
             CategoryCode = s[1];
             LineNumber = s[2];
-            FirstStop = (from station in MainWindow._stops where station.Id.TrimStart('S').Split('_')[0] == s[3] select station).FirstOrDefault();
-            LastStop = (from station in MainWindow._stops where station.Id.TrimStart('S').Split('_')[0] == s[4] select station).FirstOrDefault();
+            FirstStop = (from station in MainWindow._stops where station.Key.TrimStart('S').Split('_')[0] == s[3] select station.Value).FirstOrDefault();
+            MainWindow._stops.TryGetValue(s[3], out stop);
+            FirstStop = stop;
+            LastStop = (from station in MainWindow._stops where station.Key.TrimStart('S').Split('_')[0] == s[4] select station.Value).FirstOrDefault();
+            MainWindow._stops.TryGetValue(s[4], out stop);
+            LastStop = stop;
             TripLength = TimeSpan.FromMinutes(Convert.ToInt32(s[5]));
             ArrivalTimeLastStop = new DateTime().AddHours(Convert.ToInt32(s[6]) / 100).AddMinutes(Convert.ToInt32(s[6]) % 100);
             LastServiceDay = DateTime.ParseExact(s[7], "yyyyMMdd", new CultureInfo("fr-FR"));
@@ -138,15 +143,27 @@ namespace Project_NMBS
         }
 
         /// <summary>
-        /// Converts a List&lt;Trip&gt; into a List&lt;TripExtra&gt;
+        /// Converts a List&lt;Trip&gt; into a Dictionary&lt;TripId, TripExtra&gt;
         /// </summary>
-        /// <param name="trips">The List&lt;Trip&gt; that will be converted into a List&lt;TripExtra&gt;</param>
-        /// <returns>A List&lt;TripExtra&gt;</returns>
-        public static List<TripExtra> ToTripExtraList(this List<Trip> trips)
+        /// <param name="trips">The List&lt;Trip&gt; that will be converted into a Dictionary&lt;TripId, TripExtra&gt;</param>
+        /// <returns>A Dictionary&lt;TripId, TripExtra&gt;</returns>
+        public static Dictionary<TripId, TripExtra> ToTripExtraDictionary(this List<Trip> trips)
         {
-            List<TripExtra> tripsExtra = new List<TripExtra>();
+            Dictionary<TripId, TripExtra> tripsExtra = new Dictionary<TripId, TripExtra>();
             foreach (Trip trip in trips)
-                tripsExtra.Add(trip.ToTripExtra());
+                tripsExtra.Add(trip.ToTripExtra().Id, trip.ToTripExtra());
+            return tripsExtra;
+        }
+        /// <summary>
+        /// Converts a Dictionary&lt;string, Trip&gt; into a Dictionary&lt;TripId, TripExtra&gt;
+        /// </summary>
+        /// <param name="trips">The Dictionary&lt;string, Trip&gt; that will be converted into a Dictionary&lt;TripId, TripExtra&gt;</param>
+        /// <returns>A Dictionary&lt;TripId, TripExtra&gt;</returns>
+        public static Dictionary<TripId, TripExtra> ToTripExtraDictionary(this Dictionary<string, Trip> trips)
+        {
+            Dictionary<TripId, TripExtra> tripsExtra = new Dictionary<TripId, TripExtra>();
+            foreach (KeyValuePair<string, Trip> kVP in trips)
+                tripsExtra.Add(kVP.Value.ToTripExtra().Id, kVP.Value.ToTripExtra());
             return tripsExtra;
         }
     }

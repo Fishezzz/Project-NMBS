@@ -61,15 +61,27 @@ namespace Project_NMBS
         }
 
         /// <summary>
-        /// Converts a List&lt;Trip&gt; into a List&lt;TripExtra&gt;
+        /// Converts a List&lt;Route&gt; into a Dictionary&lt;string, RouteExtra&gt;
         /// </summary>
-        /// <param name="routes">The List&lt;Route&gt; that will be converted into a List&lt;RouteExtra&gt;</param>
-        /// <returns>A List&lt;RouteExtra&gt;</returns>
-        public static List<RouteExtra> ToRouteExtraList(this List<Route> routes)
+        /// <param name="routes">The List&lt;Route&gt; that will be converted into a Dictionary&lt;string, RouteExtra&gt;</param>
+        /// <returns>A Dictionary&lt;string, RouteExtra&gt;</returns>
+        public static Dictionary<string, RouteExtra> ToRouteExtraList(this List<Route> routes)
         {
-            List<RouteExtra> routesExtra = new List<RouteExtra>();
+            Dictionary<string, RouteExtra> routesExtra = new Dictionary<string, RouteExtra>();
             foreach (Route route in routes)
-                routesExtra.Add(route.ToRouteExtra());
+                routesExtra.Add(route.Id, route.ToRouteExtra());
+            return routesExtra;
+        }
+        /// <summary>
+        /// Converts a Dictionary&lt;string, Route&gt; into a Dictionary&lt;string, RouteExtra&gt;
+        /// </summary>
+        /// <param name="routes">The Dictionary&lt;string, Route&gt; that will be converted into a Dictionary&lt;string, RouteExtra&gt;</param>
+        /// <returns>A Dictionary&lt;string, RouteExtra&gt;</returns>
+        public static Dictionary<string, RouteExtra> ToRouteExtraList(this Dictionary<string, Route> routes)
+        {
+            Dictionary<string, RouteExtra> routesExtra = new Dictionary<string, RouteExtra>();
+            foreach (KeyValuePair<string, Route> kVP in routes)
+                routesExtra.Add(kVP.Value.ToRouteExtra().Id, kVP.Value.ToRouteExtra());
             return routesExtra;
         }
     }

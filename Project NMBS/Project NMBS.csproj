@@ -38,9 +38,6 @@
     <ApplicationIcon>NMBS.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GoogleMapsApi">
-      <HintPath>.\GoogleMapsApi.dll</HintPath>
-    </Reference>
     <Reference Include="GTFS, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GTFS.1.7.1\lib\net40\GTFS.dll</HintPath>
     </Reference>
