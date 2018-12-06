@@ -47,16 +47,16 @@ namespace Project_NMBS
         GTFSFeed _feedStatic;
         FeedMessage _feedRealtime;
 
-        //List<Stop> _stops;
-        //List<Trip/*Extra*/> _trips;
-        //List<Route/*Extra*/> _routes;
-        //List<Agency> _agencies;
-        //List<GTFS.Entities.Calendar> _calendars;
-        //List<CalendarDate> _calendarDates;
-        //List<StopTime> _stopTimes;
-        //List<StopTimeOverride> _stopTimeOverrides;
-        //List<Transfer> _transfers;
-        //List<Translation> _translations;
+        ////List<Stop> _stops;
+        ////List<Trip/*Extra*/> _trips;
+        ////List<Route/*Extra*/> _routes;
+        ////List<Agency> _agencies;
+        ////List<GTFS.Entities.Calendar> _calendars;
+        ////List<CalendarDate> _calendarDates;
+        ////List<StopTime> _stopTimes;
+        ////List<StopTimeOverride> _stopTimeOverrides;
+        ////List<Transfer> _transfers;
+        ////List<Translation> _translations;
 
         public static Dictionary<string, Stop> _stops;
         Dictionary<string, Trip> _trips;
@@ -178,7 +178,7 @@ namespace Project_NMBS
         private void UpdateLvResultTripviewer()
         {
             var filterdStations = from station in _stops
-                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxEndStationRouteplanner.Text.ToLower())
+                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxStationTripviewer.Text.ToLower())
                                   orderby station.Value.Name ascending
                                   select station;
 
@@ -199,7 +199,7 @@ namespace Project_NMBS
         private void UpdateLvStationRealtime()
         {
             var filterdStations = from station in _stops
-                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxEndStationRouteplanner.Text.ToLower())
+                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxStationRealtime.Text.ToLower())
                                   orderby station.Value.Name ascending
                                   select station;
 
@@ -246,7 +246,7 @@ namespace Project_NMBS
         /// <param name="sender">tbxBeginStationRouteplanner</param>
         private void TbxBeginStationRouteplanner_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //UpdateLvBeginStationRouteplanner();
+            UpdateLvBeginStationRouteplanner();
         }
 
         /// <summary>
@@ -255,24 +255,23 @@ namespace Project_NMBS
         /// <param name="sender">lvBeginStationRouteplanner</param>
         private void LvBeginStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //ListView lv = (ListView)sender;
-            //try
-            //{
-            //    ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-            //    _searchBeginStationRouteplanner = (Stop)lbi.Tag;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(ex.Message);
-            //}
+            ListView lv = (ListView)sender;
+            try
+            {
+                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                _searchBeginStationRouteplanner = (Stop)lbi.Tag;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
-            //if (_searchEndstationPlanner != null)
-            //{
-            //    btnQueryRouteplanner.IsEnabled = true;
-            //    tbxBeginStationRouteplanner.Text = _searchBeginStationRouteplanner.Name;
-            //}
-            //else
-            //    btnQueryRouteplanner.IsEnabled = false;
+            tbxBeginStationRouteplanner.Text = _searchBeginStationRouteplanner.Name;
+
+            if (_searchEndstationPlanner != null)
+                btnQueryRouteplanner.IsEnabled = true;
+            else
+                btnQueryRouteplanner.IsEnabled = false;
         }
 
         /// <summary>
@@ -281,7 +280,7 @@ namespace Project_NMBS
         /// <param name="sender">tbxEndStationRouteplanner</param>
         private void TbxEndStationRouteplanner_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //UpdateLvEndStationRouteplanner();
+            UpdateLvEndStationRouteplanner();
         }
 
         /// <summary>
@@ -290,24 +289,23 @@ namespace Project_NMBS
         /// <param name="sender">lvEndStationRouteplanner</param>
         private void LvEndStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //ListView lv = (ListView)sender;
-            //try
-            //{
-            //    ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-            //    _searchEndstationPlanner = (Stop)lbi.Tag;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(ex.Message);
-            //}
+            ListView lv = (ListView)sender;
+            try
+            {
+                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                _searchEndstationPlanner = (Stop)lbi.Tag;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
-            //if (_searchBeginStationRouteplanner != null)
-            //{
-            //    btnQueryRouteplanner.IsEnabled = true;
-            //    tbxEndStationRouteplanner.Text = _searchEndstationPlanner.Name;
-            //}
-            //else
-            //    btnQueryRouteplanner.IsEnabled = false;
+            tbxEndStationRouteplanner.Text = _searchEndstationPlanner.Name;
+
+            if (_searchBeginStationRouteplanner != null)
+                btnQueryRouteplanner.IsEnabled = true;
+            else
+                btnQueryRouteplanner.IsEnabled = false;
         }
 
         /// <summary>
@@ -326,19 +324,19 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryRouteplanner</param>
         private void BtnQueryRouteplanner_Click(object sender, RoutedEventArgs e)
         {
-            //var gefilterdeStations = from station in _stops
-            //                         where station.Key == _searchBeginStationRouteplanner.Id
-            //                         select station;
+            var gefilterdeStations = from station in _stops
+                                     where station.Key == _searchBeginStationRouteplanner.Id
+                                     select station;
 
-            //lvResultRouteplanner.Items.Clear();
+            lvResultRouteplanner.Items.Clear();
 
-            //foreach (KeyValuePair<string, Stop> s in gefilterdeStations)
-            //{
-            //    ListBoxItem lbi = new ListBoxItem();
-            //    lbi.Content = $"[{s.Key}] {s.Value.Name}";
-            //    lbi.Tag = s.Value;
-            //    lvResultRouteplanner.Items.Add(lbi);
-            //}
+            foreach (KeyValuePair<string, Stop> s in gefilterdeStations)
+            {
+                ListBoxItem lbi = new ListBoxItem();
+                lbi.Content = $"[{s.Key}] {s.Value.Name}";
+                lbi.Tag = s.Value;
+                lvResultRouteplanner.Items.Add(lbi);
+            }
         }
 
 
@@ -351,7 +349,7 @@ namespace Project_NMBS
         /// <param name="sender">tbxStationTripviewer</param>
         private void TbxStationTripviewer_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //UpdateLvResultTripviewer();
+            UpdateLvResultTripviewer();
         }
 
         /// <summary>
@@ -360,24 +358,24 @@ namespace Project_NMBS
         /// <param name="sender">lvStationTripviewer</param>
         private void LvStationTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //ListView lv = (ListView)sender;
-            //try
-            //{
-            //    ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-            //    _searchStationTripviewer = (Stop)lbi.Tag;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(ex.Message);
-            //}
+            ListView lv = (ListView)sender;
+            try
+            {
+                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                _searchStationTripviewer = (Stop)lbi.Tag;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
-            //if (_searchStationTripviewer != null)
-            //{
-            //    btnQueryTripviewer.IsEnabled = true;
-            //    tbxStationTripviewer.Text = _searchStationTripviewer.Name;
-            //}
-            //else
-            //    btnQueryTripviewer.IsEnabled = false;
+            if (_searchStationTripviewer != null)
+            {
+                btnQueryTripviewer.IsEnabled = true;
+                tbxStationTripviewer.Text = _searchStationTripviewer.Name;
+            }
+            else
+                btnQueryTripviewer.IsEnabled = false;
         }
 
         /// <summary>
@@ -396,22 +394,22 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryTripviewer</param>
         private void BtnQueryTripviewer_Click(object sender, RoutedEventArgs e)
         {
-            //var gefilterdeTrips = from trip in _stopTimes
-            //                      where trip.Key == _searchStationTripviewer.Id.TrimStart('S').Split('_')[0]
-            //                      orderby trip.Value.TripId.Split(':')[7] ascending
-            //                      select trip;
+            var gefilterdeTrips = from trip in _stopTimes
+                                  where trip.Key == _searchStationTripviewer.Id.TrimStart('S').Split('_')[0]
+                                  orderby trip.Value.TripId.Split(':')[7] ascending
+                                  select trip;
 
-            //lvResultTripviewer.Items.Clear();
-            
-            //foreach (KeyValuePair<string, StopTime> stopTime in gefilterdeTrips)
-            //{
-            //    ListBoxItem lbi = new ListBoxItem();
-            //    var stopName = from stop in _stops where stop.Key.TrimStart('S') == stopTime.Key.Split(':')[4] select stop;
-            //    DateTime dateDT = DateTime.ParseExact(stopTime.Key.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")).AddHours(Convert.ToDouble(stopTime.Value.DepartureTime.Hours)).AddMinutes(Convert.ToDouble(stopTime.Value.DepartureTime.Minutes));
-            //    lbi.Content = $"[{stopTime.Key}]\n{dateDT}\n Train to {stopName.First().Value.Name}";
-            //    lbi.Tag = stopTime;
-            //    lvResultTripviewer.Items.Add(lbi);
-            //}
+            lvResultTripviewer.Items.Clear();
+
+            foreach (KeyValuePair<string, StopTime> stopTime in gefilterdeTrips)
+            {
+                ListBoxItem lbi = new ListBoxItem();
+                var stopName = from stop in _stops where stop.Key.TrimStart('S') == stopTime.Key.Split(':')[4] select stop;
+                DateTime dateDT = DateTime.ParseExact(stopTime.Key.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")).AddHours(Convert.ToDouble(stopTime.Value.DepartureTime.Hours)).AddMinutes(Convert.ToDouble(stopTime.Value.DepartureTime.Minutes));
+                lbi.Content = $"[{stopTime.Key}]\n{dateDT}\n Train to {stopName.First().Value.Name}";
+                lbi.Tag = stopTime;
+                lvResultTripviewer.Items.Add(lbi);
+            }
         }
 
 
@@ -433,7 +431,7 @@ namespace Project_NMBS
         /// <param name="sender">tbxStationRealtime</param>
         private void TbxStationRealtime_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //UpdateLvStationRealtime();
+            UpdateLvStationRealtime();
         }
 
         /// <summary>
@@ -442,48 +440,51 @@ namespace Project_NMBS
         /// <param name="sender">lvStationRealtime</param>
         private void LvStationRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //ListView lv = (ListView)sender;
-            //try
-            //{
-            //    ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-            //    _searchStationRealtime = (Stop)lbi.Tag;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(ex.Message);
-            //}
+            ListView lv = (ListView)sender;
+            try
+            {
+                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                _searchStationRealtime = (Stop)lbi.Tag;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
-            //if (_searchStationRealtime != null)
-            //{
-            //    tbxStationRealtime.Text = _searchStationRealtime.Name;
-            //    // [3]
-            //    // [4]
-            //    var filterdEntities = from entity in _feedRealtime.entity
-            //                          where entity.id.Split(':')[3] == _searchStationRealtime.Id.TrimStart('S').Split('_')[0]
-            //                          select entity;
+            if (_searchStationRealtime != null)
+            {
+                tbxStationRealtime.Text = _searchStationRealtime.Name;
+                // [3]
+                // [4]
+                var filterdEntities = from entity in _feedRealtime.entity
+                                      where entity.id.Split(':')[3] == _searchStationRealtime.Id.TrimStart('S').Split('_')[0]
+                                      select entity;
 
-            //    lvResultRealtime.Items.Clear();
+                lvResultRealtime.Items.Clear();
 
-            //    foreach (FeedEntity entity in filterdEntities)
-            //    {
-            //        ListBoxItem lbi = new ListBoxItem();
-            //        DateTime dt = new DateTime();
-            //        lbi.Content = $"Arrival: {dt.AddSeconds(entity.trip_update.stop_time_update.Last().arrival.time).ToShortTimeString()}";
-            //        //lbi.Content = $"{entity.trip_update.stop_time_update.Last().arrival}\t{entity.trip_update.stop_time_update.Last().departure}";
-            //        lbi.Tag = entity;
-            //        lvResultRealtime.Items.Add(lbi);
-            //    }
-            //}
+                foreach (FeedEntity entity in filterdEntities)
+                {
+                    ListBoxItem lbi = new ListBoxItem();
+                    DateTime dt = new DateTime();
+                    lbi.Content = $"Arrival: {dt.AddSeconds(entity.trip_update.stop_time_update.Last().arrival.time).ToShortTimeString()}";
+                    //lbi.Content = $"{entity.trip_update.stop_time_update.Last().arrival}\t{entity.trip_update.stop_time_update.Last().departure}";
+                    lbi.Tag = entity;
+                    lvResultRealtime.Items.Add(lbi);
+                }
+            }
         }
+
+
+
 
         private void ExpStationRealtime_Expanded(object sender, RoutedEventArgs e)
         {
-            //expStationRealtime.Height = 391;
+            expStationRealtime.Height = 391;
         }
 
         private void ExpStationRealtime_Collapsed(object sender, RoutedEventArgs e)
         {
-            //expStationRealtime.Height = 30;
+            expStationRealtime.Height = 30;
         }
     }
 }
