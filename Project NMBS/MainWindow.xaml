@@ -48,30 +48,6 @@
                     <Button Name="btnQueryRouteplanner" Content="Query" HorizontalAlignment="Left" Margin="10,315,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQueryRouteplanner_Click"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Real time">
-                <Grid Background="#FFE5E5E5">
-                    <ListView Name="lvResultRealtime" Margin="10,30,10,10" MouseDoubleClick="LvResultRealtime_MouseDoubleClick">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Info" Width="788"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <Expander Name="expStationRealtime" Header="Station" ExpandDirection="Down" Margin="0,0,0,0" Expanded="ExpStationRealtime_Expanded" Collapsed="ExpStationRealtime_Collapsed" Height="391" VerticalAlignment="Top">
-                        <Grid Background="#FFE5E5E5">
-                            <Label Content="Station:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
-                            <TextBox Name="tbxStationRealtime" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxStationRealtime_TextChanged"/>
-                            <ListView Name="lvStationRealtime" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvStationRealtime_MouseDoubleClick">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Stations" Width="200"/>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </Grid>
-                    </Expander>
-                </Grid>
-            </TabItem>
             <TabItem Header="Trip viewer">
                 <Grid Background="#FFE5E5E5">
                     <Label Content="Station:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
@@ -96,6 +72,30 @@
                     </ListView>
 
                     <Button Name="btnQueryTripviewer" Content="Query" HorizontalAlignment="Left" Margin="478,280,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQueryTripviewer_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Real time">
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="lvResultRealtime" Margin="10,30,10,10" MouseDoubleClick="LvResultRealtime_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Info" Width="788"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Expander Name="expStationRealtime" Header="Station" ExpandDirection="Down" Margin="0,0,0,0" Expanded="ExpStationRealtime_Expanded" Collapsed="ExpStationRealtime_Collapsed" Height="391" VerticalAlignment="Top">
+                        <Grid Background="#FFE5E5E5">
+                            <Label Content="Station:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
+                            <TextBox Name="tbxStationRealtime" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxStationRealtime_TextChanged"/>
+                            <ListView Name="lvStationRealtime" HorizontalAlignment="Left" Height="200" Margin="10,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvStationRealtime_MouseDoubleClick">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Stations" Width="200"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Expander>
                 </Grid>
             </TabItem>
         </TabControl>
