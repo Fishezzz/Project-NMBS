@@ -172,30 +172,49 @@ namespace Project_NMBS
                 _stopTimeOverrides.Add(new StopTimeOverride(stop_time_overridesRaw[i]));
 
             // Update ListViews
-            UpdateLvBeginStationRouteplanner();
-            UpdateLvEndStationRouteplanner();
-            UpdateLvResultTripviewer();
-            UpdateLvStationRealtime();
+            //UpdateLvBeginStationRouteplanner();
+            //UpdateLvEndStationRouteplanner();
+            //UpdateLvResultTripviewer();
+            //UpdateLvStationRealtime();
+            UpdateLv(SelectedLv.BeginStationRouteplanner);
+            UpdateLv(SelectedLv.EndStationRouteplanner);
+            UpdateLv(SelectedLv.ResultTripviewer);
+            UpdateLv(SelectedLv.StationRealtime);
 
             // Realtime GTFS
             _feedRealtime = Serializer.Deserialize<FeedMessage>(new FileStream("GTFS/realtime", FileMode.Open, FileAccess.Read));
         }
 
         //// METHODS
-        
-            //// TODO: Onderstaande methods tesamen voegen + 
 
         /// <summary>
-        /// Filter the results in lvBeginStationRouteplanner based on the input of tbxBeginStationRouteplanner.
+        /// Filter the results in selected ListView based on the input of according TextBox.
         /// </summary>
-        private void UpdateLvBeginStationRouteplanner()
+        /// <param name="selectedLv">The ListView to update.</param>
+        private void UpdateLv(SelectedLv selectedLv)
         {
+            string tbxStationText = "";
+            switch (selectedLv)
+            {
+                case SelectedLv.BeginStationRouteplanner: tbxStationText = tbxBeginStationRouteplanner.Text.ToLower(); break;
+                case SelectedLv.EndStationRouteplanner: tbxStationText = tbxEndStationRouteplanner.Text.ToLower(); break;
+                case SelectedLv.ResultTripviewer: tbxStationText = tbxStationTripviewer.Text.ToLower(); break;
+                case SelectedLv.StationRealtime: tbxStationText = tbxStationRealtime.Text.ToLower(); break;
+            }
+
             var filterdStations = from station in _stops
-                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxBeginStationRouteplanner.Text.ToLower())
+                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxStationText)
                                   orderby station.Value.Name ascending
                                   select station;
 
-            lvBeginStationRouteplanner.Items.Clear();
+            // ListView.Items.Clear();
+            switch (selectedLv)
+            {
+                case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.Items.Clear(); break;
+                case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.Items.Clear(); break;
+                case SelectedLv.ResultTripviewer: lvStationTripviewer.Items.Clear(); break;
+                case SelectedLv.StationRealtime: lvStationRealtime.Items.Clear(); break;
+            }
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
@@ -204,84 +223,112 @@ namespace Project_NMBS
                     Content = s.Value.Name,
                     Tag = s.Value
                 };
-                lvBeginStationRouteplanner.Items.Add(lbi);
-            }
-        }
-
-        /// <summary>
-        /// Filter the results in lvEndStationRouteplanner based on the input of tbxEndStationRouteplanner.
-        /// </summary>
-        private void UpdateLvEndStationRouteplanner()
-        {
-            var filterdStations = from station in _stops
-                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxEndStationRouteplanner.Text.ToLower())
-                                  orderby station.Value.Name ascending
-                                  select station;
-
-            lvEndStationRouteplanner.Items.Clear();
-
-            foreach (KeyValuePair<string, Stop> s in filterdStations)
-            {
-                ListBoxItem lbi = new ListBoxItem
+                // ListView.Items.Add(lbi);
+                switch (selectedLv)
                 {
-                    Content = s.Value.Name,
-                    Tag = s.Value
-                };
-                lvEndStationRouteplanner.Items.Add(lbi);
+                    case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.Items.Add(lbi); break;
+                    case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.Items.Add(lbi); break;
+                    case SelectedLv.ResultTripviewer: lvStationTripviewer.Items.Add(lbi); break;
+                    case SelectedLv.StationRealtime: lvStationRealtime.Items.Add(lbi); break;
+                }
             }
         }
 
-        /// <summary>
-        /// Filter the results in lvStationTripviewer based on the input of tbxStationTripviewer.
-        /// </summary>
-        private void UpdateLvResultTripviewer()
-        {
-            var filterdStations = from station in _stops
-                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxStationTripviewer.Text.ToLower())
-                                  orderby station.Value.Name ascending
-                                  select station;
+        ///// <summary>
+        ///// Filter the results in lvBeginStationRouteplanner based on the input of tbxBeginStationRouteplanner.
+        ///// </summary>
+        //private void UpdateLvBeginStationRouteplanner()
+        //{
+        //    var filterdStations = from station in _stops
+        //                          where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxBeginStationRouteplanner.Text.ToLower())
+        //                          orderby station.Value.Name ascending
+        //                          select station;
 
-            lvStationTripviewer.Items.Clear();
+        //    lvBeginStationRouteplanner.Items.Clear();
 
-            foreach (KeyValuePair<string, Stop> s in filterdStations)
-            {
-                ListBoxItem lbi = new ListBoxItem
-                {
-                    Content = s.Value.Name,
-                    Tag = s.Value
-                };
-                lvStationTripviewer.Items.Add(lbi);
-            }
-        }
+        //    foreach (KeyValuePair<string, Stop> s in filterdStations)
+        //    {
+        //        ListBoxItem lbi = new ListBoxItem
+        //        {
+        //            Content = s.Value.Name,
+        //            Tag = s.Value
+        //        };
+        //        lvBeginStationRouteplanner.Items.Add(lbi);
+        //    }
+        //}
 
-        /// <summary>
-        /// Filter the results in lvStationRealtime based on the input of tbxStationRealtime.
-        /// </summary>
-        private void UpdateLvStationRealtime()
-        {
-            var filterdStations = from station in _stops
-                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxStationRealtime.Text.ToLower())
-                                  orderby station.Value.Name ascending
-                                  select station;
+        ///// <summary>
+        ///// Filter the results in lvEndStationRouteplanner based on the input of tbxEndStationRouteplanner.
+        ///// </summary>
+        //private void UpdateLvEndStationRouteplanner()
+        //{
+        //    var filterdStations = from station in _stops
+        //                          where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxEndStationRouteplanner.Text.ToLower())
+        //                          orderby station.Value.Name ascending
+        //                          select station;
 
-            lvStationRealtime.Items.Clear();
+        //    lvEndStationRouteplanner.Items.Clear();
 
-            foreach (KeyValuePair<string, Stop> s in filterdStations)
-            {
-                ListBoxItem lbi = new ListBoxItem
-                {
-                    Content = s.Value.Name,
-                    Tag = s.Value
-                };
-                lvStationRealtime.Items.Add(lbi);
-            }
-        }
+        //    foreach (KeyValuePair<string, Stop> s in filterdStations)
+        //    {
+        //        ListBoxItem lbi = new ListBoxItem
+        //        {
+        //            Content = s.Value.Name,
+        //            Tag = s.Value
+        //        };
+        //        lvEndStationRouteplanner.Items.Add(lbi);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Filter the results in lvStationTripviewer based on the input of tbxStationTripviewer.
+        ///// </summary>
+        //private void UpdateLvResultTripviewer()
+        //{
+        //    var filterdStations = from station in _stops
+        //                          where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxStationTripviewer.Text.ToLower())
+        //                          orderby station.Value.Name ascending
+        //                          select station;
+
+        //    lvStationTripviewer.Items.Clear();
+
+        //    foreach (KeyValuePair<string, Stop> s in filterdStations)
+        //    {
+        //        ListBoxItem lbi = new ListBoxItem
+        //        {
+        //            Content = s.Value.Name,
+        //            Tag = s.Value
+        //        };
+        //        lvStationTripviewer.Items.Add(lbi);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Filter the results in lvStationRealtime based on the input of tbxStationRealtime.
+        ///// </summary>
+        //private void UpdateLvStationRealtime()
+        //{
+        //    var filterdStations = from station in _stops
+        //                          where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxStationRealtime.Text.ToLower())
+        //                          orderby station.Value.Name ascending
+        //                          select station;
+
+        //    lvStationRealtime.Items.Clear();
+
+        //    foreach (KeyValuePair<string, Stop> s in filterdStations)
+        //    {
+        //        ListBoxItem lbi = new ListBoxItem
+        //        {
+        //            Content = s.Value.Name,
+        //            Tag = s.Value
+        //        };
+        //        lvStationRealtime.Items.Add(lbi);
+        //    }
+        //}
 
 
 
         //// EVENT HANDLERS
-
-        //////// ROUTE PLANNER
 
         /// <summary>
         /// Initial setting the DisplayDateStart and DisplayDateEnd for dpRouteplanner and dpTripviewer.
@@ -303,13 +350,17 @@ namespace Project_NMBS
         }
 
 
+
+        //////// ROUTE PLANNER
+
         /// <summary>
         /// Call method to update lvBeginStationRouteplanner.
         /// </summary>
         /// <param name="sender">tbxBeginStationRouteplanner</param>
         private void TbxBeginStationRouteplanner_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateLvBeginStationRouteplanner();
+            //UpdateLvBeginStationRouteplanner();
+            UpdateLv(SelectedLv.BeginStationRouteplanner);
         }
 
         /// <summary>
@@ -343,7 +394,8 @@ namespace Project_NMBS
         /// <param name="sender">tbxEndStationRouteplanner</param>
         private void TbxEndStationRouteplanner_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateLvEndStationRouteplanner();
+            //UpdateLvEndStationRouteplanner();
+            UpdateLv(SelectedLv.EndStationRouteplanner);
         }
 
         /// <summary>
@@ -414,7 +466,8 @@ namespace Project_NMBS
         /// <param name="sender">tbxStationTripviewer</param>
         private void TbxStationTripviewer_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateLvResultTripviewer();
+            //UpdateLvResultTripviewer();
+            UpdateLv(SelectedLv.ResultTripviewer);
         }
 
         /// <summary>
@@ -460,7 +513,7 @@ namespace Project_NMBS
         private void BtnQueryTripviewer_Click(object sender, RoutedEventArgs e)
         {
             var gefilterdeTrips = from trip in _stopTimes
-                                  where trip.Key.Item1 == _searchStationTripviewer.Id.TrimStart('S').Split('_')[0]
+                                  where trip.Key.Item1.Split(':')[3] == _searchStationTripviewer.Id.TrimStart('S').Split('_')[0]
                                   orderby trip.Value.TripId.Split(':')[7] ascending
                                   select trip;
 
@@ -468,14 +521,17 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<Tuple<string, uint>, StopTime> stopTime in gefilterdeTrips)
             {
-                ListBoxItem lbi = new ListBoxItem();
                 var stopName = from stop in _stops where stop.Key.TrimStart('S') == stopTime.Key.Item1.Split(':')[4] select stop;
                 DateTime dateDT = DateTime
                     .ParseExact(stopTime.Key.Item1.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR"))
                     .AddHours(Convert.ToDouble(stopTime.Value.DepartureTime.Hours))
                     .AddMinutes(Convert.ToDouble(stopTime.Value.DepartureTime.Minutes));
-                lbi.Content = $"[{stopTime.Key}]\n{dateDT}\n Train to {stopName.First().Value.Name}";
-                lbi.Tag = stopTime;
+
+                ListBoxItem lbi = new ListBoxItem
+                {
+                    Content = $"[{stopTime.Key}]\n{dateDT}\n Train to {stopName.First().Value.Name}",
+                    Tag = stopTime
+                };
                 lvResultTripviewer.Items.Add(lbi);
             }
         }
@@ -499,7 +555,8 @@ namespace Project_NMBS
         /// <param name="sender">tbxStationRealtime</param>
         private void TbxStationRealtime_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateLvStationRealtime();
+            //UpdateLvStationRealtime();
+            UpdateLv(SelectedLv.StationRealtime);
         }
 
         /// <summary>
@@ -522,8 +579,6 @@ namespace Project_NMBS
             if (_searchStationRealtime != null)
             {
                 tbxStationRealtime.Text = _searchStationRealtime.Name;
-                // [3]
-                // [4]
                 var filterdEntities = from entity in _feedRealtime.entity
                                       where entity.id.Split(':')[3] == _searchStationRealtime.Id.TrimStart('S').Split('_')[0]
                                       select entity;
@@ -532,22 +587,29 @@ namespace Project_NMBS
 
                 foreach (FeedEntity entity in filterdEntities)
                 {
-                    ListBoxItem lbi = new ListBoxItem();
-                    lbi.Content = $"Arrival: {entity.trip_update.stop_time_update.LastOrDefault().arrival?.time.FromUnixTime().ToLongTimeString() ?? ""}\t\tDeparture: {entity.trip_update.stop_time_update.LastOrDefault().departure?.time.FromUnixTime().ToLongTimeString() ?? ""}";
-                    lbi.Tag = entity;
+                    ListBoxItem lbi = new ListBoxItem
+                    {
+                        Content = $"Arrival: {entity.trip_update.stop_time_update.LastOrDefault().arrival?.time.FromUnixTime().ToLongTimeString() ?? ""}\t\tDeparture: {entity.trip_update.stop_time_update.LastOrDefault().departure?.time.FromUnixTime().ToLongTimeString() ?? ""}",
+                        Tag = entity
+                    };
                     lvResultRealtime.Items.Add(lbi);
                 }
             }
         }
 
-
-
-
+        /// <summary>
+        /// Catch the Expanded event and sets the Height of expStationRealtime.
+        /// </summary>
+        /// <param name="sender">expStationRealtime</param>
         private void ExpStationRealtime_Expanded(object sender, RoutedEventArgs e)
         {
             expStationRealtime.Height = 391;
         }
 
+        /// <summary>
+        /// Catch the Collapsed event and sets the Height of expStationRealtime.
+        /// </summary>
+        /// <param name="sender">expStationRealtime</param>
         private void ExpStationRealtime_Collapsed(object sender, RoutedEventArgs e)
         {
             expStationRealtime.Height = 30;
