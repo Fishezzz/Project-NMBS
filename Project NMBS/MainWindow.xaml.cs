@@ -35,7 +35,6 @@ using System.Net;
 using ProtoBuf;
 using transit_realtime;
 
-
 namespace Project_NMBS
 {
     /// <summary>
@@ -52,30 +51,77 @@ namespace Project_NMBS
         ////List<Route/*Extra*/> _routes;
         ////List<Agency> _agencies;
         ////List<GTFS.Entities.Calendar> _calendars;
-        ////List<CalendarDate> _calendarDates;
+        ////Dictionary<string, CalendarDate> _calendarDates;
         ////List<StopTime> _stopTimes;
-        ////List<StopTimeOverride> _stopTimeOverrides;
+        ////Dictionary<Tuple<string, string, string>, StopTimeOverride> _stopTimeOverrides;
         ////List<Transfer> _transfers;
         ////List<Translation> _translations;
 
-        public static Dictionary<string, Stop> _stops;
-        Dictionary<string, Trip> _trips;
-        Dictionary<string, Route> _routes;
-        Dictionary<string, Agency> _agencies;
-        Dictionary<string, GTFS.Entities.Calendar> _calendars;
-        Dictionary<string, CalendarDate> _calendarDates;
-        Dictionary<string, StopTime> _stopTimes;
         /// <summary>
-        /// <param name="T1">TripId</param>
-        /// <param name="T2">ServiceId</param>
-        /// <param name="T3">StopId</param>
+        /// Key: Stop_Id
+        /// <para/>
+        /// Value: Stop
         /// </summary>
-        Dictionary<Tuple<string, string, string>, StopTimeOverride> _stopTimeOverrides;
+        public static Dictionary<string, Stop> _stops;
+        /// <summary>
+        /// Key: Trip_Id
+        /// <para/>
+        /// Value: Trip
+        /// </summary>
+        Dictionary<string, Trip> _trips;
+        /// <summary>
+        /// Key: Route_Id
+        /// <para/>
+        /// Value: Route
+        /// </summary>
+        Dictionary<string, Route> _routes;
+        /// <summary>
+        /// Key: Agency_Id
+        /// <para/>
+        /// Value: Agency
+        /// </summary>
+        Dictionary<string, Agency> _agencies;
+        /// <summary>
+        /// Key: Service_Id
+        /// <para/>
+        /// Value: Calendar
+        /// </summary>
+        Dictionary<string, GTFS.Entities.Calendar> _calendars;
+        /// <summary>
+        /// Key: From_Stop_Id
+        /// <para/>
+        /// Value: Transfer
+        /// </summary>
         Dictionary<string, Transfer> _transfers;
-        Dictionary<string, Translation> _translations;
+
+        /// <summary>
+        /// Key-T1: Service_Id
+        /// <para/>
+        /// Key-T2: Date
+        /// <para/>
+        /// Value: Exception_Type
+        /// </summary>
+        Dictionary<Tuple<string, DateTime>, ExceptionType> _calendarDates;
+        /// <summary>
+        /// Key-T1: Trip_Id
+        /// <para/>
+        /// Key-T2: Stop_Sequence
+        /// <para/>
+        /// Value: StopTime
+        /// </summary>
+        Dictionary<Tuple<string, uint>, StopTime> _stopTimes;
+        /// <summary>
+        /// Key: Trans_Id
+        /// <para/>
+        /// Value-Key: Language
+        /// <para/>
+        /// Value-Value: Trans
+        /// </summary>
+        Dictionary<string, Dictionary<string, string>> _translations;
+        List<StopTimeOverride> _stopTimeOverrides;
 
         Stop _searchBeginStationRouteplanner;
-        Stop _searchEndstationPlanner;
+        Stop _searchEndStationRoutePlanner;
         Stop _searchStationTripviewer;
         Stop _searchStationRealtime;
 
@@ -95,26 +141,35 @@ namespace Project_NMBS
             _routes = _feedStatic.Routes.ToDictionary(x => x.Id, x => x);   /*.ToRouteExtraList();*/
             _agencies = _feedStatic.Agencies.ToDictionary(x => x.Id, x => x);
             _calendars = _feedStatic.Calendars.ToDictionary(x => x.ServiceId, x => x);
-            //_calendarDates = _feedStatic.CalendarDates.ToDictionary(x => x.ServiceId, x => x);
-            //_stopTimes = _feedStatic.StopTimes.ToDictionary(x => x.TripId, x => x);
-            _stopTimeOverrides = new Dictionary<Tuple<string, string, string>, StopTimeOverride>();
             _transfers = _feedStatic.Transfers.ToDictionary(x => x.FromStopId, x => x);
-            _translations = new Dictionary<string, Translation>();
+
+            _translations = new Dictionary<string, Dictionary<string, string>>();
+            _stopTimeOverrides = new List<StopTimeOverride>();
+
+            _calendarDates = _feedStatic.CalendarDates.ToDictionary(x => Tuple.Create(x.ServiceId, x.Date), x => x.ExceptionType);
+            _stopTimes = _feedStatic.StopTimes.ToDictionary(x => Tuple.Create(x.TripId, x.StopSequence), x => x);
 
             // Read extra files and create lists with objects
-            //string[] stop_time_overridesRaw = File.ReadAllLines("GTFS\\stop_time_overrides.txt");
-            //for (int i = 1; i < stop_time_overridesRaw.Length; i++)
-            //    _stopTimeOverrides.Add(
-            //        Tuple.Create(
-            //            new StopTimeOverride(stop_time_overridesRaw[i]).Trip_Id,
-            //            new StopTimeOverride(stop_time_overridesRaw[i]).Service_Id,
-            //            new StopTimeOverride(stop_time_overridesRaw[i]).Stop_Id),
-            //        new StopTimeOverride(stop_time_overridesRaw[i]));
-            //string[] translationsRaw = File.ReadAllLines("GTFS\\translations.txt");
-            //for (int i = 1; i < translationsRaw.Length; i++)
-            //    _translations.Add(
-            //        new Translation(translationsRaw[i]).Trans_Id,
-            //        new Translation(translationsRaw[i]));
+            string[] translationsRaw = File.ReadAllLines("GTFS\\translations.txt");
+            for (int i = 1; i < translationsRaw.Length;)
+            {
+                string key = new Translation(translationsRaw[i]).Trans_Id;
+                Dictionary<string, string> value = new Dictionary<string, string>();
+
+                Translation valueValue = new Translation(translationsRaw[i++]);
+                value.Add(valueValue.Language, valueValue.Trans);
+                valueValue = new Translation(translationsRaw[i++]);
+                value.Add(valueValue.Language, valueValue.Trans);
+                valueValue = new Translation(translationsRaw[i++]);
+                value.Add(valueValue.Language, valueValue.Trans);
+                valueValue = new Translation(translationsRaw[i++]);
+                value.Add(valueValue.Language, valueValue.Trans);
+
+                _translations.Add(key, value);
+            }
+            string[] stop_time_overridesRaw = File.ReadAllLines("GTFS\\stop_time_overrides.txt");
+            for (int i = 1; i < stop_time_overridesRaw.Length; i++)
+                _stopTimeOverrides.Add(new StopTimeOverride(stop_time_overridesRaw[i]));
 
             // Update ListViews
             UpdateLvBeginStationRouteplanner();
@@ -144,9 +199,11 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Content = s.Value.Name;
-                lbi.Tag = s.Value;
+                ListBoxItem lbi = new ListBoxItem
+                {
+                    Content = s.Value.Name,
+                    Tag = s.Value
+                };
                 lvBeginStationRouteplanner.Items.Add(lbi);
             }
         }
@@ -165,9 +222,11 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Content = s.Value.Name;
-                lbi.Tag = s.Value;
+                ListBoxItem lbi = new ListBoxItem
+                {
+                    Content = s.Value.Name,
+                    Tag = s.Value
+                };
                 lvEndStationRouteplanner.Items.Add(lbi);
             }
         }
@@ -186,9 +245,11 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Content = s.Value.Name;
-                lbi.Tag = s.Value;
+                ListBoxItem lbi = new ListBoxItem
+                {
+                    Content = s.Value.Name,
+                    Tag = s.Value
+                };
                 lvStationTripviewer.Items.Add(lbi);
             }
         }
@@ -207,9 +268,11 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Content = s.Value.Name;
-                lbi.Tag = s.Value;
+                ListBoxItem lbi = new ListBoxItem
+                {
+                    Content = s.Value.Name,
+                    Tag = s.Value
+                };
                 lvStationRealtime.Items.Add(lbi);
             }
         }
@@ -250,7 +313,7 @@ namespace Project_NMBS
         }
 
         /// <summary>
-        /// Catche the DoubleClick event and sets _searchBeginStation to the SelectedItem.
+        /// Catch the DoubleClick event and sets _searchBeginStation to the SelectedItem.
         /// </summary>
         /// <param name="sender">lvBeginStationRouteplanner</param>
         private void LvBeginStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -266,9 +329,9 @@ namespace Project_NMBS
                 Debug.WriteLine(ex.Message);
             }
 
-            tbxBeginStationRouteplanner.Text = _searchBeginStationRouteplanner.Name;
+            tbxBeginStationRouteplanner.Text = _searchBeginStationRouteplanner.Name ?? "";
 
-            if (_searchEndstationPlanner != null)
+            if (_searchEndStationRoutePlanner != null)
                 btnQueryRouteplanner.IsEnabled = true;
             else
                 btnQueryRouteplanner.IsEnabled = false;
@@ -284,7 +347,7 @@ namespace Project_NMBS
         }
 
         /// <summary>
-        /// Cath the DoubleClick event and set _searchEndStation to the SelectedItem.
+        /// Catch the DoubleClick event and set _searchEndStation to the SelectedItem.
         /// </summary>
         /// <param name="sender">lvEndStationRouteplanner</param>
         private void LvEndStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -293,14 +356,14 @@ namespace Project_NMBS
             try
             {
                 ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-                _searchEndstationPlanner = (Stop)lbi.Tag;
+                _searchEndStationRoutePlanner = (Stop)lbi.Tag;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            tbxEndStationRouteplanner.Text = _searchEndstationPlanner.Name;
+            tbxEndStationRouteplanner.Text = _searchEndStationRoutePlanner.Name ?? "";
 
             if (_searchBeginStationRouteplanner != null)
                 btnQueryRouteplanner.IsEnabled = true;
@@ -332,9 +395,11 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in gefilterdeStations)
             {
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Content = $"[{s.Key}] {s.Value.Name}";
-                lbi.Tag = s.Value;
+                ListBoxItem lbi = new ListBoxItem
+                {
+                    Content = $"[{s.Key}] {s.Value.Name}",
+                    Tag = s.Value
+                };
                 lvResultRouteplanner.Items.Add(lbi);
             }
         }
@@ -395,17 +460,20 @@ namespace Project_NMBS
         private void BtnQueryTripviewer_Click(object sender, RoutedEventArgs e)
         {
             var gefilterdeTrips = from trip in _stopTimes
-                                  where trip.Key == _searchStationTripviewer.Id.TrimStart('S').Split('_')[0]
+                                  where trip.Key.Item1 == _searchStationTripviewer.Id.TrimStart('S').Split('_')[0]
                                   orderby trip.Value.TripId.Split(':')[7] ascending
                                   select trip;
 
             lvResultTripviewer.Items.Clear();
 
-            foreach (KeyValuePair<string, StopTime> stopTime in gefilterdeTrips)
+            foreach (KeyValuePair<Tuple<string, uint>, StopTime> stopTime in gefilterdeTrips)
             {
                 ListBoxItem lbi = new ListBoxItem();
-                var stopName = from stop in _stops where stop.Key.TrimStart('S') == stopTime.Key.Split(':')[4] select stop;
-                DateTime dateDT = DateTime.ParseExact(stopTime.Key.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")).AddHours(Convert.ToDouble(stopTime.Value.DepartureTime.Hours)).AddMinutes(Convert.ToDouble(stopTime.Value.DepartureTime.Minutes));
+                var stopName = from stop in _stops where stop.Key.TrimStart('S') == stopTime.Key.Item1.Split(':')[4] select stop;
+                DateTime dateDT = DateTime
+                    .ParseExact(stopTime.Key.Item1.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR"))
+                    .AddHours(Convert.ToDouble(stopTime.Value.DepartureTime.Hours))
+                    .AddMinutes(Convert.ToDouble(stopTime.Value.DepartureTime.Minutes));
                 lbi.Content = $"[{stopTime.Key}]\n{dateDT}\n Train to {stopName.First().Value.Name}";
                 lbi.Tag = stopTime;
                 lvResultTripviewer.Items.Add(lbi);
@@ -465,9 +533,7 @@ namespace Project_NMBS
                 foreach (FeedEntity entity in filterdEntities)
                 {
                     ListBoxItem lbi = new ListBoxItem();
-                    DateTime dt = new DateTime();
-                    lbi.Content = $"Arrival: {dt.AddSeconds(entity.trip_update.stop_time_update.Last().arrival.time).ToShortTimeString()}";
-                    //lbi.Content = $"{entity.trip_update.stop_time_update.Last().arrival}\t{entity.trip_update.stop_time_update.Last().departure}";
+                    lbi.Content = $"Arrival: {entity.trip_update.stop_time_update.LastOrDefault().arrival?.time.FromUnixTime().ToLongTimeString() ?? ""}\t\tDeparture: {entity.trip_update.stop_time_update.LastOrDefault().departure?.time.FromUnixTime().ToLongTimeString() ?? ""}";
                     lbi.Tag = entity;
                     lvResultRealtime.Items.Add(lbi);
                 }
