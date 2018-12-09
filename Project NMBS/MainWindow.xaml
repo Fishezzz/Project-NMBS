@@ -31,12 +31,12 @@
                         </ListView.View>
                     </ListView>
 
-                    <Label Content="Date:" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="60" FontSize="15"/>
-                    <DatePicker Name="dpRouteplanner" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
+                    <Label Content="Date:" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="50" FontSize="15"/>
+                    <DatePicker Name="dpRouteplanner" HorizontalAlignment="Left" Margin="60,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
 
-                    <Label Content="Time:" HorizontalAlignment="Left" Margin="230,280,0,0" VerticalAlignment="Top" Height="30" Width="40" FontSize="15"/>
-                    <xctk:TimePicker Name="tpRouteplanner" HorizontalAlignment="Left" Margin="270,280,0,0" VerticalAlignment="Top" Height="30" Width="145" FontSize="15" Loaded="TimePicker_Loaded" CultureInfo="nl-BE" TimeInterval="0:15:0" CurrentDateTimePart="Hour24" Kind="Local"/>
-                    
+                    <Label Content="Time:" HorizontalAlignment="Left" Margin="215,280,0,0" VerticalAlignment="Top" Height="30" Width="50" FontSize="15"/>
+                    <xctk:TimePicker Name="tpRouteplanner" HorizontalAlignment="Left" Margin="265,280,0,0" VerticalAlignment="Top" Height="30" Width="150" FontSize="15" Loaded="TimePicker_Loaded" CultureInfo="nl-BE" TimeInterval="0:15:0" CurrentDateTimePart="Hour24" Kind="Local"/>
+
                     <ListView Name="lvResultRouteplanner" HorizontalAlignment="Left" Height="235" Margin="420,40,0,0" VerticalAlignment="Top" Width="350" MouseDoubleClick="LvResultRouteplanner_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
@@ -44,7 +44,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    
+
                     <Button Name="btnQueryRouteplanner" Content="Query" HorizontalAlignment="Left" Margin="10,315,0,0" VerticalAlignment="Top" Width="200" Height="50" FontSize="30" IsEnabled="False" Click="BtnQueryRouteplanner_Click"/>
                 </Grid>
             </TabItem>
@@ -60,8 +60,8 @@
                         </ListView.View>
                     </ListView>
 
-                    <Label Content="Datum: " HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="60" FontSize="15"/>
-                    <DatePicker Name="dpTripviewer" HorizontalAlignment="Left" Margin="70,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
+                    <Label Content="Date: " HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="30" Width="50" FontSize="15"/>
+                    <DatePicker Name="dpTripviewer" HorizontalAlignment="Left" Margin="60,280,0,0" VerticalAlignment="Top" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
 
                     <ListView Name="lvResultTripviewer" HorizontalAlignment="Left" Height="235" Margin="228,40,0,0" VerticalAlignment="Top" Width="450" MouseDoubleClick="LvResultTripviewer_MouseDoubleClick">
                         <ListView.View>

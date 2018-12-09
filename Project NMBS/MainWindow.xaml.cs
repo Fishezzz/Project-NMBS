@@ -246,6 +246,8 @@ namespace Project_NMBS
         {
             dpRouteplanner.DisplayDateStart = dpTripviewer.DisplayDateStart = _feedStatic.Calendars.First().StartDate;
             dpRouteplanner.DisplayDateEnd = dpTripviewer.DisplayDateEnd = _feedStatic.Calendars.First().EndDate;
+            dpRouteplanner.SelectedDate = dpTripviewer.SelectedDate = DateTime.Now;
+            dpRouteplanner.Text = dpTripviewer.Text = DateTime.Now.ToLongDateString();
         }
 
         /// <summary>
