@@ -43,12 +43,18 @@ namespace Project_NMBS
     public partial class MainWindow : Window
     {
         GTFSReader<GTFSFeed> _reader;
+        /// <summary>
+        /// _feed.StopTimes.StopId is TRIMMED
+        /// </summary>
         GTFSFeed _feedStatic;
         FeedMessage _feedRealtime;
 
+        //  fr      nl      de      en
+        const string _LANG = "nl";
+
         ////List<Stop> _stops;
-        ////List<Trip/*Extra*/> _trips;
-        ////List<Route/*Extra*/> _routes;
+        ////List<Trip> _trips;
+        ////List<Route> _routes;
         ////List<Agency> _agencies;
         ////List<GTFS.Entities.Calendar> _calendars;
         ////Dictionary<string, CalendarDate> _calendarDates;
@@ -58,66 +64,63 @@ namespace Project_NMBS
         ////List<Translation> _translations;
 
         /// <summary>
-        /// Key: Stop_Id
+        /// Key: Stop_Id (string) NOT TRIMMED!
         /// <para/>
-        /// Value: Stop
+        /// Value: Stop (Stop)
         /// </summary>
         public static Dictionary<string, Stop> _stops;
         /// <summary>
-        /// Key: Trip_Id
+        /// Key: Trip_Id (string)
         /// <para/>
-        /// Value: Trip
+        /// Value: Trip (Trip)
         /// </summary>
         Dictionary<string, Trip> _trips;
         /// <summary>
-        /// Key: Route_Id
+        /// Key: Route_Id (string)
         /// <para/>
-        /// Value: Route
+        /// Value: Route (Route)
         /// </summary>
         Dictionary<string, Route> _routes;
         /// <summary>
-        /// Key: Agency_Id
+        /// Key: Agency_Id (string)
         /// <para/>
-        /// Value: Agency
+        /// Value: Agency (Agency)
         /// </summary>
         Dictionary<string, Agency> _agencies;
         /// <summary>
-        /// Key: Service_Id
+        /// Key: Service_Id (string)
         /// <para/>
-        /// Value: Calendar
+        /// Value: Calendar (Calendar)
         /// </summary>
         Dictionary<string, GTFS.Entities.Calendar> _calendars;
         /// <summary>
-        /// Key: From_Stop_Id
+        /// Key: From_Stop_Id (string) TRIMMED
         /// <para/>
-        /// Value: Transfer
+        /// Value: Transfer (Transfer)
         /// </summary>
         Dictionary<string, Transfer> _transfers;
 
         /// <summary>
-        /// Key-T1: Service_Id
+        /// Used when 'Service_Id' is known, but a specific 'Date' needs to be found.
         /// <para/>
-        /// Key-T2: Date
+        /// Key: Service_Id (string)
         /// <para/>
-        /// Value: Exception_Type
+        /// Value-Key: Date (DateTime)
+        /// <para/>
+        /// Value-Value: Exception_Type (ExceptionType)
         /// </summary>
-        Dictionary<Tuple<string, DateTime>, ExceptionType> _calendarDates;
+        Dictionary<string, Dictionary<DateTime, ExceptionType>> _calendarDates;
         /// <summary>
-        /// Key-T1: Trip_Id
+        /// Key: Trans_Id (string)
         /// <para/>
-        /// Key-T2: Stop_Sequence
+        /// Value-Key: Language (string)
         /// <para/>
-        /// Value: StopTime
-        /// </summary>
-        Dictionary<Tuple<string, uint>, StopTime> _stopTimes;
-        /// <summary>
-        /// Key: Trans_Id
-        /// <para/>
-        /// Value-Key: Language
-        /// <para/>
-        /// Value-Value: Trans
+        /// Value-Value: Trans (string)
         /// </summary>
         Dictionary<string, Dictionary<string, string>> _translations;
+        /// <summary>
+        /// StopId is WITH an __
+        /// </summary>
         List<StopTimeOverride> _stopTimeOverrides;
 
         Stop _searchBeginStationRouteplanner;
@@ -135,22 +138,25 @@ namespace Project_NMBS
             _reader = new GTFSReader<GTFSFeed>(strict: false);
             _feedStatic = _reader.Read(new DirectoryInfo("GTFS"));
 
+            // Read extra files and create lists with objects
+            string[] translationsRaw = File.ReadAllLines("GTFS\\translations.txt");
+            string[] stop_time_overridesRaw = File.ReadAllLines("GTFS\\stop_time_overrides.txt");
+
             // Create lists with objects
             _stops = _feedStatic.Stops.ToDictionary(x => x.Id, x => x);
-            _trips = _feedStatic.Trips.ToDictionary(x => x.Id, x => x);     /*.ToTripExtraList();*/
-            _routes = _feedStatic.Routes.ToDictionary(x => x.Id, x => x);   /*.ToRouteExtraList();*/
+            _trips = _feedStatic.Trips.ToDictionary(x => x.Id, x => x);
+            _routes = _feedStatic.Routes.ToDictionary(x => x.Id, x => x);
             _agencies = _feedStatic.Agencies.ToDictionary(x => x.Id, x => x);
             _calendars = _feedStatic.Calendars.ToDictionary(x => x.ServiceId, x => x);
             _transfers = _feedStatic.Transfers.ToDictionary(x => x.FromStopId, x => x);
 
+            _calendarDates = new Dictionary<string, Dictionary<DateTime, ExceptionType>>();
+            foreach (string serviceId in _calendars.Keys)
+                _calendarDates.Add(serviceId, new Dictionary<DateTime, ExceptionType>());
+            foreach (CalendarDate cd in _feedStatic.CalendarDates)
+                _calendarDates[cd.ServiceId].Add(cd.Date, cd.ExceptionType);
+            
             _translations = new Dictionary<string, Dictionary<string, string>>();
-            _stopTimeOverrides = new List<StopTimeOverride>();
-
-            _calendarDates = _feedStatic.CalendarDates.ToDictionary(x => Tuple.Create(x.ServiceId, x.Date), x => x.ExceptionType);
-            _stopTimes = _feedStatic.StopTimes.ToDictionary(x => Tuple.Create(x.TripId, x.StopSequence), x => x);
-
-            // Read extra files and create lists with objects
-            string[] translationsRaw = File.ReadAllLines("GTFS\\translations.txt");
             for (int i = 1; i < translationsRaw.Length;)
             {
                 string key = new Translation(translationsRaw[i]).Trans_Id;
@@ -167,15 +173,12 @@ namespace Project_NMBS
 
                 _translations.Add(key, value);
             }
-            string[] stop_time_overridesRaw = File.ReadAllLines("GTFS\\stop_time_overrides.txt");
+
+            _stopTimeOverrides = new List<StopTimeOverride>();
             for (int i = 1; i < stop_time_overridesRaw.Length; i++)
                 _stopTimeOverrides.Add(new StopTimeOverride(stop_time_overridesRaw[i]));
 
             // Update ListViews
-            //UpdateLvBeginStationRouteplanner();
-            //UpdateLvEndStationRouteplanner();
-            //UpdateLvResultTripviewer();
-            //UpdateLvStationRealtime();
             UpdateLv(SelectedLv.BeginStationRouteplanner);
             UpdateLv(SelectedLv.EndStationRouteplanner);
             UpdateLv(SelectedLv.ResultTripviewer);
@@ -188,11 +191,94 @@ namespace Project_NMBS
         //// METHODS
 
         /// <summary>
+        /// Returns the parent station as a 'Stop' for the given -Trimed- stopId.
+        /// </summary>
+        /// <param name="stopId">Trimmed! stopId</param>
+        /// <returns>The parent station as 'Stop'</returns>
+        private Stop GetStop(string stopId)
+        {
+            Stop value;
+            if (_stops.TryGetValue("S" + stopId, out value))
+                return value;
+            else
+            {
+                _stops.TryGetValue(stopId, out value);
+                return value;
+            }
+
+        }
+        
+        /// <summary>
+        /// Returns the Trip for the given tripId.
+        /// </summary>
+        private Trip GetTrip(string tripId)
+        {
+            Trip value;
+            _trips.TryGetValue(tripId, out value);
+            return value;
+        }
+
+        /// <summary>
+        /// Returns the Route for the given routeId.
+        /// </summary>
+        private Route GetRoute(string routeId)
+        {
+            Route value;
+            _routes.TryGetValue(routeId, out value);
+            return value;
+        }
+
+        /// <summary>
+        /// Returns the Calendar for the given serviceId.
+        /// </summary>
+        private GTFS.Entities.Calendar GetCalendar(string serviceId)
+        {
+            GTFS.Entities.Calendar value;
+            _calendars.TryGetValue(serviceId, out value);
+            return value;
+        }
+
+        /// <summary>
+        /// Returns the Transfer from the Stop for the given -Trimmed- stopId.
+        /// </summary>
+        /// <param name="fromStopId">Trimmed! stopId</param>
+        private Transfer GetTransfer(string fromStopId)
+        {
+            Transfer value;
+            _transfers.TryGetValue(fromStopId, out value);
+            return value;
+
+        }
+
+        /// <summary>
+        /// Returns the Translation for the set LANG.
+        /// </summary>
+        /// <param name="transId">transId (in French)</param>
+        private string GetTrans(string transId)
+        {
+            Dictionary<string, string> trans;
+            _translations.TryGetValue(transId, out trans);
+            string name = transId;
+            if (trans != null)
+                trans.TryGetValue(_LANG, out name);
+            return name;
+        }
+
+        /// <summary>
         /// Filter the results in selected ListView based on the input of according TextBox.
         /// </summary>
         /// <param name="selectedLv">The ListView to update.</param>
         private void UpdateLv(SelectedLv selectedLv)
         {
+            // ListView.Items.Clear();
+            switch (selectedLv)
+            {
+                case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.Items.Clear(); break;
+                case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.Items.Clear(); break;
+                case SelectedLv.ResultTripviewer: lvStationTripviewer.Items.Clear(); break;
+                case SelectedLv.StationRealtime: lvStationRealtime.Items.Clear(); break;
+            }
+
             string tbxStationText = "";
             switch (selectedLv)
             {
@@ -203,26 +289,22 @@ namespace Project_NMBS
             }
 
             var filterdStations = from station in _stops
-                                  where station.Value.LocationType == LocationType.Station && station.Value.Name.ToLower().Contains(tbxStationText)
-                                  orderby station.Value.Name ascending
+                                  where station.Value.LocationType == LocationType.Station && GetTrans(station.Value.Name).ToLower().Contains(tbxStationText)
+                                  orderby GetTrans(station.Value.Name) ascending
                                   select station;
-
-            // ListView.Items.Clear();
-            switch (selectedLv)
-            {
-                case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.Items.Clear(); break;
-                case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.Items.Clear(); break;
-                case SelectedLv.ResultTripviewer: lvStationTripviewer.Items.Clear(); break;
-                case SelectedLv.StationRealtime: lvStationRealtime.Items.Clear(); break;
-            }
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
+                Dictionary<string, string> trans;
+                _translations.TryGetValue(s.Value.Name, out trans);
+                string name;
+                trans.TryGetValue(_LANG, out name);
                 ListBoxItem lbi = new ListBoxItem
                 {
-                    Content = s.Value.Name,
+                    Content = /*s.Value.Name*/name,
                     Tag = s.Value
                 };
+
                 // ListView.Items.Add(lbi);
                 switch (selectedLv)
                 {
@@ -269,7 +351,6 @@ namespace Project_NMBS
         /// <param name="sender">tbxBeginStationRouteplanner</param>
         private void TbxBeginStationRouteplanner_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //UpdateLvBeginStationRouteplanner();
             UpdateLv(SelectedLv.BeginStationRouteplanner);
         }
 
@@ -290,7 +371,8 @@ namespace Project_NMBS
                 Debug.WriteLine(ex.Message);
             }
 
-            tbxBeginStationRouteplanner.Text = _searchBeginStationRouteplanner.Name ?? "";
+            if (_searchBeginStationRouteplanner != null)
+                tbxBeginStationRouteplanner.Text = GetTrans(_searchBeginStationRouteplanner.Name) ?? "";
 
             if (_searchEndStationRoutePlanner != null)
                 btnQueryRouteplanner.IsEnabled = true;
@@ -304,7 +386,6 @@ namespace Project_NMBS
         /// <param name="sender">tbxEndStationRouteplanner</param>
         private void TbxEndStationRouteplanner_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //UpdateLvEndStationRouteplanner();
             UpdateLv(SelectedLv.EndStationRouteplanner);
         }
 
@@ -325,7 +406,8 @@ namespace Project_NMBS
                 Debug.WriteLine(ex.Message);
             }
 
-            tbxEndStationRouteplanner.Text = _searchEndStationRoutePlanner.Name ?? "";
+            if (_searchEndStationRoutePlanner != null)
+                tbxEndStationRouteplanner.Text = GetTrans(_searchEndStationRoutePlanner.Name) ?? "";
 
             if (_searchBeginStationRouteplanner != null)
                 btnQueryRouteplanner.IsEnabled = true;
@@ -349,17 +431,17 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryRouteplanner</param>
         private void BtnQueryRouteplanner_Click(object sender, RoutedEventArgs e)
         {
-            var gefilterdeStations = from station in _stops
-                                     where station.Key == _searchBeginStationRouteplanner.Id
-                                     select station;
-
             lvResultRouteplanner.Items.Clear();
 
-            foreach (KeyValuePair<string, Stop> s in gefilterdeStations)
+            var filterdStations = from station in _stops
+                                  where station.Key == _searchBeginStationRouteplanner.Id
+                                  select station;
+
+            foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
                 ListBoxItem lbi = new ListBoxItem
                 {
-                    Content = $"[{s.Key}] {s.Value.Name}",
+                    Content = $"[{s.Key}] {GetTrans(s.Value.Name)}",
                     Tag = s.Value
                 };
                 lvResultRouteplanner.Items.Add(lbi);
@@ -376,7 +458,6 @@ namespace Project_NMBS
         /// <param name="sender">tbxStationTripviewer</param>
         private void TbxStationTripviewer_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //UpdateLvResultTripviewer();
             UpdateLv(SelectedLv.ResultTripviewer);
         }
 
@@ -400,7 +481,7 @@ namespace Project_NMBS
             if (_searchStationTripviewer != null)
             {
                 btnQueryTripviewer.IsEnabled = true;
-                tbxStationTripviewer.Text = _searchStationTripviewer.Name;
+                tbxStationTripviewer.Text = GetTrans(_searchStationTripviewer.Name);
             }
             else
                 btnQueryTripviewer.IsEnabled = false;
@@ -422,24 +503,32 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryTripviewer</param>
         private void BtnQueryTripviewer_Click(object sender, RoutedEventArgs e)
         {
-            var gefilterdeTrips = from trip in _stopTimes
-                                  where trip.Key.Item1.Split(':')[3] == _searchStationTripviewer.Id.TrimStart('S').Split('_')[0]
-                                  orderby trip.Value.TripId.Split(':')[7] ascending
-                                  select trip;
-
             lvResultTripviewer.Items.Clear();
 
-            foreach (KeyValuePair<Tuple<string, uint>, StopTime> stopTime in gefilterdeTrips)
+            var stops = _feedStatic.StopTimes.GetForStop(_searchStationTripviewer.Id.TrimStart('S')) ;
+
+            foreach (StopTime stopTime in stops)
             {
-                var stopName = from stop in _stops where stop.Key.TrimStart('S') == stopTime.Key.Item1.Split(':')[4] select stop;
+                string content = "";
                 DateTime dateDT = DateTime
-                    .ParseExact(stopTime.Key.Item1.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR"))
-                    .AddHours(Convert.ToDouble(stopTime.Value.DepartureTime.Hours))
-                    .AddMinutes(Convert.ToDouble(stopTime.Value.DepartureTime.Minutes));
+                    .ParseExact(stopTime.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR"))
+                    .AddHours(Convert.ToDouble(stopTime.DepartureTime.Hours))
+                    .AddMinutes(Convert.ToDouble(stopTime.DepartureTime.Minutes));
+
+                if (stopTime.TripId.Split(':')[4] != _searchStationTripviewer.Id.TrimStart('S'))
+                {
+                    Stop stopToForName = GetStop(stopTime.TripId.Split(':')[4]);
+                    content = $"[{stopTime.TripId}]\n{dateDT}\nDEPARTURE: Train to {GetTrans(stopToForName.Name)}";
+                }
+                else /*if (stopTime.TripId.Split(':')[3] != _searchStationTripviewer.Id.TrimStart('S'))*/
+                {
+                    Stop stopToForName = GetStop(stopTime.TripId.Split(':')[3]);
+                    content = $"[{stopTime.TripId}]\n{dateDT}\nARRIVAL: Train from {GetTrans(stopToForName.Name)}";
+                }
 
                 ListBoxItem lbi = new ListBoxItem
                 {
-                    Content = $"[{stopTime.Key}]\n{dateDT}\n Train to {stopName.First().Value.Name}",
+                    Content = content,
                     Tag = stopTime
                 };
                 lvResultTripviewer.Items.Add(lbi);
@@ -465,7 +554,6 @@ namespace Project_NMBS
         /// <param name="sender">tbxStationRealtime</param>
         private void TbxStationRealtime_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //UpdateLvStationRealtime();
             UpdateLv(SelectedLv.StationRealtime);
         }
 
@@ -488,12 +576,13 @@ namespace Project_NMBS
 
             if (_searchStationRealtime != null)
             {
-                tbxStationRealtime.Text = _searchStationRealtime.Name;
+                lvResultRealtime.Items.Clear();
+
+                tbxStationRealtime.Text = GetTrans(_searchStationRealtime.Name);
+
                 var filterdEntities = from entity in _feedRealtime.entity
                                       where entity.id.Split(':')[3] == _searchStationRealtime.Id.TrimStart('S').Split('_')[0]
                                       select entity;
-
-                lvResultRealtime.Items.Clear();
 
                 foreach (FeedEntity entity in filterdEntities)
                 {

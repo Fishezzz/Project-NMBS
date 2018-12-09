@@ -26,7 +26,7 @@
                     <ListView Name="lvEndStationRouteplanner" HorizontalAlignment="Left" Height="200" Margin="215,75,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="LvEndStationRouteplanner_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Endestation" Width="200"/>
+                                <GridViewColumn Header="Endstation" Width="200"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
