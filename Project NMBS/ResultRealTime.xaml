@@ -12,7 +12,7 @@
         <ListView Name="lvResult" Margin="10,40,10,10.4">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Station" Width="220" DisplayMemberBinding="{Binding Item1}"/>
+                    <GridViewColumn Header="Station" Width="200" DisplayMemberBinding="{Binding Item1}"/>
                     <GridViewColumn Header="Arrival" Width="150" DisplayMemberBinding="{Binding Item2}"/>
                     <GridViewColumn Header="Departure" Width="150" DisplayMemberBinding="{Binding Item3}"/>
                 </GridView>

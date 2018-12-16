@@ -94,6 +94,26 @@
                     </ListView>
                 </Grid>
             </TabItem>
+            <TabItem Header="Route finder">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Station:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="200" FontSize="15"/>
+                    <TextBox Name="tbxStationRoutefinder" HorizontalAlignment="Left" Height="30" Margin="10,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" FontSize="15" TextChanged="TbxStationRoutefinder_TextChanged"/>
+                    <ListView Name="lvStationRoutefinder" HorizontalAlignment="Left" Margin="10,75,0,16.2" Width="200" MouseDoubleClick="LvStationRoutefinder_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Stations" Width="{Binding ActualWidth, ElementName=lvStationRoutefinder}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <ListView Name="lvResultRoutefinder" Margin="228,40,20,16.2" MouseDoubleClick="LvResultRoutefinder_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Available routes" Width="{Binding ActualWidth, ElementName=lvResultRoutefinder}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

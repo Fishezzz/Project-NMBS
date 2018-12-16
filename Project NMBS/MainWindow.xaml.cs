@@ -128,7 +128,7 @@ namespace Project_NMBS
         Stop _searchStationTripviewer;
         Stop _searchStationRealtime;
 
-        enum SelectedLv { BeginStationRouteplanner = 1, EndStationRouteplanner = 2, ResultTripviewer = 3, StationRealtime = 4 }
+        enum SelectedLv { BeginStationRouteplanner = 1, EndStationRouteplanner = 2, StationTripviewer = 3, StationRealtime = 4, StationRoutefinder = 5 }
 
         public MainWindow()
         {
@@ -181,8 +181,9 @@ namespace Project_NMBS
             // Update ListViews
             UpdateLv(SelectedLv.BeginStationRouteplanner);
             UpdateLv(SelectedLv.EndStationRouteplanner);
-            UpdateLv(SelectedLv.ResultTripviewer);
+            UpdateLv(SelectedLv.StationTripviewer);
             UpdateLv(SelectedLv.StationRealtime);
+            UpdateLv(SelectedLv.StationRoutefinder);
 
             // Realtime GTFS
             _feedRealtime = Serializer.Deserialize<FeedMessage>(new FileStream("GTFS/realtime", FileMode.Open, FileAccess.Read));
@@ -275,8 +276,9 @@ namespace Project_NMBS
             {
                 case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.Items.Clear(); break;
                 case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.Items.Clear(); break;
-                case SelectedLv.ResultTripviewer: lvStationTripviewer.Items.Clear(); break;
+                case SelectedLv.StationTripviewer: lvStationTripviewer.Items.Clear(); break;
                 case SelectedLv.StationRealtime: lvStationRealtime.Items.Clear(); break;
+                case SelectedLv.StationRoutefinder: lvStationRoutefinder.Items.Clear(); break;
             }
 
             string tbxStationText = "";
@@ -284,8 +286,9 @@ namespace Project_NMBS
             {
                 case SelectedLv.BeginStationRouteplanner: tbxStationText = tbxBeginStationRouteplanner.Text.ToLower(); break;
                 case SelectedLv.EndStationRouteplanner: tbxStationText = tbxEndStationRouteplanner.Text.ToLower(); break;
-                case SelectedLv.ResultTripviewer: tbxStationText = tbxStationTripviewer.Text.ToLower(); break;
+                case SelectedLv.StationTripviewer: tbxStationText = tbxStationTripviewer.Text.ToLower(); break;
                 case SelectedLv.StationRealtime: tbxStationText = tbxStationRealtime.Text.ToLower(); break;
+                case SelectedLv.StationRoutefinder: tbxStationText = tbxStationRoutefinder.Text.ToLower(); break;
             }
 
             var filterdStations = from station in _stops
@@ -310,8 +313,9 @@ namespace Project_NMBS
                 {
                     case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.Items.Add(lbi); break;
                     case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.Items.Add(lbi); break;
-                    case SelectedLv.ResultTripviewer: lvStationTripviewer.Items.Add(lbi); break;
+                    case SelectedLv.StationTripviewer: lvStationTripviewer.Items.Add(lbi); break;
                     case SelectedLv.StationRealtime: lvStationRealtime.Items.Add(lbi); break;
+                    case SelectedLv.StationRoutefinder: lvStationRoutefinder.Items.Add(lbi); break;
                 }
             }
         }
@@ -458,7 +462,7 @@ namespace Project_NMBS
         /// <param name="sender">tbxStationTripviewer</param>
         private void TbxStationTripviewer_TextChanged(object sender, TextChangedEventArgs e)
         {
-            UpdateLv(SelectedLv.ResultTripviewer);
+            UpdateLv(SelectedLv.StationTripviewer);
         }
 
         /// <summary>
@@ -505,7 +509,7 @@ namespace Project_NMBS
         {
             lvResultTripviewer.Items.Clear();
 
-            var stops = _feedStatic.StopTimes.GetForStop(_searchStationTripviewer.Id.TrimStart('S')) ;
+            var stops = _feedStatic.StopTimes.GetForStop(_searchStationTripviewer.Id.TrimStart('S')).Where(x => DateTime.ParseExact(x.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now);
 
             foreach (StopTime stopTime in stops)
             {
@@ -518,12 +522,12 @@ namespace Project_NMBS
                 if (stopTime.TripId.Split(':')[4] != _searchStationTripviewer.Id.TrimStart('S'))
                 {
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[4]);
-                    content = $"[{stopTime.TripId}]\n{dateDT}\nDEPARTURE: Train to {GetTrans(stopToForName.Name)}";
+                    content = $"{dateDT}\nDEPARTURE: Train to {GetTrans(stopToForName.Name)}";
                 }
                 else
                 {
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[3]);
-                    content = $"[{stopTime.TripId}]\n{dateDT}\nARRIVAL: Train from {GetTrans(stopToForName.Name)}";
+                    content = $"{dateDT}\nARRIVAL: Train from {GetTrans(stopToForName.Name)}";
                 }
 
                 ListBoxItem lbi = new ListBoxItem
@@ -538,31 +542,6 @@ namespace Project_NMBS
 
 
         //////// REAL TIME
-
-        /// <summary>
-        /// Catch the DoubleClick event.
-        /// </summary>
-        /// <param name="sender">lvResultRealtime</param>
-        private void LvResultRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ListView lv = (ListView)sender;
-            ListBoxItem lbi = null;
-            try
-            {
-                lbi = (ListBoxItem)lv.SelectedItem;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-
-            if (lbi != null)
-            {
-                object[] resultTemp = lbi.Tag as object[];
-                ResultRealTime resultRealTime = new ResultRealTime(resultTemp[0].ToString(), resultTemp[1].ToString(), resultTemp[2] as Tuple<string, string, string>[]);
-                resultRealTime.Show();
-            }
-        }
 
         /// <summary>
         /// Call method to update lvStationRealtime.
@@ -626,11 +605,69 @@ namespace Project_NMBS
                     ListBoxItem lbi = new ListBoxItem
                     {
                         Content = headerInfo,
-                        Tag = new object[] {entity.id, headerInfo, resultInfo}
+                        Tag = new object[] { entity.id, headerInfo, resultInfo }
                     };
                     lvResultRealtime.Items.Add(lbi);
                 }
             }
+        }
+
+        /// <summary>
+        /// Catch the DoubleClick event.
+        /// <para/>
+        /// Opens a new window with the specific info for the selected realtime trip update.
+        /// </summary>
+        /// <param name="sender">lvResultRealtime</param>
+        private void LvResultRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListView lv = (ListView)sender;
+            ListBoxItem lbi = null;
+            try
+            {
+                lbi = (ListBoxItem)lv.SelectedItem;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            if (lbi != null)
+            {
+                object[] resultTemp = lbi.Tag as object[];
+                ResultRealTime resultRealTime = new ResultRealTime(resultTemp[0].ToString(), resultTemp[1].ToString(), resultTemp[2] as Tuple<string, string, string>[]);
+                resultRealTime.Show();
+            }
+        }
+
+
+
+        //////// ROUTE FINDER
+
+        /// <summary>
+        /// Call method to update lvStationRoutefinder
+        /// </summary>
+        /// <param name="sender">tbxStationRoutefinder</param>
+        private void TbxStationRoutefinder_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateLv(SelectedLv.StationRoutefinder);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender">lvStationRoutefinder</param>
+        private void LvStationRoutefinder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Catch the DoubleClick event.
+        /// </summary>
+        /// <param name="sender">lvResultRoutefinder</param>
+        private void LvResultRoutefinder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
