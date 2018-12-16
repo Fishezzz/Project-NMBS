@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_NMBS
+namespace Fishezzz
 {
     /// <summary>
     /// Inherited from Route, but a List&lt;TripExtra&gt; TripList has been added.
@@ -35,12 +35,12 @@ namespace Project_NMBS
             TextColor = route.TextColor;
 
             StopList = new Dictionary<string, Stop>();
-            string tripId = MainWindow._trips.Values.Where(x => x.RouteId == route.Id).ToList().Select(x => x.Id).ToArray().First();
-            List<string> stopIds = MainWindow._feedStatic.StopTimes.GetForTrip(tripId).Select(x => x.StopId).ToList();
+            string tripId = Project_NMBS.MainWindow._trips.Values.Where(x => x.RouteId == route.Id).ToList().Select(x => x.Id).ToArray().First();
+            List<string> stopIds = Project_NMBS.MainWindow._feedStatic.StopTimes.GetForTrip(tripId).Select(x => x.StopId).ToList();
             foreach (string stopId in stopIds)
             {
                 Stop stopForDictionary = null;
-                MainWindow._stops.TryGetValue(stopId, out stopForDictionary);
+                Project_NMBS.MainWindow._stops.TryGetValue(stopId, out stopForDictionary);
                 StopList.Add(stopId, stopForDictionary);
             }
         }

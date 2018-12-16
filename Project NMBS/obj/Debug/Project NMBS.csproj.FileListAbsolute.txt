@@ -38,3 +38,5 @@ C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\protobuf-net.dll
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\protobuf-net.xml
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRealTime.g.cs
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRealTime.baml
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRoutefinder.g.cs
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRoutefinder.baml

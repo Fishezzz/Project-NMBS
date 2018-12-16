@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_NMBS
+namespace Fishezzz
 {
     /// <summary>
     /// Exception thrown when the trip parameter is not of the type Trip, whilst converting a Trip into a TripExtra

@@ -95,12 +95,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ExceptionExtensions.cs" />
+    <Compile Include="ResultRoutefinder.xaml.cs">
+      <DependentUpon>ResultRoutefinder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RouteExtensions.cs" />
     <Compile Include="TripExtensions.cs" />
     <Compile Include="StopTimeOverride.cs" />
     <Compile Include="Translation.cs" />
-    <Compile Include="ResultRealTime.xaml.cs">
-      <DependentUpon>ResultRealTime.xaml</DependentUpon>
+    <Compile Include="ResultRealtime.xaml.cs">
+      <DependentUpon>ResultRealtime.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -114,7 +117,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ResultRealTime.xaml">
+    <Page Include="ResultRealtime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResultRoutefinder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

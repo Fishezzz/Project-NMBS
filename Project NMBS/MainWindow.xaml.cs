@@ -35,6 +35,8 @@ using System.Net;
 using ProtoBuf;
 using transit_realtime;
 
+using Fishezzz;
+
 namespace Project_NMBS
 {
     /// <summary>
@@ -129,11 +131,19 @@ namespace Project_NMBS
         Stop _searchStationRealtime;
         Stop _searchStationRoutefinder;
 
+        StringBuilder _sb;
+        const char WS = ' ';
+        const string RLNS = "--";
+        const string NA = "N/A";
+
         enum SelectedLv { BeginStationRouteplanner = 1, EndStationRouteplanner = 2, StationTripviewer = 3, StationRealtime = 4, StationRoutefinder = 5 }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            // Create StringBuilder
+            _sb = new StringBuilder();
 
             // Read GTFS Static files
             _reader = new GTFSReader<GTFSFeed>(strict: false);
@@ -179,16 +189,18 @@ namespace Project_NMBS
             for (int i = 1; i < stop_time_overridesRaw.Length; i++)
                 _stopTimeOverrides.Add(new StopTimeOverride(stop_time_overridesRaw[i]));
 
+            // Realtime GTFS
+            _feedRealtime = Serializer.Deserialize<FeedMessage>(new FileStream("GTFS/c21ac6758dd25af84cca5b707f3cb3de", FileMode.Open, FileAccess.Read));
+
             // Update ListViews
             UpdateLv(SelectedLv.BeginStationRouteplanner);
             UpdateLv(SelectedLv.EndStationRouteplanner);
             UpdateLv(SelectedLv.StationTripviewer);
             UpdateLv(SelectedLv.StationRealtime);
             UpdateLv(SelectedLv.StationRoutefinder);
-
-            // Realtime GTFS
-            _feedRealtime = Serializer.Deserialize<FeedMessage>(new FileStream("GTFS/realtime", FileMode.Open, FileAccess.Read));
         }
+
+
 
         //// METHODS
 
@@ -200,7 +212,7 @@ namespace Project_NMBS
         private Stop GetStop(string stopId)
         {
             Stop value = null;
-            if (_stops.TryGetValue("S" + stopId, out value))
+            if (_stops.TryGetValue(/*"S" + */stopId, out value))
                 return value;
             else
             {
@@ -258,6 +270,10 @@ namespace Project_NMBS
         /// <param name="transId">transId (in French)</param>
         private string GetTrans(string transId)
         {
+            if (transId == null)
+                return "";
+            if (transId == "" || transId == NA)
+                return transId;
             Dictionary<string, string> trans = null;
             _translations.TryGetValue(transId, out trans);
             string name = transId;
@@ -299,13 +315,9 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
-                Dictionary<string, string> trans = null;
-                _translations.TryGetValue(s.Value.Name, out trans);
-                string name = null;
-                trans.TryGetValue(_LANG, out name);
                 ListBoxItem lbi = new ListBoxItem
                 {
-                    Content = name,
+                    Content = GetTrans(s.Value.Name),
                     Tag = s.Value
                 };
 
@@ -378,7 +390,7 @@ namespace Project_NMBS
             }
 
             if (_searchBeginStationRouteplanner != null && lbi != null)
-                tbxBeginStationRouteplanner.Text = GetTrans(_searchBeginStationRouteplanner.Name) ?? "";
+                tbxBeginStationRouteplanner.Text = GetTrans(_searchBeginStationRouteplanner.Name);
 
             if (_searchEndStationRoutePlanner != null && lbi != null)
                 btnQueryRouteplanner.IsEnabled = true;
@@ -414,7 +426,7 @@ namespace Project_NMBS
             }
 
             if (_searchEndStationRoutePlanner != null && lbi != null)
-                tbxEndStationRouteplanner.Text = GetTrans(_searchEndStationRoutePlanner.Name) ?? "";
+                tbxEndStationRouteplanner.Text = GetTrans(_searchEndStationRoutePlanner.Name);
 
             if (_searchBeginStationRouteplanner != null && lbi != null)
                 btnQueryRouteplanner.IsEnabled = true;
@@ -446,6 +458,8 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
+                ///////////////////////// SB
+
                 ListBoxItem lbi = new ListBoxItem
                 {
                     Content = $"[{s.Key}] {GetTrans(s.Value.Name)}",
@@ -513,7 +527,9 @@ namespace Project_NMBS
         {
             lvResultTripviewer.Items.Clear();
 
-            var stops = _feedStatic.StopTimes.GetForStop(_searchStationTripviewer.Id.TrimStart('S')).Where(x => DateTime.ParseExact(x.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now);
+            var stops = _feedStatic.StopTimes
+                .GetForStop(_searchStationTripviewer.Id.TrimStart('S'))
+                .Where(x => DateTime.ParseExact(x.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now);
 
             foreach (StopTime stopTime in stops)
             {
@@ -525,11 +541,13 @@ namespace Project_NMBS
 
                 if (stopTime.TripId.Split(':')[4] != _searchStationTripviewer.Id.TrimStart('S'))
                 {
+                    /////////////////// SB
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[4]);
                     content = $"{dateDT}\nDEPARTURE: Train to {GetTrans(stopToForName.Name)}";
                 }
                 else
                 {
+                    /////////////////// SB
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[3]);
                     content = $"{dateDT}\nARRIVAL: Train from {GetTrans(stopToForName.Name)}";
                 }
@@ -589,21 +607,32 @@ namespace Project_NMBS
                 foreach (FeedEntity entity in filterdEntities)
                 {
                     Stop stopTemp1 = null;
-                    _stops.TryGetValue("S" + entity.id.Split(':')[3], out stopTemp1);
+                    _stops.TryGetValue(entity.id.Split(':')[3], out stopTemp1);
 
                     Stop stopTemp2 = null;
-                    _stops.TryGetValue("S" + entity.id.Split(':')[4], out stopTemp2);
+                    _stops.TryGetValue(entity.id.Split(':')[4], out stopTemp2);
 
-                    string headerInfo = $"{GetTrans(stopTemp1?.Name ?? "N/A")} -> {GetTrans(stopTemp2?.Name ?? "N/A")}\n";
-                    headerInfo += DateTime.ParseExact(entity.trip_update.trip.start_date, "yyyyMMdd", new CultureInfo("fr-FR")).ToShortDateString() + "\t" + entity.trip_update.trip.start_time;
+                    ///////////////////// SB
+
+                    string headerInfo =
+                        $"{GetTrans(stopTemp1?.Name ?? "N/A")} -> {GetTrans(stopTemp2?.Name ?? "N/A")}\n"
+                        + DateTime.ParseExact(entity.trip_update.trip.start_date, "yyyyMMdd", new CultureInfo("fr-FR")).ToShortDateString()
+                        + "\t" + entity.trip_update.trip.start_time;
 
                     Tuple<string, string, string>[] resultInfo = new Tuple<string, string, string>[entity.trip_update.stop_time_update.Count];
                     int count = 0;
                     foreach (TripUpdate.StopTimeUpdate update in entity.trip_update.stop_time_update)
                     {
                         Stop stopInStopUpdate = null;
-                        _stops.TryGetValue("S" + update.stop_id, out stopInStopUpdate);
-                        resultInfo[count] = Tuple.Create(GetTrans(stopInStopUpdate?.Name ?? "N/A"), entity.trip_update.stop_time_update[count].arrival?.time.FromUnixTime().ToLongTimeString() ?? "", entity.trip_update.stop_time_update[count].departure?.time.FromUnixTime().ToLongTimeString() ?? "");
+                        _stops.TryGetValue(update.stop_id, out stopInStopUpdate);
+                        resultInfo[count] = Tuple.Create(
+                            GetTrans(stopInStopUpdate?.Name ?? "N/A"),
+                            entity.trip_update.stop_time_update[count].arrival?.time != null
+                                ? DateTimeOffset.FromUnixTimeSeconds(entity.trip_update.stop_time_update[count].arrival.time).DateTime.ToLongTimeString()
+                                : "",
+                            entity.trip_update.stop_time_update[count].departure?.time != null
+                                ? DateTimeOffset.FromUnixTimeSeconds(entity.trip_update.stop_time_update[count].departure.time).DateTime.ToLongTimeString()
+                                : "");
                         count++;
                     }
 
@@ -639,8 +668,8 @@ namespace Project_NMBS
             if (lbi != null)
             {
                 object[] resultTemp = lbi.Tag as object[];
-                ResultRealTime resultRealTime = new ResultRealTime(resultTemp[0].ToString(), resultTemp[1].ToString(), resultTemp[2] as Tuple<string, string, string>[]);
-                resultRealTime.Show();
+                ResultRealtime resultRealtime = new ResultRealtime(resultTemp[0].ToString(), resultTemp[1].ToString(), resultTemp[2] as Tuple<string, string, string>[]);
+                resultRealtime.Show();
             }
         }
 
@@ -666,25 +695,53 @@ namespace Project_NMBS
         private void LvStationRoutefinder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
-            ListBoxItem lbi = null;
+            ListBoxItem lbiSender = null;
             try
             {
-                lbi = (ListBoxItem)lv.SelectedItem;
-                _searchStationRoutefinder = (Stop)lbi.Tag;
+                lbiSender = (ListBoxItem)lv.SelectedItem;
+                _searchStationRoutefinder = (Stop)lbiSender.Tag;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if(_searchStationRoutefinder != null && lbi != null)
+            if(_searchStationRoutefinder != null && lbiSender != null)
             {
                 lvResultRoutefinder.Items.Clear();
 
+                tbxStationRoutefinder.Text = GetTrans(_searchStationRoutefinder.Name);
+
                 List<RouteExtra> routes = _routes.Values.Where(x => x.StopList.Keys.Contains(_searchStationRoutefinder.Id.TrimStart('S').Split('_')[0])).ToList();
+
                 foreach (RouteExtra routeExtra in routes)
                 {
-                    //////////////////////////////////////////////////
+
+                    _sb.Clear()
+                        .Append(routeExtra.ShortName)
+                        .Append(WS)
+                        .Append(GetTrans(routeExtra.LongName.Split(new string[] { RLNS }, StringSplitOptions.None)[0].TrimEnd(WS)))
+                        .Append(WS)
+                        .Append(RLNS)
+                        .Append(WS)
+                        .Append(GetTrans(routeExtra.LongName.Split(new string[] { RLNS }, StringSplitOptions.None)[1].TrimStart(WS)));
+
+                    Tuple<string, string, string>[] resultInfo = new Tuple<string, string, string>[routeExtra.StopList.Count];
+                    int count = 0;
+                    foreach (Stop s in routeExtra.StopList.Values)
+                    {
+                        resultInfo[count++] = Tuple.Create(
+                            GetTrans(s.Name),
+                            s.Latitude.ToString(),
+                            s.Longitude.ToString());
+                    }
+
+                    ListBoxItem lbi = new ListBoxItem
+                    {
+                        Content = _sb.ToString(),
+                        Tag = new object[] { routeExtra.Id, _sb.ToString(), resultInfo }
+                    };
+                    lvResultRoutefinder.Items.Add(lbi);
                 }
             }
         }
@@ -695,7 +752,23 @@ namespace Project_NMBS
         /// <param name="sender">lvResultRoutefinder</param>
         private void LvResultRoutefinder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            ListView lv = (ListView)sender;
+            ListBoxItem lbi = null;
+            try
+            {
+                lbi = (ListBoxItem)lv.SelectedItem;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
+            if (lbi != null)
+            {
+                object[] resultTemp = lbi.Tag as object[];
+                ResultRoutefinder resultRealtime = new ResultRoutefinder(resultTemp[0].ToString(), resultTemp[1].ToString(), resultTemp[2] as Tuple<string, string, string>[]);
+                resultRealtime.Show();
+            }
         }
     }
 }

@@ -1,67 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Project_NMBS.NotATripException">
-    <Position X="10.5" Y="1" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ExceptionExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Project_NMBS.RouteExtra">
-    <Position X="8.5" Y="2.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>RouteExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Project_NMBS.TripId">
+  <Class Name="Fishezzz.TripId">
     <Position X="4.5" Y="1" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAACCAgEAAEIAAAAgAAAAAAAABAAQAAAAAA=</HashCode>
       <FileName>TripExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_NMBS.TripExtra">
+  <Class Name="Fishezzz.TripExtra">
     <Position X="6.5" Y="2.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>TripExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_NMBS.StopTimeOverride">
+  <Class Name="Fishezzz.StopTimeOverride">
     <Position X="2.5" Y="1" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAAAAAABCAAAAAIAAAAAAAAAAAA=</HashCode>
       <FileName>StopTimeOverride.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_NMBS.Translation">
+  <Class Name="Fishezzz.Translation">
     <Position X="0.5" Y="1" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgCAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Translation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_NMBS.RouteExtensionMethods">
-    <Position X="8.5" Y="1" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAEAAAAAA=</HashCode>
-      <FileName>RouteExtensions.cs</FileName>
-      <NewMemberFileName>TripExtensions.cs</NewMemberFileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Project_NMBS.TripExtensionMethods">
+  <Class Name="Fishezzz.TripExtensionMethods">
     <Position X="6.5" Y="1" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAACAAAAAAAA=</HashCode>
       <FileName>TripExtensions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Project_NMBS.NotARouteException">
-    <Position X="10.5" Y="2.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ExceptionExtensions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GTFS.Entities.Trip">
@@ -92,6 +63,34 @@
   <Class Name="GTFS.Entities.Agency">
     <Position X="0.5" Y="7.25" Width="1.75" />
     <TypeIdentifier />
+  </Class>
+  <Class Name="Fishezzz.RouteExtensionMethods">
+    <Position X="8.5" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RouteExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fishezzz.RouteExtra">
+    <Position X="8.5" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RouteExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fishezzz.NotATripException">
+    <Position X="10.5" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExceptionExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fishezzz.NotARouteException">
+    <Position X="10.5" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExceptionExtensions.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

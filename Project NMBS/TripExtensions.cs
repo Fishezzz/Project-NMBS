@@ -7,16 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project_NMBS
+namespace Fishezzz
 {
     /// <summary>
     /// The Trip.Id string split into it's components, which are converted to their corresponding objects. This makes it easier to use the Trip.Id property.
     /// </summary>
     public class TripId
     {
-        ////// TODO: DateTime veranderen door GTFS.Entities.TimeOfDay
-
-
         /// <summary>
         /// Administration code of this trip. (The Belgium NMBS code is "88____")
         /// </summary>
@@ -44,7 +41,7 @@ namespace Project_NMBS
         /// <summary>
         /// Time when the train arrives at the last stop of it's route.
         /// </summary>
-		public DateTime ArrivalTimeLastStop { get; set; }
+		public TimeOfDay ArrivalTimeLastStop { get; set; }
         /// <summary>
         /// Last date when the route is serviced in the given GTFS data set.
         /// </summary>
@@ -65,14 +62,14 @@ namespace Project_NMBS
             AdministrationCode = s[0];
             CategoryCode = s[1];
             LineNumber = s[2];
-            FirstStop = (from station in MainWindow._stops where station.Key.TrimStart('S').Split('_')[0] == s[3] select station.Value).FirstOrDefault();
-            MainWindow._stops.TryGetValue(s[3], out stop);
+            FirstStop = (from station in Project_NMBS.MainWindow._stops where station.Key.TrimStart('S').Split('_')[0] == s[3] select station.Value).FirstOrDefault();
+            Project_NMBS.MainWindow._stops.TryGetValue(s[3], out stop);
             FirstStop = stop;
-            LastStop = (from station in MainWindow._stops where station.Key.TrimStart('S').Split('_')[0] == s[4] select station.Value).FirstOrDefault();
-            MainWindow._stops.TryGetValue(s[4], out stop);
+            LastStop = (from station in Project_NMBS.MainWindow._stops where station.Key.TrimStart('S').Split('_')[0] == s[4] select station.Value).FirstOrDefault();
+            Project_NMBS.MainWindow._stops.TryGetValue(s[4], out stop);
             LastStop = stop;
             TripLength = TimeSpan.FromMinutes(Convert.ToInt32(s[5]));
-            ArrivalTimeLastStop = new DateTime().AddHours(Convert.ToInt32(s[6]) / 100).AddMinutes(Convert.ToInt32(s[6]) % 100);
+            ArrivalTimeLastStop = TimeOfDay.FromTotalSeconds(Convert.ToInt32(s[6]));
             LastServiceDay = DateTime.ParseExact(s[7], "yyyyMMdd", new CultureInfo("fr-FR"));
             TripIdString = tripId;
         }
