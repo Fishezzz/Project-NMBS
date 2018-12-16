@@ -99,6 +99,9 @@
     <Compile Include="TripExtensions.cs" />
     <Compile Include="StopTimeOverride.cs" />
     <Compile Include="Translation.cs" />
+    <Compile Include="ResultRealTime.xaml.cs">
+      <DependentUpon>ResultRealTime.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,6 +114,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ResultRealTime.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -36,3 +36,5 @@ C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\zh-Hans\Xceed.Wpf.
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\GtfsRealtimeBindings.dll
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\protobuf-net.dll
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\protobuf-net.xml
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRealTime.g.cs
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRealTime.baml

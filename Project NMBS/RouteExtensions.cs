@@ -13,10 +13,10 @@ namespace Project_NMBS
     /// </summary>
     public class RouteExtra : Route
     {
-        ///// <summary>
-        ///// A List&lt;TripExtra&gt; containing all the Trips in this Route.
-        ///// </summary>
-        //public List<TripExtra> TripList { get; set; }
+        /// <summary>
+        /// A Dictionary&lt;string, Stop&gt; containing all the Stops in this Route.
+        /// </summary>
+        public Dictionary<string, Stop> StopList { get; }
 
         /// <summary>
         /// Constructor for RouteExtra. Creates a RouteExtra object.
@@ -33,7 +33,16 @@ namespace Project_NMBS
             Url = route.Url;
             Color = route.Color;
             TextColor = route.TextColor;
-            //TripList = (from trip in MainWindow._trips where trip.RouteId == route.Id select trip).ToList();
+
+            StopList = new Dictionary<string, Stop>();
+            string tripId = MainWindow._trips.Values.Where(x => x.RouteId == route.Id).ToList().Select(x => x.Id).ToArray().First();
+            List<string> stopIds = MainWindow._feedStatic.StopTimes.GetForTrip(tripId).Select(x => x.StopId).ToList();
+            foreach (string stopId in stopIds)
+            {
+                Stop stopForDictionary;
+                MainWindow._stops.TryGetValue(stopId, out stopForDictionary);
+                StopList.Add(stopId, stopForDictionary);
+            }
         }
     }
 
@@ -65,7 +74,7 @@ namespace Project_NMBS
         /// </summary>
         /// <param name="routes">The List&lt;Route&gt; that will be converted into a Dictionary&lt;string, RouteExtra&gt;</param>
         /// <returns>A Dictionary&lt;string, RouteExtra&gt;</returns>
-        public static Dictionary<string, RouteExtra> ToRouteExtraList(this List<Route> routes)
+        public static Dictionary<string, RouteExtra> ToRouteExtraDictionary(this List<Route> routes)
         {
             Dictionary<string, RouteExtra> routesExtra = new Dictionary<string, RouteExtra>();
             foreach (Route route in routes)
@@ -77,11 +86,11 @@ namespace Project_NMBS
         /// </summary>
         /// <param name="routes">The Dictionary&lt;string, Route&gt; that will be converted into a Dictionary&lt;string, RouteExtra&gt;</param>
         /// <returns>A Dictionary&lt;string, RouteExtra&gt;</returns>
-        public static Dictionary<string, RouteExtra> ToRouteExtraList(this Dictionary<string, Route> routes)
+        public static Dictionary<string, RouteExtra> ToRouteExtraDictionary(this Dictionary<string, Route> routes)
         {
             Dictionary<string, RouteExtra> routesExtra = new Dictionary<string, RouteExtra>();
             foreach (KeyValuePair<string, Route> kVP in routes)
-                routesExtra.Add(kVP.Value.ToRouteExtra().Id, kVP.Value.ToRouteExtra());
+                routesExtra.Add(kVP.Key, kVP.Value.ToRouteExtra());
             return routesExtra;
         }
     }

@@ -46,7 +46,7 @@ namespace Project_NMBS
         /// <summary>
         /// _feed.StopTimes.StopId is TRIMMED
         /// </summary>
-        GTFSFeed _feedStatic;
+        public static GTFSFeed _feedStatic;
         FeedMessage _feedRealtime;
 
         //  fr      nl      de      en
@@ -74,13 +74,13 @@ namespace Project_NMBS
         /// <para/>
         /// Value: Trip (Trip)
         /// </summary>
-        Dictionary<string, Trip> _trips;
+        public static Dictionary<string, Trip> _trips;
         /// <summary>
         /// Key: Route_Id (string)
         /// <para/>
         /// Value: Route (Route)
         /// </summary>
-        Dictionary<string, Route> _routes;
+        Dictionary<string, RouteExtra> _routes;
         /// <summary>
         /// Key: Agency_Id (string)
         /// <para/>
@@ -145,7 +145,7 @@ namespace Project_NMBS
             // Create lists with objects
             _stops = _feedStatic.Stops.ToDictionary(x => x.Id, x => x);
             _trips = _feedStatic.Trips.ToDictionary(x => x.Id, x => x);
-            _routes = _feedStatic.Routes.ToDictionary(x => x.Id, x => x);
+            _routes = _feedStatic.Routes.ToDictionary(x => x.Id, x => x).ToRouteExtraDictionary();
             _agencies = _feedStatic.Agencies.ToDictionary(x => x.Id, x => x);
             _calendars = _feedStatic.Calendars.ToDictionary(x => x.ServiceId, x => x);
             _transfers = _feedStatic.Transfers.ToDictionary(x => x.FromStopId, x => x);
@@ -223,7 +223,7 @@ namespace Project_NMBS
         /// </summary>
         private Route GetRoute(string routeId)
         {
-            Route value;
+            RouteExtra value;
             _routes.TryGetValue(routeId, out value);
             return value;
         }
@@ -301,7 +301,7 @@ namespace Project_NMBS
                 trans.TryGetValue(_LANG, out name);
                 ListBoxItem lbi = new ListBoxItem
                 {
-                    Content = /*s.Value.Name*/name,
+                    Content = name,
                     Tag = s.Value
                 };
 
@@ -520,7 +520,7 @@ namespace Project_NMBS
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[4]);
                     content = $"[{stopTime.TripId}]\n{dateDT}\nDEPARTURE: Train to {GetTrans(stopToForName.Name)}";
                 }
-                else /*if (stopTime.TripId.Split(':')[3] != _searchStationTripviewer.Id.TrimStart('S'))*/
+                else
                 {
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[3]);
                     content = $"[{stopTime.TripId}]\n{dateDT}\nARRIVAL: Train from {GetTrans(stopToForName.Name)}";
@@ -545,7 +545,23 @@ namespace Project_NMBS
         /// <param name="sender">lvResultRealtime</param>
         private void LvResultRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            ListView lv = (ListView)sender;
+            ListBoxItem lbi = null;
+            try
+            {
+                lbi = (ListBoxItem)lv.SelectedItem;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
+            if (lbi != null)
+            {
+                object[] resultTemp = lbi.Tag as object[];
+                ResultRealTime resultRealTime = new ResultRealTime(resultTemp[0].ToString(), resultTemp[1].ToString(), resultTemp[2] as Tuple<string, string, string>[]);
+                resultRealTime.Show();
+            }
         }
 
         /// <summary>
@@ -559,6 +575,8 @@ namespace Project_NMBS
 
         /// <summary>
         /// Catch the DoubleClick event.
+        /// <para/>
+        /// Fills lvResultRealtime.
         /// </summary>
         /// <param name="sender">lvStationRealtime</param>
         private void LvStationRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -586,32 +604,33 @@ namespace Project_NMBS
 
                 foreach (FeedEntity entity in filterdEntities)
                 {
+                    Stop stopTemp1 = null;
+                    _stops.TryGetValue("S" + entity.id.Split(':')[3], out stopTemp1);
+
+                    Stop stopTemp2 = null;
+                    _stops.TryGetValue("S" + entity.id.Split(':')[4], out stopTemp2);
+
+                    string headerInfo = $"{stopTemp1?.Name ?? "N/A"} -> {stopTemp2?.Name ?? "N/A"}\n";
+                    headerInfo += DateTime.ParseExact(entity.trip_update.trip.start_date, "yyyyMMdd", new CultureInfo("fr-FR")).ToShortDateString() + "\t" + entity.trip_update.trip.start_time;
+
+                    Tuple<string, string, string>[] resultInfo = new Tuple<string, string, string>[entity.trip_update.stop_time_update.Count];
+                    int count = 0;
+                    foreach (TripUpdate.StopTimeUpdate update in entity.trip_update.stop_time_update)
+                    {
+                        Stop stopInStopUpdate = null;
+                        _stops.TryGetValue("S" + update.stop_id, out stopInStopUpdate);
+                        resultInfo[count] = Tuple.Create(stopInStopUpdate?.Name ?? "N/A", entity.trip_update.stop_time_update[count].arrival?.time.FromUnixTime().ToLongTimeString() ?? "", entity.trip_update.stop_time_update[count].departure?.time.FromUnixTime().ToLongTimeString() ?? "");
+                        count++;
+                    }
+
                     ListBoxItem lbi = new ListBoxItem
                     {
-                        Content = $"Arrival: {entity.trip_update.stop_time_update.LastOrDefault().arrival?.time.FromUnixTime().ToLongTimeString() ?? ""}\t\tDeparture: {entity.trip_update.stop_time_update.LastOrDefault().departure?.time.FromUnixTime().ToLongTimeString() ?? ""}",
-                        Tag = entity
+                        Content = headerInfo,
+                        Tag = new object[] {entity.id, headerInfo, resultInfo}
                     };
                     lvResultRealtime.Items.Add(lbi);
                 }
             }
-        }
-
-        /// <summary>
-        /// Catch the Expanded event and sets the Height of expStationRealtime.
-        /// </summary>
-        /// <param name="sender">expStationRealtime</param>
-        private void ExpStationRealtime_Expanded(object sender, RoutedEventArgs e)
-        {
-            expStationRealtime.Height = 391;
-        }
-
-        /// <summary>
-        /// Catch the Collapsed event and sets the Height of expStationRealtime.
-        /// </summary>
-        /// <param name="sender">expStationRealtime</param>
-        private void ExpStationRealtime_Collapsed(object sender, RoutedEventArgs e)
-        {
-            expStationRealtime.Height = 30;
         }
     }
 }
