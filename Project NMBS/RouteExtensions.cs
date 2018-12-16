@@ -39,7 +39,7 @@ namespace Project_NMBS
             List<string> stopIds = MainWindow._feedStatic.StopTimes.GetForTrip(tripId).Select(x => x.StopId).ToList();
             foreach (string stopId in stopIds)
             {
-                Stop stopForDictionary;
+                Stop stopForDictionary = null;
                 MainWindow._stops.TryGetValue(stopId, out stopForDictionary);
                 StopList.Add(stopId, stopForDictionary);
             }

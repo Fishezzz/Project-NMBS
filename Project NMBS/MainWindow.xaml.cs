@@ -127,6 +127,7 @@ namespace Project_NMBS
         Stop _searchEndStationRoutePlanner;
         Stop _searchStationTripviewer;
         Stop _searchStationRealtime;
+        Stop _searchStationRoutefinder;
 
         enum SelectedLv { BeginStationRouteplanner = 1, EndStationRouteplanner = 2, StationTripviewer = 3, StationRealtime = 4, StationRoutefinder = 5 }
 
@@ -198,7 +199,7 @@ namespace Project_NMBS
         /// <returns>The parent station as 'Stop'</returns>
         private Stop GetStop(string stopId)
         {
-            Stop value;
+            Stop value = null;
             if (_stops.TryGetValue("S" + stopId, out value))
                 return value;
             else
@@ -214,7 +215,7 @@ namespace Project_NMBS
         /// </summary>
         private Trip GetTrip(string tripId)
         {
-            Trip value;
+            Trip value = null;
             _trips.TryGetValue(tripId, out value);
             return value;
         }
@@ -224,7 +225,7 @@ namespace Project_NMBS
         /// </summary>
         private Route GetRoute(string routeId)
         {
-            RouteExtra value;
+            RouteExtra value = null;
             _routes.TryGetValue(routeId, out value);
             return value;
         }
@@ -234,7 +235,7 @@ namespace Project_NMBS
         /// </summary>
         private GTFS.Entities.Calendar GetCalendar(string serviceId)
         {
-            GTFS.Entities.Calendar value;
+            GTFS.Entities.Calendar value = null;
             _calendars.TryGetValue(serviceId, out value);
             return value;
         }
@@ -245,7 +246,7 @@ namespace Project_NMBS
         /// <param name="fromStopId">Trimmed! stopId</param>
         private Transfer GetTransfer(string fromStopId)
         {
-            Transfer value;
+            Transfer value = null;
             _transfers.TryGetValue(fromStopId, out value);
             return value;
 
@@ -257,7 +258,7 @@ namespace Project_NMBS
         /// <param name="transId">transId (in French)</param>
         private string GetTrans(string transId)
         {
-            Dictionary<string, string> trans;
+            Dictionary<string, string> trans = null;
             _translations.TryGetValue(transId, out trans);
             string name = transId;
             if (trans != null)
@@ -298,9 +299,9 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
-                Dictionary<string, string> trans;
+                Dictionary<string, string> trans = null;
                 _translations.TryGetValue(s.Value.Name, out trans);
-                string name;
+                string name = null;
                 trans.TryGetValue(_LANG, out name);
                 ListBoxItem lbi = new ListBoxItem
                 {
@@ -365,9 +366,10 @@ namespace Project_NMBS
         private void LvBeginStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
+            ListBoxItem lbi = null;
             try
             {
-                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                lbi = (ListBoxItem)lv.SelectedItem;
                 _searchBeginStationRouteplanner = (Stop)lbi.Tag;
             }
             catch (Exception ex)
@@ -375,10 +377,10 @@ namespace Project_NMBS
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchBeginStationRouteplanner != null)
+            if (_searchBeginStationRouteplanner != null && lbi != null)
                 tbxBeginStationRouteplanner.Text = GetTrans(_searchBeginStationRouteplanner.Name) ?? "";
 
-            if (_searchEndStationRoutePlanner != null)
+            if (_searchEndStationRoutePlanner != null && lbi != null)
                 btnQueryRouteplanner.IsEnabled = true;
             else
                 btnQueryRouteplanner.IsEnabled = false;
@@ -400,9 +402,10 @@ namespace Project_NMBS
         private void LvEndStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
+            ListBoxItem lbi = null;
             try
             {
-                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                lbi = (ListBoxItem)lv.SelectedItem;
                 _searchEndStationRoutePlanner = (Stop)lbi.Tag;
             }
             catch (Exception ex)
@@ -410,10 +413,10 @@ namespace Project_NMBS
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchEndStationRoutePlanner != null)
+            if (_searchEndStationRoutePlanner != null && lbi != null)
                 tbxEndStationRouteplanner.Text = GetTrans(_searchEndStationRoutePlanner.Name) ?? "";
 
-            if (_searchBeginStationRouteplanner != null)
+            if (_searchBeginStationRouteplanner != null && lbi != null)
                 btnQueryRouteplanner.IsEnabled = true;
             else
                 btnQueryRouteplanner.IsEnabled = false;
@@ -472,9 +475,10 @@ namespace Project_NMBS
         private void LvStationTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
+            ListBoxItem lbi = null;
             try
             {
-                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
+                lbi = (ListBoxItem)lv.SelectedItem;
                 _searchStationTripviewer = (Stop)lbi.Tag;
             }
             catch (Exception ex)
@@ -482,7 +486,7 @@ namespace Project_NMBS
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchStationTripviewer != null)
+            if (_searchStationTripviewer != null && lbi != null)
             {
                 btnQueryTripviewer.IsEnabled = true;
                 tbxStationTripviewer.Text = GetTrans(_searchStationTripviewer.Name);
@@ -561,17 +565,18 @@ namespace Project_NMBS
         private void LvStationRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
+            ListBoxItem lbiSender = null;
             try
             {
-                ListBoxItem lbi = (ListBoxItem)lv.SelectedItem;
-                _searchStationRealtime = (Stop)lbi.Tag;
+                lbiSender = (ListBoxItem)lv.SelectedItem;
+                _searchStationRealtime = (Stop)lbiSender.Tag;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchStationRealtime != null)
+            if (_searchStationRealtime != null && lbiSender != null)
             {
                 lvResultRealtime.Items.Clear();
 
@@ -589,7 +594,7 @@ namespace Project_NMBS
                     Stop stopTemp2 = null;
                     _stops.TryGetValue("S" + entity.id.Split(':')[4], out stopTemp2);
 
-                    string headerInfo = $"{stopTemp1?.Name ?? "N/A"} -> {stopTemp2?.Name ?? "N/A"}\n";
+                    string headerInfo = $"{GetTrans(stopTemp1?.Name ?? "N/A")} -> {GetTrans(stopTemp2?.Name ?? "N/A")}\n";
                     headerInfo += DateTime.ParseExact(entity.trip_update.trip.start_date, "yyyyMMdd", new CultureInfo("fr-FR")).ToShortDateString() + "\t" + entity.trip_update.trip.start_time;
 
                     Tuple<string, string, string>[] resultInfo = new Tuple<string, string, string>[entity.trip_update.stop_time_update.Count];
@@ -598,7 +603,7 @@ namespace Project_NMBS
                     {
                         Stop stopInStopUpdate = null;
                         _stops.TryGetValue("S" + update.stop_id, out stopInStopUpdate);
-                        resultInfo[count] = Tuple.Create(stopInStopUpdate?.Name ?? "N/A", entity.trip_update.stop_time_update[count].arrival?.time.FromUnixTime().ToLongTimeString() ?? "", entity.trip_update.stop_time_update[count].departure?.time.FromUnixTime().ToLongTimeString() ?? "");
+                        resultInfo[count] = Tuple.Create(GetTrans(stopInStopUpdate?.Name ?? "N/A"), entity.trip_update.stop_time_update[count].arrival?.time.FromUnixTime().ToLongTimeString() ?? "", entity.trip_update.stop_time_update[count].departure?.time.FromUnixTime().ToLongTimeString() ?? "");
                         count++;
                     }
 
@@ -653,12 +658,35 @@ namespace Project_NMBS
         }
 
         /// <summary>
-        /// 
+        /// Catch the DoubleClick event.
+        /// <para/>
+        /// Fills lvResultRoutefinder.
         /// </summary>
         /// <param name="sender">lvStationRoutefinder</param>
         private void LvStationRoutefinder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            ListView lv = (ListView)sender;
+            ListBoxItem lbi = null;
+            try
+            {
+                lbi = (ListBoxItem)lv.SelectedItem;
+                _searchStationRoutefinder = (Stop)lbi.Tag;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
+            if(_searchStationRoutefinder != null && lbi != null)
+            {
+                lvResultRoutefinder.Items.Clear();
+
+                List<RouteExtra> routes = _routes.Values.Where(x => x.StopList.Keys.Contains(_searchStationRoutefinder.Id.TrimStart('S').Split('_')[0])).ToList();
+                foreach (RouteExtra routeExtra in routes)
+                {
+                    //////////////////////////////////////////////////
+                }
+            }
         }
 
         /// <summary>
