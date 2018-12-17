@@ -94,4 +94,20 @@ namespace Fishezzz
             return routesExtra;
         }
     }
+
+    public static class Extensions
+    {
+        public static string Trimmed(this string stopId)
+        {
+            try
+            {
+                return stopId.TrimStart('S').Split('_')[0];
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return stopId;
+            }
+        }
+    }
 }

@@ -448,26 +448,21 @@ namespace Project_NMBS
         {
             lvResultRouteplanner.Items.Clear();
 
-            var filterdStations = from station in _stops
-                                  where station.Key == _searchBeginStationRouteplanner.Id
-                                  select station;
+            Stop stop = GetStop(_searchBeginStationRouteplanner.Id.Trimmed());
 
-            foreach (KeyValuePair<string, Stop> s in filterdStations)
+            _sb.Clear()
+                .Append('[')
+                .Append(stop.Id)
+                .Append(']')
+                .Append(WS)
+                .Append(GetTrans(stop.Name));
+
+            ListBoxItem lbi = new ListBoxItem
             {
-                _sb.Clear()
-                    .Append('[')
-                    .Append(s.Key)
-                    .Append(']')
-                    .Append(WS)
-                    .Append(GetTrans(s.Value.Name));
-
-                ListBoxItem lbi = new ListBoxItem
-                {
-                    Content = _sb.ToString(),
-                    Tag = s.Value
-                };
-                lvResultRouteplanner.Items.Add(lbi);
-            }
+                Content = _sb.ToString(),
+                Tag = stop
+            };
+            lvResultRouteplanner.Items.Add(lbi);
         }
 
 
@@ -536,7 +531,7 @@ namespace Project_NMBS
         {
             lvResultTripviewer.Items.Clear();
 
-            var stops = _feedStatic.StopTimes
+            IEnumerable<StopTime> stops = _feedStatic.StopTimes
                 .GetForStop(_searchStationTripviewer.Id.TrimStart('S'))
                 .Where(x => DateTime.ParseExact(x.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now);
 
@@ -547,7 +542,7 @@ namespace Project_NMBS
                     .AddHours(Convert.ToDouble(stopTime.DepartureTime.Hours))
                     .AddMinutes(Convert.ToDouble(stopTime.DepartureTime.Minutes));
 
-                if (stopTime.TripId.Split(':')[4] != _searchStationTripviewer.Id.TrimStart('S'))
+                if (stopTime.TripId.Split(':')[4] != _searchStationTripviewer.Id.Trimmed())
                 {
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[4]);
                     _sb.Clear()
@@ -617,7 +612,7 @@ namespace Project_NMBS
                 tbxStationRealtime.Text = GetTrans(_searchStationRealtime.Name);
 
                 var filterdEntities = from entity in _feedRealtime.entity
-                                      where entity.id.Split(':')[3] == _searchStationRealtime.Id.TrimStart('S').Split('_')[0]
+                                      where entity.id.Split(':')[3] == _searchStationRealtime.Id.Trimmed()
                                       select entity;
 
                 foreach (FeedEntity entity in filterdEntities)
@@ -686,7 +681,7 @@ namespace Project_NMBS
             if (lbi != null)
             {
                 object[] resultTemp = lbi.Tag as object[];
-                ResultRealtime resultRealtime = new ResultRealtime(resultTemp[0].ToString(), resultTemp[1].ToString(), resultTemp[2] as Tuple<string, string, string>[]);
+                ResultRealtime resultRealtime = new ResultRealtime(resultTemp[0] as string, resultTemp[1] as string, resultTemp[2] as Tuple<string, string, string>[]);
                 resultRealtime.Show();
             }
         }
@@ -730,7 +725,7 @@ namespace Project_NMBS
 
                 tbxStationRoutefinder.Text = GetTrans(_searchStationRoutefinder.Name);
 
-                List<RouteExtra> routes = _routes.Values.Where(x => x.StopList.Keys.Contains(_searchStationRoutefinder.Id.TrimStart('S').Split('_')[0])).ToList();
+                List<RouteExtra> routes = _routes.Values.Where(x => x.StopList.Keys.Contains(_searchStationRoutefinder.Id.Trimmed())).ToList();
 
                 foreach (RouteExtra routeExtra in routes)
                 {
@@ -784,7 +779,7 @@ namespace Project_NMBS
             if (lbi != null)
             {
                 object[] resultTemp = lbi.Tag as object[];
-                ResultRoutefinder resultRealtime = new ResultRoutefinder(resultTemp[0].ToString(), resultTemp[1].ToString(), resultTemp[2] as Tuple<string, string, string>[]);
+                ResultRoutefinder resultRealtime = new ResultRoutefinder(resultTemp[0]as string, resultTemp[1] as string, resultTemp[2] as Tuple<string, string, string>[]);
                 resultRealtime.Show();
             }
         }
