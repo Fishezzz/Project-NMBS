@@ -36,6 +36,7 @@ using ProtoBuf;
 using transit_realtime;
 
 using Fishezzz;
+using System.Threading;
 
 namespace Project_NMBS
 {
@@ -50,20 +51,6 @@ namespace Project_NMBS
         /// </summary>
         public static GTFSFeed _feedStatic;
         FeedMessage _feedRealtime;
-
-        //  fr      nl      de      en
-        const string _LANG = "nl";
-
-        ////List<Stop> _stops;
-        ////List<Trip> _trips;
-        ////List<Route> _routes;
-        ////List<Agency> _agencies;
-        ////List<GTFS.Entities.Calendar> _calendars;
-        ////Dictionary<string, CalendarDate> _calendarDates;
-        ////List<StopTime> _stopTimes;
-        ////Dictionary<Tuple<string, string, string>, StopTimeOverride> _stopTimeOverrides;
-        ////List<Transfer> _transfers;
-        ////List<Translation> _translations;
 
         /// <summary>
         /// Key: Stop_Id (string) NOT TRIMMED!
@@ -131,16 +118,22 @@ namespace Project_NMBS
         Stop _searchStationRealtime;
         Stop _searchStationRoutefinder;
 
+        //  fr      nl      de      en
+        const string _LANG = "nl";
+
         StringBuilder _sb;
         const char WS = ' ';
-        const string RLNS = "--";
         const string NA = "N/A";
+        string[] RLNS = { "--" };
 
         enum SelectedLv { BeginStationRouteplanner = 1, EndStationRouteplanner = 2, StationTripviewer = 3, StationRealtime = 4, StationRoutefinder = 5 }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-GB");
 
             // Create StringBuilder
             _sb = new StringBuilder();
@@ -198,6 +191,9 @@ namespace Project_NMBS
             UpdateLv(SelectedLv.StationTripviewer);
             UpdateLv(SelectedLv.StationRealtime);
             UpdateLv(SelectedLv.StationRoutefinder);
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
         }
 
 
@@ -440,7 +436,7 @@ namespace Project_NMBS
         /// <param name="sender">lvResultRouteplanner</param>
         private void LvResultRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            /////////////////// GRAND FINALE
         }
 
         /// <summary>
@@ -458,11 +454,16 @@ namespace Project_NMBS
 
             foreach (KeyValuePair<string, Stop> s in filterdStations)
             {
-                ///////////////////////// SB
+                _sb.Clear()
+                    .Append('[')
+                    .Append(s.Key)
+                    .Append(']')
+                    .Append(WS)
+                    .Append(GetTrans(s.Value.Name));
 
                 ListBoxItem lbi = new ListBoxItem
                 {
-                    Content = $"[{s.Key}] {GetTrans(s.Value.Name)}",
+                    Content = _sb.ToString(),
                     Tag = s.Value
                 };
                 lvResultRouteplanner.Items.Add(lbi);
@@ -515,7 +516,15 @@ namespace Project_NMBS
         /// <param name="sender">lvResultTripviewer</param>
         private void LvResultTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            ////// met routeId uit Trip de Route zoeken en StopList eruit halen
+            ////// voor iedere Stop in StopList, de StopTime zoeken ahv stopId, waar tripId = tripId van de Trip
+            ////// Zorgen dan StopSequence eindstation > beginstation
+            ////// ArrivalTime, StopTime, StopName, StopSequence nemen
+            ////// Nieuwe window open doen
+            ////// Listview met StopSequence, StopName, ArrivalTime en DepartureTime
+            //////
+            ////// Dan enkel de info tonen tussen begin en eindstation
+            ////// Dan enkel eerste 3 hits tonen
         }
 
         /// <summary>
@@ -533,7 +542,6 @@ namespace Project_NMBS
 
             foreach (StopTime stopTime in stops)
             {
-                string content = "";
                 DateTime dateDT = DateTime
                     .ParseExact(stopTime.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR"))
                     .AddHours(Convert.ToDouble(stopTime.DepartureTime.Hours))
@@ -541,20 +549,28 @@ namespace Project_NMBS
 
                 if (stopTime.TripId.Split(':')[4] != _searchStationTripviewer.Id.TrimStart('S'))
                 {
-                    /////////////////// SB
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[4]);
-                    content = $"{dateDT}\nDEPARTURE: Train to {GetTrans(stopToForName.Name)}";
+                    _sb.Clear()
+                        .Append(dateDT.ToShortDateString())
+                        .Append('\t')
+                        .AppendLine(dateDT.ToLongTimeString())
+                        .Append("DEPARTURE: Train to ")
+                        .Append(GetTrans(stopToForName.Name));
                 }
                 else
                 {
-                    /////////////////// SB
                     Stop stopToForName = GetStop(stopTime.TripId.Split(':')[3]);
-                    content = $"{dateDT}\nARRIVAL: Train from {GetTrans(stopToForName.Name)}";
+                    _sb.Clear()
+                        .Append(dateDT.ToShortDateString())
+                        .Append('\t')
+                        .AppendLine(dateDT.ToLongTimeString())
+                        .Append("ARRIVAL: Train from ")
+                        .Append(GetTrans(stopToForName.Name));
                 }
 
                 ListBoxItem lbi = new ListBoxItem
                 {
-                    Content = content,
+                    Content = _sb.ToString(),
                     Tag = stopTime
                 };
                 lvResultTripviewer.Items.Add(lbi);
@@ -612,12 +628,13 @@ namespace Project_NMBS
                     Stop stopTemp2 = null;
                     _stops.TryGetValue(entity.id.Split(':')[4], out stopTemp2);
 
-                    ///////////////////// SB
-
-                    string headerInfo =
-                        $"{GetTrans(stopTemp1?.Name ?? "N/A")} -> {GetTrans(stopTemp2?.Name ?? "N/A")}\n"
-                        + DateTime.ParseExact(entity.trip_update.trip.start_date, "yyyyMMdd", new CultureInfo("fr-FR")).ToShortDateString()
-                        + "\t" + entity.trip_update.trip.start_time;
+                    _sb.Clear()
+                        .Append(GetTrans(stopTemp1?.Name ?? NA))
+                        .Append(" -> ")
+                        .AppendLine(GetTrans(stopTemp2?.Name ?? NA))
+                        .Append(DateTime.ParseExact(entity.trip_update.trip.start_date, "yyyyMMdd", new CultureInfo("fr-FR")).ToShortDateString())
+                        .Append('\t')
+                        .Append(entity.trip_update.trip.start_time);
 
                     Tuple<string, string, string>[] resultInfo = new Tuple<string, string, string>[entity.trip_update.stop_time_update.Count];
                     int count = 0;
@@ -625,21 +642,22 @@ namespace Project_NMBS
                     {
                         Stop stopInStopUpdate = null;
                         _stops.TryGetValue(update.stop_id, out stopInStopUpdate);
+
                         resultInfo[count] = Tuple.Create(
-                            GetTrans(stopInStopUpdate?.Name ?? "N/A"),
+                            GetTrans(stopInStopUpdate?.Name ?? NA),
                             entity.trip_update.stop_time_update[count].arrival?.time != null
-                                ? DateTimeOffset.FromUnixTimeSeconds(entity.trip_update.stop_time_update[count].arrival.time).DateTime.ToLongTimeString()
+                                ? DateTimeOffset.FromUnixTimeSeconds(entity.trip_update.stop_time_update[count].arrival.time).DateTime.ToLocalTime().ToLongTimeString()
                                 : "",
                             entity.trip_update.stop_time_update[count].departure?.time != null
-                                ? DateTimeOffset.FromUnixTimeSeconds(entity.trip_update.stop_time_update[count].departure.time).DateTime.ToLongTimeString()
+                                ? DateTimeOffset.FromUnixTimeSeconds(entity.trip_update.stop_time_update[count].departure.time).DateTime.ToLocalTime().ToLongTimeString()
                                 : "");
                         count++;
                     }
 
                     ListBoxItem lbi = new ListBoxItem
                     {
-                        Content = headerInfo,
-                        Tag = new object[] { entity.id, headerInfo, resultInfo }
+                        Content = _sb.ToString(),
+                        Tag = new object[] { entity.id, _sb.ToString(), resultInfo }
                     };
                     lvResultRealtime.Items.Add(lbi);
                 }
@@ -720,11 +738,11 @@ namespace Project_NMBS
                     _sb.Clear()
                         .Append(routeExtra.ShortName)
                         .Append(WS)
-                        .Append(GetTrans(routeExtra.LongName.Split(new string[] { RLNS }, StringSplitOptions.None)[0].TrimEnd(WS)))
+                        .Append(GetTrans(routeExtra.LongName.Split(RLNS, StringSplitOptions.None)[0].TrimEnd(WS)))
                         .Append(WS)
-                        .Append(RLNS)
+                        .Append('-', 2)
                         .Append(WS)
-                        .Append(GetTrans(routeExtra.LongName.Split(new string[] { RLNS }, StringSplitOptions.None)[1].TrimStart(WS)));
+                        .Append(GetTrans(routeExtra.LongName.Split(RLNS, StringSplitOptions.None)[1].TrimStart(WS)));
 
                     Tuple<string, string, string>[] resultInfo = new Tuple<string, string, string>[routeExtra.StopList.Count];
                     int count = 0;
