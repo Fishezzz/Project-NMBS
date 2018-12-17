@@ -284,17 +284,8 @@ namespace Project_NMBS
         /// <param name="selectedLv">The ListView to update.</param>
         private void UpdateLv(SelectedLv selectedLv)
         {
-            // ListView.Items.Clear();
-            switch (selectedLv)
-            {
-                case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.Items.Clear(); break;
-                case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.Items.Clear(); break;
-                case SelectedLv.StationTripviewer: lvStationTripviewer.Items.Clear(); break;
-                case SelectedLv.StationRealtime: lvStationRealtime.Items.Clear(); break;
-                case SelectedLv.StationRoutefinder: lvStationRoutefinder.Items.Clear(); break;
-            }
-
             string tbxStationText = "";
+            //// tbxStationText = TextBox.Text.ToLower();
             switch (selectedLv)
             {
                 case SelectedLv.BeginStationRouteplanner: tbxStationText = tbxBeginStationRouteplanner.Text.ToLower(); break;
@@ -307,25 +298,23 @@ namespace Project_NMBS
             var filterdStations = from station in _stops
                                   where station.Value.LocationType == LocationType.Station && GetTrans(station.Value.Name).ToLower().Contains(tbxStationText)
                                   orderby GetTrans(station.Value.Name) ascending
-                                  select station;
+                                  select station.Value;
 
-            foreach (KeyValuePair<string, Stop> s in filterdStations)
+            List<Tuple<string, Stop>> itemSource = new List<Tuple<string, Stop>>();
+
+            foreach (Stop s in filterdStations)
             {
-                ListBoxItem lbi = new ListBoxItem
-                {
-                    Content = GetTrans(s.Value.Name),
-                    Tag = s.Value
-                };
+                itemSource.Add(Tuple.Create(GetTrans(s.Name), s));
+            }
 
-                // ListView.Items.Add(lbi);
-                switch (selectedLv)
-                {
-                    case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.Items.Add(lbi); break;
-                    case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.Items.Add(lbi); break;
-                    case SelectedLv.StationTripviewer: lvStationTripviewer.Items.Add(lbi); break;
-                    case SelectedLv.StationRealtime: lvStationRealtime.Items.Add(lbi); break;
-                    case SelectedLv.StationRoutefinder: lvStationRoutefinder.Items.Add(lbi); break;
-                }
+            //// ListView.ItemsSource = itemSource;
+            switch (selectedLv)
+            {
+                case SelectedLv.BeginStationRouteplanner: lvBeginStationRouteplanner.ItemsSource = itemSource; break;
+                case SelectedLv.EndStationRouteplanner: lvEndStationRouteplanner.ItemsSource = itemSource; break;
+                case SelectedLv.StationTripviewer: lvStationTripviewer.ItemsSource = itemSource; break;
+                case SelectedLv.StationRealtime: lvStationRealtime.ItemsSource = itemSource; break;
+                case SelectedLv.StationRoutefinder: lvStationRoutefinder.ItemsSource = itemSource; break;
             }
         }
 
@@ -374,21 +363,19 @@ namespace Project_NMBS
         private void LvBeginStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
-            ListBoxItem lbi = null;
             try
             {
-                lbi = (ListBoxItem)lv.SelectedItem;
-                _searchBeginStationRouteplanner = (Stop)lbi.Tag;
+                _searchBeginStationRouteplanner = lv.ItemsSource.Cast<Tuple<string, Stop>>().ElementAt(lv.SelectedIndex).Item2;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchBeginStationRouteplanner != null && lbi != null)
+            if (_searchBeginStationRouteplanner != null)
                 tbxBeginStationRouteplanner.Text = GetTrans(_searchBeginStationRouteplanner.Name);
 
-            if (_searchEndStationRoutePlanner != null && lbi != null)
+            if (_searchEndStationRoutePlanner != null)
                 btnQueryRouteplanner.IsEnabled = true;
             else
                 btnQueryRouteplanner.IsEnabled = false;
@@ -410,33 +397,22 @@ namespace Project_NMBS
         private void LvEndStationRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
-            ListBoxItem lbi = null;
             try
             {
-                lbi = (ListBoxItem)lv.SelectedItem;
-                _searchEndStationRoutePlanner = (Stop)lbi.Tag;
+                _searchEndStationRoutePlanner = lv.ItemsSource.Cast<Tuple<string, Stop>>().ElementAt(lv.SelectedIndex).Item2;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchEndStationRoutePlanner != null && lbi != null)
+            if (_searchEndStationRoutePlanner != null)
                 tbxEndStationRouteplanner.Text = GetTrans(_searchEndStationRoutePlanner.Name);
 
-            if (_searchBeginStationRouteplanner != null && lbi != null)
+            if (_searchBeginStationRouteplanner != null)
                 btnQueryRouteplanner.IsEnabled = true;
             else
                 btnQueryRouteplanner.IsEnabled = false;
-        }
-
-        /// <summary>
-        /// Catch the DoubleClick event.
-        /// </summary>
-        /// <param name="sender">lvResultRouteplanner</param>
-        private void LvResultRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            /////////////////// GRAND FINALE
         }
 
         /// <summary>
@@ -465,6 +441,15 @@ namespace Project_NMBS
             lvResultRouteplanner.Items.Add(lbi);
         }
 
+        /// <summary>
+        /// Catch the DoubleClick event.
+        /// </summary>
+        /// <param name="sender">lvResultRouteplanner</param>
+        private void LvResultRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            /////////////////// GRAND FINALE
+        }
+
 
 
         //////// TRIP VIEWER
@@ -485,41 +470,22 @@ namespace Project_NMBS
         private void LvStationTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
-            ListBoxItem lbi = null;
             try
             {
-                lbi = (ListBoxItem)lv.SelectedItem;
-                _searchStationTripviewer = (Stop)lbi.Tag;
+                _searchStationTripviewer = lv.ItemsSource.Cast<Tuple<string, Stop>>().ElementAt(lv.SelectedIndex).Item2;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchStationTripviewer != null && lbi != null)
+            if (_searchStationTripviewer != null)
             {
                 btnQueryTripviewer.IsEnabled = true;
                 tbxStationTripviewer.Text = GetTrans(_searchStationTripviewer.Name);
             }
             else
                 btnQueryTripviewer.IsEnabled = false;
-        }
-
-        /// <summary>
-        /// Catch the DoubleClick event.
-        /// </summary>
-        /// <param name="sender">lvResultTripviewer</param>
-        private void LvResultTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ////// met routeId uit Trip de Route zoeken en StopList eruit halen
-            ////// voor iedere Stop in StopList, de StopTime zoeken ahv stopId, waar tripId = tripId van de Trip
-            ////// Zorgen dan StopSequence eindstation > beginstation
-            ////// ArrivalTime, StopTime, StopName, StopSequence nemen
-            ////// Nieuwe window open doen
-            ////// Listview met StopSequence, StopName, ArrivalTime en DepartureTime
-            //////
-            ////// Dan enkel de info tonen tussen begin en eindstation
-            ////// Dan enkel eerste 3 hits tonen
         }
 
         /// <summary>
@@ -532,7 +498,7 @@ namespace Project_NMBS
             lvResultTripviewer.Items.Clear();
 
             IEnumerable<StopTime> stops = _feedStatic.StopTimes
-                .GetForStop(_searchStationTripviewer.Id.TrimStart('S'))
+                .GetForStop(_searchStationTripviewer.Id.Trimmed())
                 .Where(x => DateTime.ParseExact(x.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now);
 
             foreach (StopTime stopTime in stops)
@@ -572,6 +538,39 @@ namespace Project_NMBS
             }
         }
 
+        /// <summary>
+        /// Catch the DoubleClick event.
+        /// </summary>
+        /// <param name="sender">lvResultTripviewer</param>
+        private void LvResultTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ////// met routeId uit Trip de Route zoeken en StopList eruit halen
+            ////// voor iedere Stop in StopList, de StopTime zoeken ahv stopId, waar tripId = tripId van de Trip
+            ////// Zorgen dan StopSequence eindstation > beginstation
+            ////// ArrivalTime, StopTime, StopName, StopSequence nemen
+            ////// Nieuwe window open doen
+            ////// Listview met StopSequence, StopName, ArrivalTime en DepartureTime
+            //////
+            ////// Dan enkel de info tonen tussen begin en eindstation
+            ////// Dan enkel eerste 3 hits tonen
+
+            ListView lv = (ListView)sender;
+            ListBoxItem lbiSender = null;
+            try
+            {
+                lbiSender = (ListBoxItem)lv.SelectedItem;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            if (lbiSender != null)
+            {
+
+            }
+        }
+
 
 
         //////// REAL TIME
@@ -594,26 +593,24 @@ namespace Project_NMBS
         private void LvStationRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
-            ListBoxItem lbiSender = null;
             try
             {
-                lbiSender = (ListBoxItem)lv.SelectedItem;
-                _searchStationRealtime = (Stop)lbiSender.Tag;
+                _searchStationRealtime = lv.ItemsSource.Cast<Tuple<string, Stop>>().ElementAt(lv.SelectedIndex).Item2;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (_searchStationRealtime != null && lbiSender != null)
+            if (_searchStationRealtime != null)
             {
-                lvResultRealtime.Items.Clear();
-
                 tbxStationRealtime.Text = GetTrans(_searchStationRealtime.Name);
 
                 var filterdEntities = from entity in _feedRealtime.entity
-                                      where entity.id.Split(':')[3] == _searchStationRealtime.Id.Trimmed()
+                                      where entity.id.Split(':')[3] == _searchStationRealtime.Id.Trimmed() || entity.id.Split(':')[4] == _searchStationRealtime.Id.Trimmed()
                                       select entity;
+
+                List<Tuple<string, string, Tuple<string, string, string>[]>> itemSource = new List<Tuple<string, string, Tuple<string, string, string>[]>>();
 
                 foreach (FeedEntity entity in filterdEntities)
                 {
@@ -649,13 +646,10 @@ namespace Project_NMBS
                         count++;
                     }
 
-                    ListBoxItem lbi = new ListBoxItem
-                    {
-                        Content = _sb.ToString(),
-                        Tag = new object[] { entity.id, _sb.ToString(), resultInfo }
-                    };
-                    lvResultRealtime.Items.Add(lbi);
+                    itemSource.Add(Tuple.Create(entity.id, _sb.ToString(), resultInfo));
                 }
+
+                lvResultRealtime.ItemsSource = itemSource;
             }
         }
 
@@ -668,20 +662,19 @@ namespace Project_NMBS
         private void LvResultRealtime_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
-            ListBoxItem lbi = null;
+            Tuple<string, string, Tuple<string, string, string>[]> resultTemp = null;
             try
             {
-                lbi = (ListBoxItem)lv.SelectedItem;
+                resultTemp = lv.ItemsSource.Cast<Tuple<string, string, Tuple<string, string, string>[]>>().ElementAt(lv.SelectedIndex);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (lbi != null)
+            if (resultTemp != null)
             {
-                object[] resultTemp = lbi.Tag as object[];
-                ResultRealtime resultRealtime = new ResultRealtime(resultTemp[0] as string, resultTemp[1] as string, resultTemp[2] as Tuple<string, string, string>[]);
+                ResultRealtime resultRealtime = new ResultRealtime(resultTemp.Item1, resultTemp.Item2, resultTemp.Item3 );
                 resultRealtime.Show();
             }
         }
@@ -708,18 +701,16 @@ namespace Project_NMBS
         private void LvStationRoutefinder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
-            ListBoxItem lbiSender = null;
             try
             {
-                lbiSender = (ListBoxItem)lv.SelectedItem;
-                _searchStationRoutefinder = (Stop)lbiSender.Tag;
+                _searchStationRoutefinder = lv.ItemsSource.Cast<Tuple<string, Stop>>().ElementAt(lv.SelectedIndex).Item2;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if(_searchStationRoutefinder != null && lbiSender != null)
+            if(_searchStationRoutefinder != null)
             {
                 lvResultRoutefinder.Items.Clear();
 
@@ -727,12 +718,14 @@ namespace Project_NMBS
 
                 List<RouteExtra> routes = _routes.Values.Where(x => x.StopList.Keys.Contains(_searchStationRoutefinder.Id.Trimmed())).ToList();
 
+                List<Tuple<string, string, Tuple<string, string, string>[]>> itemSource = new List<Tuple<string, string, Tuple<string, string, string>[]>>();
+
                 foreach (RouteExtra routeExtra in routes)
                 {
 
                     _sb.Clear()
                         .Append(routeExtra.ShortName)
-                        .Append(WS)
+                        .Append('\t')
                         .Append(GetTrans(routeExtra.LongName.Split(RLNS, StringSplitOptions.None)[0].TrimEnd(WS)))
                         .Append(WS)
                         .Append('-', 2)
@@ -749,13 +742,10 @@ namespace Project_NMBS
                             s.Longitude.ToString());
                     }
 
-                    ListBoxItem lbi = new ListBoxItem
-                    {
-                        Content = _sb.ToString(),
-                        Tag = new object[] { routeExtra.Id, _sb.ToString(), resultInfo }
-                    };
-                    lvResultRoutefinder.Items.Add(lbi);
+                    itemSource.Add(Tuple.Create(routeExtra.Id, _sb.ToString(), resultInfo));
                 }
+
+                lvResultRoutefinder.ItemsSource = itemSource;
             }
         }
 
@@ -766,21 +756,20 @@ namespace Project_NMBS
         private void LvResultRoutefinder_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListView lv = (ListView)sender;
-            ListBoxItem lbi = null;
+            Tuple<string, string, Tuple<string, string, string>[]> resultTemp = null;
             try
             {
-                lbi = (ListBoxItem)lv.SelectedItem;
+                resultTemp = lv.ItemsSource.Cast<Tuple<string, string, Tuple<string, string, string>[]>>().ElementAt(lv.SelectedIndex);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (lbi != null)
+            if (resultTemp != null)
             {
-                object[] resultTemp = lbi.Tag as object[];
-                ResultRoutefinder resultRealtime = new ResultRoutefinder(resultTemp[0]as string, resultTemp[1] as string, resultTemp[2] as Tuple<string, string, string>[]);
-                resultRealtime.Show();
+                ResultRoutefinder resultRoutefinder = new ResultRoutefinder(resultTemp.Item1, resultTemp.Item2, resultTemp.Item3);
+                resultRoutefinder.Show();
             }
         }
     }

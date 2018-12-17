@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:Project_NMBS"
         mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="NMBS" Height="450" Width="800">
+        Title="NMBS"
+        Height="450" Width="800"
+        MinHeight="350" MinWidth="550">
     <Grid>
         <TabControl Margin="0,0,0,0">
             <TabItem Header="Route planner">
@@ -16,7 +18,7 @@
                     <ListView Name="lvBeginStationRouteplanner" HorizontalAlignment="Left" Margin="10,75,0,116.2" Width="200" MouseDoubleClick="LvBeginStationRouteplanner_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Beginstation" Width="{Binding ActualWidth, ElementName=lvBeginStationRouteplanner}"/>
+                                <GridViewColumn Header="Beginstation" Width="{Binding ActualWidth, ElementName=lvBeginStationRouteplanner}" DisplayMemberBinding="{Binding Item1}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -26,7 +28,7 @@
                     <ListView Name="lvEndStationRouteplanner" HorizontalAlignment="Left" Margin="215,75,0,116.2" Width="200" MouseDoubleClick="LvEndStationRouteplanner_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Endstation" Width="{Binding ActualWidth, ElementName=lvEndStationRouteplanner}"/>
+                                <GridViewColumn Header="Endstation" Width="{Binding ActualWidth, ElementName=lvEndStationRouteplanner}" DisplayMemberBinding="{Binding Item1}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -55,7 +57,7 @@
                     <ListView Name="lvStationTripviewer" HorizontalAlignment="Left" Margin="10,75,0,116.2" Width="200" MouseDoubleClick="LvStationTripviewer_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Stations" Width="{Binding ActualWidth, ElementName=lvStationTripviewer}"/>
+                                <GridViewColumn Header="Stations" Width="{Binding ActualWidth, ElementName=lvStationTripviewer}" DisplayMemberBinding="{Binding Item1}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -81,14 +83,14 @@
                     <ListView Name="lvStationRealtime" HorizontalAlignment="Left" Margin="10,75,0,16.2" Width="200" MouseDoubleClick="LvStationRealtime_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Stations" Width="{Binding ActualWidth, ElementName=lvStationRealtime}"/>
+                                <GridViewColumn Header="Stations" Width="{Binding ActualWidth, ElementName=lvStationRealtime}" DisplayMemberBinding="{Binding Item1}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <ListView Name="lvResultRealtime" Margin="228,40,20,16.2" MouseDoubleClick="LvResultRealtime_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Info" Width="{Binding ActualWidth, ElementName=lvResultRealtime}"/>
+                                <GridViewColumn Header="Info" Width="{Binding ActualWidth, ElementName=lvResultRealtime}" DisplayMemberBinding="{Binding Item2}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -101,14 +103,14 @@
                     <ListView Name="lvStationRoutefinder" HorizontalAlignment="Left" Margin="10,75,0,16.2" Width="200" MouseDoubleClick="LvStationRoutefinder_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Stations" Width="{Binding ActualWidth, ElementName=lvStationRoutefinder}"/>
+                                <GridViewColumn Header="Stations" Width="{Binding ActualWidth, ElementName=lvStationRoutefinder}" DisplayMemberBinding="{Binding Item1}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <ListView Name="lvResultRoutefinder" Margin="228,40,20,16.2" MouseDoubleClick="LvResultRoutefinder_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Available routes" Width="{Binding ActualWidth, ElementName=lvResultRoutefinder}"/>
+                                <GridViewColumn Header="Available routes" Width="{Binding ActualWidth, ElementName=lvResultRoutefinder}" DisplayMemberBinding="{Binding Item2}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
