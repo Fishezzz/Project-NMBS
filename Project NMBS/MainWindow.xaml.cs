@@ -207,14 +207,8 @@ namespace Project_NMBS
         /// <returns>The parent station as 'Stop'</returns>
         private Stop GetStop(string stopId)
         {
-            Stop value = null;
-            if (_stops.TryGetValue(/*"S" + */stopId, out value))
-                return value;
-            else
-            {
-                _stops.TryGetValue(stopId, out value);
-                return value;
-            }
+            _stops.TryGetValue(stopId, out Stop value);
+            return value;
 
         }
         
@@ -223,8 +217,7 @@ namespace Project_NMBS
         /// </summary>
         private Trip GetTrip(string tripId)
         {
-            Trip value = null;
-            _trips.TryGetValue(tripId, out value);
+            _trips.TryGetValue(tripId, out Trip value);
             return value;
         }
 
@@ -233,8 +226,7 @@ namespace Project_NMBS
         /// </summary>
         private Route GetRoute(string routeId)
         {
-            RouteExtra value = null;
-            _routes.TryGetValue(routeId, out value);
+            _routes.TryGetValue(routeId, out RouteExtra value);
             return value;
         }
 
@@ -243,8 +235,7 @@ namespace Project_NMBS
         /// </summary>
         private GTFS.Entities.Calendar GetCalendar(string serviceId)
         {
-            GTFS.Entities.Calendar value = null;
-            _calendars.TryGetValue(serviceId, out value);
+            _calendars.TryGetValue(serviceId, out GTFS.Entities.Calendar value);
             return value;
         }
 
@@ -254,8 +245,7 @@ namespace Project_NMBS
         /// <param name="fromStopId">Trimmed! stopId</param>
         private Transfer GetTransfer(string fromStopId)
         {
-            Transfer value = null;
-            _transfers.TryGetValue(fromStopId, out value);
+            _transfers.TryGetValue(fromStopId, out Transfer value);
             return value;
 
         }
@@ -270,8 +260,7 @@ namespace Project_NMBS
                 return "";
             if (transId == "" || transId == NA)
                 return transId;
-            Dictionary<string, string> trans = null;
-            _translations.TryGetValue(transId, out trans);
+            _translations.TryGetValue(transId, out Dictionary<string, string> trans);
             string name = transId;
             if (trans != null)
                 trans.TryGetValue(_LANG, out name);
@@ -445,6 +434,18 @@ namespace Project_NMBS
         private void LvResultRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             /////////////////// GRAND FINALE
+
+            ////// met routeId uit Trip de Route zoeken en StopList eruit halen
+            ////// voor iedere Stop in StopList, de StopTime zoeken ahv stopId, waar tripId = tripId van de Trip
+            ////// Zorgen dan StopSequence eindstation > beginstation
+            ////// ArrivalTime, StopTime, StopName, StopSequence nemen
+            ////// Nieuwe window open doen
+            ////// Listview met StopSequence, StopName, ArrivalTime en DepartureTime
+            //////
+            ////// Dan enkel de info tonen tussen begin en eindstation
+            ////// Dan enkel eerste 3 hits tonen
+
+
         }
 
 
@@ -492,11 +493,11 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryTripviewer</param>
         private void BtnQueryTripviewer_Click(object sender, RoutedEventArgs e)
         {
-            IEnumerable<StopTime> stops = _feedStatic.StopTimes
+            var stops = _feedStatic.StopTimes
                 .GetForStop(_searchStationTripviewer.Id.Trimmed())
                 .Where(x => DateTime.ParseExact(x.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now);
 
-            List<Tuple<string, StopTime>> itemSource = new List<Tuple<string, StopTime>>();
+            List<Tuple<string>> itemSource = new List<Tuple<string>>();
 
             foreach (StopTime stopTime in stops)
             {
@@ -526,43 +527,10 @@ namespace Project_NMBS
                         .Append(GetTrans(stopToForName.Name));
                 }
 
-                itemSource.Add(Tuple.Create(_sb.ToString(), stopTime));
+                itemSource.Add(Tuple.Create(_sb.ToString()));
             }
 
             lvResultTripviewer.ItemsSource = itemSource;
-        }
-
-        /// <summary>
-        /// Catch the DoubleClick event.
-        /// </summary>
-        /// <param name="sender">lvResultTripviewer</param>
-        private void LvResultTripviewer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ////// met routeId uit Trip de Route zoeken en StopList eruit halen
-            ////// voor iedere Stop in StopList, de StopTime zoeken ahv stopId, waar tripId = tripId van de Trip
-            ////// Zorgen dan StopSequence eindstation > beginstation
-            ////// ArrivalTime, StopTime, StopName, StopSequence nemen
-            ////// Nieuwe window open doen
-            ////// Listview met StopSequence, StopName, ArrivalTime en DepartureTime
-            //////
-            ////// Dan enkel de info tonen tussen begin en eindstation
-            ////// Dan enkel eerste 3 hits tonen
-
-            ListView lv = (ListView)sender;
-            StopTime stopTime = null;
-            try
-            {
-                stopTime = lv.ItemsSource.Cast<Tuple<string, StopTime>>().ElementAt(lv.SelectedIndex).Item2;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-
-            if (stopTime != null)
-            {
-
-            }
         }
 
 
@@ -608,11 +576,9 @@ namespace Project_NMBS
 
                 foreach (FeedEntity entity in filterdEntities)
                 {
-                    Stop stopTemp1 = null;
-                    _stops.TryGetValue(entity.id.Split(':')[3], out stopTemp1);
+                    _stops.TryGetValue(entity.id.Split(':')[3], out Stop stopTemp1);
 
-                    Stop stopTemp2 = null;
-                    _stops.TryGetValue(entity.id.Split(':')[4], out stopTemp2);
+                    _stops.TryGetValue(entity.id.Split(':')[4], out Stop stopTemp2);
 
                     _sb.Clear()
                         .Append(GetTrans(stopTemp1?.Name ?? NA))
@@ -626,8 +592,7 @@ namespace Project_NMBS
                     int count = 0;
                     foreach (TripUpdate.StopTimeUpdate update in entity.trip_update.stop_time_update)
                     {
-                        Stop stopInStopUpdate = null;
-                        _stops.TryGetValue(update.stop_id, out stopInStopUpdate);
+                        _stops.TryGetValue(update.stop_id, out Stop stopInStopUpdate);
 
                         resultInfo[count] = Tuple.Create(
                             GetTrans(stopInStopUpdate?.Name ?? NA),

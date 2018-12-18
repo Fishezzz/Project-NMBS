@@ -65,7 +65,7 @@
                     <Label Content="Date: " HorizontalAlignment="Left" Margin="10,0,0,81.2" VerticalAlignment="Bottom" Height="30" Width="50" FontSize="15"/>
                     <DatePicker Name="dpTripviewer" HorizontalAlignment="Left" Margin="60,0,0,81.2" VerticalAlignment="Bottom" Width="150" Height="30" FirstDayOfWeek="Monday" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
 
-                    <ListView Name="lvResultTripviewer" Margin="228,40,20,26.2" MouseDoubleClick="LvResultTripviewer_MouseDoubleClick">
+                    <ListView Name="lvResultTripviewer" Margin="228,40,20,26.2">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Trips" Width="{Binding ActualWidth, ElementName=lvResultTripviewer}" DisplayMemberBinding="{Binding Item1}"/>
