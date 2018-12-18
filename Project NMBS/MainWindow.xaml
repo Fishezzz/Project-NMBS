@@ -42,7 +42,7 @@
                     <ListView Name="lvResultRouteplanner" Margin="420,40,20,26.2" MouseDoubleClick="LvResultRouteplanner_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Result" Width="{Binding ActualWidth, ElementName=lvResultRouteplanner}"/>
+                                <GridViewColumn Header="Result" Width="{Binding ActualWidth, ElementName=lvResultRouteplanner}" DisplayMemberBinding="{Binding Item1}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -68,7 +68,7 @@
                     <ListView Name="lvResultTripviewer" Margin="228,40,20,26.2" MouseDoubleClick="LvResultTripviewer_MouseDoubleClick">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Trips" Width="{Binding ActualWidth, ElementName=lvResultTripviewer}"/>
+                                <GridViewColumn Header="Trips" Width="{Binding ActualWidth, ElementName=lvResultTripviewer}" DisplayMemberBinding="{Binding Item1}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>

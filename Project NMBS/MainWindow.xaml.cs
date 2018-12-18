@@ -192,8 +192,8 @@ namespace Project_NMBS
             UpdateLv(SelectedLv.StationRealtime);
             UpdateLv(SelectedLv.StationRoutefinder);
 
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("nl-BE");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("nl-BE");
         }
 
 
@@ -422,9 +422,9 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryRouteplanner</param>
         private void BtnQueryRouteplanner_Click(object sender, RoutedEventArgs e)
         {
-            lvResultRouteplanner.Items.Clear();
-
             Stop stop = GetStop(_searchBeginStationRouteplanner.Id.Trimmed());
+
+            List<Tuple<string, Stop>> itemSource = new List<Tuple<string, Stop>>();
 
             _sb.Clear()
                 .Append('[')
@@ -433,12 +433,9 @@ namespace Project_NMBS
                 .Append(WS)
                 .Append(GetTrans(stop.Name));
 
-            ListBoxItem lbi = new ListBoxItem
-            {
-                Content = _sb.ToString(),
-                Tag = stop
-            };
-            lvResultRouteplanner.Items.Add(lbi);
+            itemSource.Add(Tuple.Create(_sb.ToString(), stop));
+
+            lvResultRouteplanner.ItemsSource = itemSource;
         }
 
         /// <summary>
@@ -495,11 +492,11 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryTripviewer</param>
         private void BtnQueryTripviewer_Click(object sender, RoutedEventArgs e)
         {
-            lvResultTripviewer.Items.Clear();
-
             IEnumerable<StopTime> stops = _feedStatic.StopTimes
                 .GetForStop(_searchStationTripviewer.Id.Trimmed())
                 .Where(x => DateTime.ParseExact(x.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now);
+
+            List<Tuple<string, StopTime>> itemSource = new List<Tuple<string, StopTime>>();
 
             foreach (StopTime stopTime in stops)
             {
@@ -529,13 +526,10 @@ namespace Project_NMBS
                         .Append(GetTrans(stopToForName.Name));
                 }
 
-                ListBoxItem lbi = new ListBoxItem
-                {
-                    Content = _sb.ToString(),
-                    Tag = stopTime
-                };
-                lvResultTripviewer.Items.Add(lbi);
+                itemSource.Add(Tuple.Create(_sb.ToString(), stopTime));
             }
+
+            lvResultTripviewer.ItemsSource = itemSource;
         }
 
         /// <summary>
@@ -555,17 +549,17 @@ namespace Project_NMBS
             ////// Dan enkel eerste 3 hits tonen
 
             ListView lv = (ListView)sender;
-            ListBoxItem lbiSender = null;
+            StopTime stopTime = null;
             try
             {
-                lbiSender = (ListBoxItem)lv.SelectedItem;
+                stopTime = lv.ItemsSource.Cast<Tuple<string, StopTime>>().ElementAt(lv.SelectedIndex).Item2;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
 
-            if (lbiSender != null)
+            if (stopTime != null)
             {
 
             }
@@ -712,8 +706,6 @@ namespace Project_NMBS
 
             if(_searchStationRoutefinder != null)
             {
-                lvResultRoutefinder.Items.Clear();
-
                 tbxStationRoutefinder.Text = GetTrans(_searchStationRoutefinder.Name);
 
                 List<RouteExtra> routes = _routes.Values.Where(x => x.StopList.Keys.Contains(_searchStationRoutefinder.Id.Trimmed())).ToList();
