@@ -183,6 +183,14 @@ namespace Project_NMBS
                 _stopTimeOverrides.Add(new StopTimeOverride(stop_time_overridesRaw[i]));
 
             // Realtime GTFS
+            try
+            {
+                FileDownload.UpdateRealtime();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
             _feedRealtime = Serializer.Deserialize<FeedMessage>(new FileStream("GTFS/c21ac6758dd25af84cca5b707f3cb3de", FileMode.Open, FileAccess.Read));
 
             // Update ListViews
@@ -411,6 +419,10 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryRouteplanner</param>
         private void BtnQueryRouteplanner_Click(object sender, RoutedEventArgs e)
         {
+            //var stopTimes = _feedStatic.StopTimes
+            //    .GetForTrip 
+
+
             Stop stop = GetStop(_searchBeginStationRouteplanner.Id.Trimmed());
 
             List<Tuple<string, Stop>> itemSource = new List<Tuple<string, Stop>>();
@@ -493,13 +505,13 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryTripviewer</param>
         private void BtnQueryTripviewer_Click(object sender, RoutedEventArgs e)
         {
-            var stops = _feedStatic.StopTimes
+            var stopTimes = _feedStatic.StopTimes
                 .GetForStop(_searchStationTripviewer.Id.Trimmed())
                 .Where(x => DateTime.ParseExact(x.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now);
 
             List<Tuple<string>> itemSource = new List<Tuple<string>>();
 
-            foreach (StopTime stopTime in stops)
+            foreach (StopTime stopTime in stopTimes)
             {
                 DateTime dateDT = DateTime
                     .ParseExact(stopTime.TripId.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR"))

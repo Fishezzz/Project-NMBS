@@ -1,4 +1,5 @@
 ﻿using GTFS.Entities;
+using GTFS.Entities.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,12 +37,11 @@ namespace Fishezzz
 
             StopList = new Dictionary<string, Stop>();
             string tripId = Project_NMBS.MainWindow._trips.Values.Where(x => x.RouteId == route.Id).ToList().Select(x => x.Id).ToArray().First();
-            List<string> stopIds = Project_NMBS.MainWindow._feedStatic.StopTimes.GetForTrip(tripId).Select(x => x.StopId).ToList();
-            foreach (string stopId in stopIds)
+            List<StopTime> stopTimes = Project_NMBS.MainWindow._feedStatic.StopTimes.GetForTrip(tripId).Where(x => x.DropOffType == DropOffType.Regular || x.PickupType == PickupType.Regular).ToList();
+            foreach (StopTime stopTime in stopTimes)
             {
-                Stop stopForDictionary = null;
-                Project_NMBS.MainWindow._stops.TryGetValue(stopId, out stopForDictionary);
-                StopList.Add(stopId, stopForDictionary);
+                Project_NMBS.MainWindow._stops.TryGetValue(stopTime.StopId, out Stop stop);
+                StopList.Add(stopTime.StopId, stop);
             }
         }
     }
