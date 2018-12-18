@@ -183,15 +183,8 @@ namespace Project_NMBS
                 _stopTimeOverrides.Add(new StopTimeOverride(stop_time_overridesRaw[i]));
 
             // Realtime GTFS
-            try
-            {
-                FileDownload.UpdateRealtime();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            _feedRealtime = Serializer.Deserialize<FeedMessage>(new FileStream("GTFS/c21ac6758dd25af84cca5b707f3cb3de", FileMode.Open, FileAccess.Read));
+            //FileDownload.UpdateRealtime();
+            _feedRealtime = Serializer.Deserialize<FeedMessage>(new FileStream(@"GTFS\c21ac6758dd25af84cca5b707f3cb3de", FileMode.Open, FileAccess.Read));
 
             // Update ListViews
             UpdateLv(SelectedLv.BeginStationRouteplanner);
@@ -419,24 +412,18 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryRouteplanner</param>
         private void BtnQueryRouteplanner_Click(object sender, RoutedEventArgs e)
         {
-            //var stopTimes = _feedStatic.StopTimes
-            //    .GetForTrip 
+            //Stop stop = GetStop(_searchBeginStationRouteplanner.Id.Trimmed());
+            //List<Tuple<string, Stop>> itemSource = new List<Tuple<string, Stop>>();
+            //_sb.Clear()
+            //    .Append('[')
+            //    .Append(stop.Id)
+            //    .Append(']')
+            //    .Append(WS)
+            //    .Append(GetTrans(stop.Name));
+            //itemSource.Add(Tuple.Create(_sb.ToString(), stop));
+            //lvResultRouteplanner.ItemsSource = itemSource;
 
 
-            Stop stop = GetStop(_searchBeginStationRouteplanner.Id.Trimmed());
-
-            List<Tuple<string, Stop>> itemSource = new List<Tuple<string, Stop>>();
-
-            _sb.Clear()
-                .Append('[')
-                .Append(stop.Id)
-                .Append(']')
-                .Append(WS)
-                .Append(GetTrans(stop.Name));
-
-            itemSource.Add(Tuple.Create(_sb.ToString(), stop));
-
-            lvResultRouteplanner.ItemsSource = itemSource;
         }
 
         /// <summary>
@@ -456,8 +443,6 @@ namespace Project_NMBS
             //////
             ////// Dan enkel de info tonen tussen begin en eindstation
             ////// Dan enkel eerste 3 hits tonen
-
-
         }
 
 
