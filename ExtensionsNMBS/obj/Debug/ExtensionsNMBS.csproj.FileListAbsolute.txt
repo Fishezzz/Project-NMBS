@@ -1,0 +1,6 @@
+C:\Users\emiel\School\OOP\Project NMBS\ExtensionsNMBS\bin\Debug\ExtensionsNMBS.dll
+C:\Users\emiel\School\OOP\Project NMBS\ExtensionsNMBS\bin\Debug\ExtensionsNMBS.pdb
+C:\Users\emiel\School\OOP\Project NMBS\ExtensionsNMBS\obj\Debug\ExtensionsNMBS.csproj.CoreCompileInputs.cache
+C:\Users\emiel\School\OOP\Project NMBS\ExtensionsNMBS\obj\Debug\ExtensionsNMBS.dll
+C:\Users\emiel\School\OOP\Project NMBS\ExtensionsNMBS\obj\Debug\ExtensionsNMBS.pdb
+C:\Users\emiel\School\OOP\Project NMBS\ExtensionsNMBS\obj\Debug\ExtensionsNMBS.csprojAssemblyReference.cache
