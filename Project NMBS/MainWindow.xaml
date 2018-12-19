@@ -39,7 +39,7 @@
                     <Label Content="Time:" HorizontalAlignment="Left" Margin="215,0,0,81.2" VerticalAlignment="Bottom" Height="30" Width="50" FontSize="15"/>
                     <xctk:TimePicker Name="tpRouteplanner" HorizontalAlignment="Left" Margin="265,0,0,81.2" VerticalAlignment="Bottom" Height="30" Width="150" FontSize="15" Loaded="TimePicker_Loaded" CultureInfo="nl-BE" TimeInterval="0:15:0" CurrentDateTimePart="Hour24" Kind="Local"/>
 
-                    <ListView Name="lvResultRouteplanner" Margin="420,40,20,26.2" MouseDoubleClick="LvResultRouteplanner_MouseDoubleClick">
+                    <ListView Name="lvResultRouteplanner" Margin="420,40,20,26.2">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Result" Width="{Binding ActualWidth, ElementName=lvResultRouteplanner}" DisplayMemberBinding="{Binding Item1}"/>

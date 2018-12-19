@@ -473,25 +473,6 @@ namespace Project_NMBS
 
         }
 
-        /// <summary>
-        /// Catch the DoubleClick event.
-        /// </summary>
-        /// <param name="sender">lvResultRouteplanner</param>
-        private void LvResultRouteplanner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            /////////////////// GRAND FINALE
-
-            ////// met routeId uit Trip de Route zoeken en StopList eruit halen
-            ////// voor iedere Stop in StopList, de StopTime zoeken ahv stopId, waar tripId = tripId van de Trip
-            ////// Zorgen dan StopSequence eindstation > beginstation
-            ////// ArrivalTime, StopTime, StopName, StopSequence nemen
-            ////// Nieuwe window open doen
-            ////// Listview met StopSequence, StopName, ArrivalTime en DepartureTime
-            //////
-            ////// Dan enkel de info tonen tussen begin en eindstation
-            ////// Dan enkel eerste 3 hits tonen
-        }
-
 
 
         //////// TRIP VIEWER
