@@ -1,22 +1,43 @@
-﻿using ExtensionsNMBS;
-using Fishezzz;
-using GTFS;
-using GTFS.Entities;
-using GTFS.Entities.Enumerations;
-using GTFS.IO;
-using ProtoBuf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+using GTFS;
+using GTFS.Attributes;
+using GTFS.DB;
+using GTFS.DB.Memory;
+using GTFS.Entities;
+using GTFS.Entities.Collections;
+using GTFS.Entities.Enumerations;
+using GTFS.Exceptions;
+using GTFS.Fields;
+using GTFS.Filters;
+using GTFS.IO;
+using GTFS.IO.CSV;
+using GTFS.StopsToShape;
+using GTFS.Validation;
+
+using System.Net;
+using ProtoBuf;
 using transit_realtime;
+
+using Fishezzz;
+using System.Threading;
+using ExtensionsNMBS;
 
 namespace Project_NMBS
 {
