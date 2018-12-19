@@ -128,6 +128,18 @@ namespace Project_NMBS
 
         enum SelectedLv { BeginStationRouteplanner = 1, EndStationRouteplanner = 2, StationTripviewer = 3, StationRealtime = 4, StationRoutefinder = 5 }
 
+        private static int StopTimeComparison(Tuple<Trip, List<StopTime>> x, Tuple<Trip, List<StopTime>> y)
+        {
+            int xS = x.Item2.FirstOrDefault().DepartureTime.TotalSeconds;
+            int yS = y.Item2.FirstOrDefault().DepartureTime.TotalSeconds;
+            if (xS > yS)
+                return 1;
+            else if (xS < yS)
+                return -1;
+            else
+                return 0;
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -412,17 +424,51 @@ namespace Project_NMBS
         /// <param name="sender">btnQueryRouteplanner</param>
         private void BtnQueryRouteplanner_Click(object sender, RoutedEventArgs e)
         {
-            //Stop stop = GetStop(_searchBeginStationRouteplanner.Id.Trimmed());
-            //List<Tuple<string, Stop>> itemSource = new List<Tuple<string, Stop>>();
-            //_sb.Clear()
-            //    .Append('[')
-            //    .Append(stop.Id)
-            //    .Append(']')
-            //    .Append(WS)
-            //    .Append(GetTrans(stop.Name));
-            //itemSource.Add(Tuple.Create(_sb.ToString(), stop));
-            //lvResultRouteplanner.ItemsSource = itemSource;
+            List<RouteExtra> routes = _routes.Values.Where(x => x.StopList.Keys.Contains(_searchBeginStationRouteplanner.Id.Trimmed()) && x.StopList.Keys.Contains(_searchEndStationRoutePlanner.Id.Trimmed())).ToList();
 
+            List<Trip> trips = new List<Trip>();
+            foreach (RouteExtra routeExtra in routes)
+            {
+                trips.AddRange(_trips.Values.Where(x => x.RouteId == routeExtra.Id && DateTime.ParseExact(x.Id.Split(':')[7], "yyyyMMdd", new CultureInfo("fr-FR")) > DateTime.Now));
+            }
+
+            List<Tuple<Trip, List<StopTime>>> tripStopTimes = new List<Tuple<Trip, List<StopTime>>>();
+            foreach (Trip trip in trips)
+            {
+                List<StopTime> stopTimes = _feedStatic.StopTimes.GetForTrip(trip.Id).ToList();
+                uint? stopSequenceBegin = stopTimes.Where(x => x.StopId == _searchBeginStationRouteplanner.Id.Trimmed()).FirstOrDefault()?.StopSequence;
+                uint? stopSequenceEnd = stopTimes.Where(x => x.StopId == _searchEndStationRoutePlanner.Id.Trimmed()).FirstOrDefault()?.StopSequence;
+                if (stopSequenceBegin != null && stopSequenceEnd != null && stopSequenceEnd > stopSequenceBegin)
+                {
+                    List<StopTime> filteredStopTimes = stopTimes.Where(x => Convert.ToUInt32(x.StopSequence) >= stopSequenceBegin && Convert.ToUInt32(x.StopSequence) <= stopSequenceEnd).ToList();
+                    tripStopTimes.Add(Tuple.Create(trip, filteredStopTimes));
+                }
+            }
+            tripStopTimes.Sort(StopTimeComparison);
+            {
+                List<Tuple<string>> itemSource = new List<Tuple<string>>();
+                foreach (Tuple<Trip, List<StopTime>> tripStoptime in tripStopTimes.Where(x=>((DateTime)dpRouteplanner.SelectedDate).AddHours(x.Item2.FirstOrDefault().DepartureTime.Hours).AddMinutes(x.Item2.FirstOrDefault().DepartureTime.Minutes) > (DateTime)tpRouteplanner.Value))
+                {
+                    string platformStart = _stopTimeOverrides.Where(x => x.Trip_Id == tripStoptime.Item1.Id && x.Stop_Sequence == tripStoptime.Item2.FirstOrDefault().StopSequence).Select(x => x.Stop_Id).FirstOrDefault().Split('_')[1];
+                    string platformEnd = _stopTimeOverrides.Where(x => x.Trip_Id == tripStoptime.Item1.Id && x.Stop_Sequence == tripStoptime.Item2.LastOrDefault().StopSequence).Select(x => x.Stop_Id).FirstOrDefault().Split('_')[1];
+                    _sb.Clear()
+                        .Append(tripStoptime.Item2.FirstOrDefault().DepartureTime.Hours.ToString().PadLeft(2, '0'))
+                        .Append(':')
+                        .Append(tripStoptime.Item2.FirstOrDefault().DepartureTime.Minutes.ToString().PadLeft(2, '0'))
+                        .Append('\t')
+                        .Append("Sp ")
+                        .Append(platformStart)
+                        .Append('\t', 2)
+                        .Append(tripStoptime.Item2.LastOrDefault().ArrivalTime.Hours.ToString().PadLeft(2, '0'))
+                        .Append(':')
+                        .Append(tripStoptime.Item2.LastOrDefault().ArrivalTime.Minutes.ToString().PadLeft(2, '0'))
+                        .Append('\t')
+                        .Append("Sp ")
+                        .Append(platformEnd);
+                    itemSource.Add(Tuple.Create(_sb.ToString()));
+                }
+                lvResultRouteplanner.ItemsSource = itemSource;
+            }
 
         }
 
