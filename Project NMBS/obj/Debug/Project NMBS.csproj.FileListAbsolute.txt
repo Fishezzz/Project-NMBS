@@ -40,3 +40,5 @@ C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRealTime.g.c
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRealTime.baml
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRoutefinder.g.cs
 C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\obj\Debug\ResultRoutefinder.baml
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\ExtensionsNMBS.dll
+C:\Users\emiel\School\OOP\Project NMBS\Project NMBS\bin\Debug\ExtensionsNMBS.pdb

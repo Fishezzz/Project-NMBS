@@ -38,6 +38,9 @@
     <ApplicationIcon>NMBS.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExtensionsNMBS">
+      <HintPath>..\ExtensionsNMBS\bin\Debug\ExtensionsNMBS.dll</HintPath>
+    </Reference>
     <Reference Include="GTFS, Version=1.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GTFS.1.7.1\lib\net40\GTFS.dll</HintPath>
     </Reference>
@@ -94,15 +97,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="FileDownload.cs" />
     <Compile Include="ResultRoutefinder.xaml.cs">
       <DependentUpon>ResultRoutefinder.xaml</DependentUpon>
     </Compile>
     <Compile Include="RouteExtensions.cs" />
-    <Compile Include="TripExtensions.cs" />
-    <Compile Include="StopTimeOverride.cs" />
-    <Compile Include="Translation.cs" />
     <Compile Include="ResultRealtime.xaml.cs">
       <DependentUpon>ResultRealtime.xaml</DependentUpon>
     </Compile>

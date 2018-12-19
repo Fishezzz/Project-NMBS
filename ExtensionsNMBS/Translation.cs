@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fishezzz
 {
-    class Translation
+    public class Translation
     {
         public string Trans_Id { get; set; }
         public string Language { get; set; }

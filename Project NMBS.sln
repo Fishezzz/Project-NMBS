@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project NMBS", "Project NMBS\Project NMBS.csproj", "{A31B1244-AB09-4F8E-96DD-5B0C8A0F6D7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionsNMBS", "ExtensionsNMBS\ExtensionsNMBS.csproj", "{3EC6F409-1DC2-4204-BBFE-5500F99DEF58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A31B1244-AB09-4F8E-96DD-5B0C8A0F6D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A31B1244-AB09-4F8E-96DD-5B0C8A0F6D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A31B1244-AB09-4F8E-96DD-5B0C8A0F6D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EC6F409-1DC2-4204-BBFE-5500F99DEF58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EC6F409-1DC2-4204-BBFE-5500F99DEF58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EC6F409-1DC2-4204-BBFE-5500F99DEF58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EC6F409-1DC2-4204-BBFE-5500F99DEF58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fishezzz
+namespace ExtensionsNMBS
 {
-    class StopTimeOverride
+    public class StopTimeOverride
     {
         public string Trip_Id { get; set; }
         public uint Stop_Sequence { get; set; }
