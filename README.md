@@ -1,4 +1,6 @@
 ﻿# Project NMBS
+ 
+ [![MIT licensed](https://img.shields.io/github/license/Fishezzz/Project-NMBS.svg)](https://github.com/Fishezzz/Project-NMBSblob/master/README.md)
 
 ## Summary ##
 This is my final project for the subject [L OOP 2](http://onderwijsaanbod.vives-zuid.be/syllabi/n/V3M025N.htm#activetab=doelstellingen_idp32096) (Object Oriented Programming) at my school.<br>
